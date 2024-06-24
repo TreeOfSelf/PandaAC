@@ -75,7 +75,7 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
         int x = (int) packet.getX();
         int y = (int) packet.getY();
         int z = (int) packet.getZ();
-
+        
         World world = playerEntity.getWorld();
         // Check for ladder around player
         for (int i = -1; i <= 1; i++) {
@@ -83,7 +83,12 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
                 for (int k = -1; k <= 1; k++) {
                     BlockPos blockType = new BlockPos(x + i, y + j, z + k);
                     BlockState blockState = world.getBlockState(blockType);
-                    if (blockState.getBlock() == Blocks.LADDER) {
+                    if (blockState.getBlock() == Blocks.LADDER
+                    || blockState.getBlock() == Blocks.VINE
+                            || blockState.getBlock() == Blocks.SCAFFOLDING
+                            || blockState.getBlock() == Blocks.CAVE_VINES
+                            || blockState.getBlock() == Blocks.TWISTING_VINES
+                            || blockState.getBlock() == Blocks.WEEPING_VINES) {
                         return true;
                     }
                 }
