@@ -75,7 +75,7 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
         int x = (int) packet.getX();
         int y = (int) packet.getY();
         int z = (int) packet.getZ();
-        
+
         World world = playerEntity.getWorld();
         // Check for ladder around player
         for (int i = -1; i <= 1; i++) {
