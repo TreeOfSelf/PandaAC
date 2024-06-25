@@ -87,8 +87,11 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
                     || blockState.getBlock() == Blocks.VINE
                             || blockState.getBlock() == Blocks.SCAFFOLDING
                             || blockState.getBlock() == Blocks.CAVE_VINES
+                            || blockState.getBlock() == Blocks.CAVE_VINES_PLANT
                             || blockState.getBlock() == Blocks.TWISTING_VINES
-                            || blockState.getBlock() == Blocks.WEEPING_VINES) {
+                            || blockState.getBlock() == Blocks.TWISTING_VINES_PLANT
+                            || blockState.getBlock() == Blocks.WEEPING_VINES
+                            || blockState.getBlock() == Blocks.WEEPING_VINES_PLANT) {
                         return true;
                     }
                 }
