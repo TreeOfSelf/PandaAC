@@ -1,14 +1,12 @@
 package me.sebastian420.PandaAC.mixin;
 
-import me.sebastian420.PandaAC.objects.PlayerMoveC2SPacketView;
+import me.sebastian420.PandaAC.PacketViews.PlayerMoveC2SPacketView;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(PlayerMoveC2SPacket.class)
 public class PlayerMoveC2SPacketMixin implements PlayerMoveC2SPacketView {
-
-
     @Shadow
     protected double x;
     @Shadow
@@ -52,10 +50,7 @@ public class PlayerMoveC2SPacketMixin implements PlayerMoveC2SPacketView {
     }
 
     @Override
-    public boolean isOnGround() {
-
-        return onGround;
-    }
+    public boolean isOnGround() { return onGround; }
 
     @Override
     public boolean isChangePosition() {

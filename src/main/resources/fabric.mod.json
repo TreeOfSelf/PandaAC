@@ -16,7 +16,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"me.sebastian420.PandaAC.PandaACInit"
+          "me.sebastian420.PandaAC.PandaAC"
 		]
 	},
 	"mixins": [

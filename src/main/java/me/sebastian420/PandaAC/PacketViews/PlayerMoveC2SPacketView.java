@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.objects;
+package me.sebastian420.PandaAC.PacketViews;
 
 public interface PlayerMoveC2SPacketView {
     double getX();
