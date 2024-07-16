@@ -12,7 +12,6 @@ public interface TeleportConfirmListener {
             for (TeleportConfirmListener listener : listeners) {
                 listener.onTeleportConfirm(player, teleportConfirmC2SPacket, playerMoveC2SPacketView);
             }
-            //player.tickRollback(playerMoveC2SPacketView.getX(), playerMoveC2SPacketView.getY(), playerMoveC2SPacketView.getZ(), true);
     });
     
     void onTeleportConfirm(PAPlayer player, TeleportConfirmC2SPacket teleportConfirmC2SPacket, PlayerMoveC2SPacketView playerMoveC2SPacketView);

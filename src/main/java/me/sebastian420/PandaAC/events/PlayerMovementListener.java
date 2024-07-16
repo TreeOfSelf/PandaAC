@@ -11,7 +11,6 @@ public interface PlayerMovementListener {
             for (PlayerMovementListener listener : listeners) {
                 listener.onMovement(player, packet, cause);
             }
-        //if (packet.isChangePosition()) player.tickRollback(packet.getX(), packet.getY(), packet.getZ(), false);
     });
 
     public enum MoveCause {

@@ -26,9 +26,5 @@ public class ModuleManager {
     public static List<PAModule> getModules() {
         return MODULES;
     }
-
-    public static int getModuleCount() {
-        return MODULES.size();
-    }
-
+    
 }

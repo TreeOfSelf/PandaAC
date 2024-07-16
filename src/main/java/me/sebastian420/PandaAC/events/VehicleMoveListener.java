@@ -15,7 +15,6 @@ public interface VehicleMoveListener {
             for (VehicleMoveListener listener : listeners) {
                 listener.onVehicleMove(player, vehicle, playerLook, playerInput, vehicleMoveC2SPacket, lastVehicleMoveC2SPacket);
             }
-            //player.tickRollback(player.getX(), player.getY(), player.getZ(), false); //TODO Make this good
     });
     
     void onVehicleMove(PAPlayer player, PAEntity vehicle, PlayerMoveC2SPacketView playerLook, PlayerInputC2SPacket playerInput, VehicleMoveC2SPacket vehicleMoveC2SPacket, @Nullable VehicleMoveC2SPacket lastVehicleMoveC2SPacket);
