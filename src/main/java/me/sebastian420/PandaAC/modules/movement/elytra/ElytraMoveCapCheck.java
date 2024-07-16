@@ -1,6 +1,5 @@
 package me.sebastian420.PandaAC.modules.movement.elytra;
 
-import me.sebastian420.PandaAC.LoggerThread;
 import me.sebastian420.PandaAC.events.ClientCommandC2SPacketListener;
 import me.sebastian420.PandaAC.events.InteractItemListener;
 import me.sebastian420.PandaAC.events.PlayerMovementListener;
@@ -122,7 +121,6 @@ public class ElytraMoveCapCheck extends PAModule implements ClientCommandC2SPack
                                 elytra.damage(500, player.asMcPlayer(), EquipmentSlot.CHEST);
                             }
                         }
-                        LoggerThread.info("ELYTRA MOVING ROLLBACK");
                         player.asMcPlayer().teleport(player.getWorld().toServerWorld(),data.lastX,data.lastY,data.lastZ, player.asMcEntity().getYaw(), player.asMcEntity().getPitch());
                     }
                 } else if (System.currentTimeMillis() - data.lastUpdate >= 1000) {

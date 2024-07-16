@@ -1,8 +1,5 @@
-//Check for block above speed
-
 package me.sebastian420.PandaAC.modules.movement;
 
-import me.sebastian420.PandaAC.LoggerThread;
 import me.sebastian420.PandaAC.events.OutgoingTeleportListener;
 import me.sebastian420.PandaAC.events.PlayerEndTickCallback;
 import me.sebastian420.PandaAC.events.PlayerMovementListener;
@@ -220,8 +217,6 @@ public class SpeedCheck extends PAModule implements PlayerMovementListener, Play
                 if (magicNumber > speedCheck /*maxSpeedMagicNumber.get()*/ && System.currentTimeMillis() - data.startAfter > 5000 && player.getWorld().getTime() - player.getPistonMovementTick() > 1000 &&
                         System.currentTimeMillis() - player.getTracked(Trackers.PLAYER_LAST_TELEPORT_TRACKER).lastTeleport > 1000 &&
                         !player.asMcEntity().hasVehicle() && player.asMcPlayer().isAlive()) {
-
-                        LoggerThread.info("SPEED ROLLBACK SHORT "+player.asMcPlayer().getName());
                         player.asMcPlayer().teleport(player.getWorld().toServerWorld(),data.rollbackX,Math.round(data.rollbackY),data.rollbackZ, player.asMcEntity().getYaw(), player.asMcEntity().getPitch());
                         data.lastRollback = System.currentTimeMillis();
                         data.lastXX = data.rollbackX;
@@ -290,9 +285,6 @@ public class SpeedCheck extends PAModule implements PlayerMovementListener, Play
 
                 double speedCheck = speedValue*speedMult ;//3.0 * speedMult;
 
-                //LoggerThread.info("Dist Long: "+String.valueOf(dist)+" , "+speedCheck+" for "+player.asMcPlayer().getName());
-
-
                 if (magicNumber > speedCheck /*maxSpeedMagicNumber.get()*/ && System.currentTimeMillis() - data.startAfter > 5000 && player.getWorld().getTime() - player.getPistonMovementTick() > 1000 &&
                         System.currentTimeMillis() - player.getTracked(Trackers.PLAYER_LAST_TELEPORT_TRACKER).lastTeleport > 1000 &&
                         !player.asMcEntity().hasVehicle() && player.asMcPlayer().isAlive()) {
@@ -300,7 +292,6 @@ public class SpeedCheck extends PAModule implements PlayerMovementListener, Play
                     data.fastCounter+=1;
 
                     if(data.fastCounter>1) {
-                        LoggerThread.info("SPEED ROLLBACK LONG "+player.asMcPlayer().getName());
                         player.asMcPlayer().teleport(player.getWorld().toServerWorld(),data.rollbackX,Math.round(data.rollbackY),data.rollbackZ, player.asMcEntity().getYaw(), player.asMcEntity().getPitch());
                         data.lastXX = data.rollbackX;
                         data.lastYY = data.rollbackY;

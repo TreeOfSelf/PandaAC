@@ -1,7 +1,5 @@
 package me.sebastian420.PandaAC.modules.movement;
 
-
-import me.sebastian420.PandaAC.LoggerThread;
 import me.sebastian420.PandaAC.events.PlayerDamageListener;
 import me.sebastian420.PandaAC.events.PlayerMovementListener;
 import me.sebastian420.PandaAC.events.PlayerSpawnListener;
@@ -31,7 +29,21 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
     public static boolean isInWater(Entity entity) {
         World world = entity.getWorld();
         BlockPos entityPos = entity.getBlockPos();
-        return !world.getBlockState(entityPos).getFluidState().isEmpty();
+
+
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1;j++) {
+                for (int k = -1; k <= 1; k++) {
+                    BlockPos blockType = new BlockPos(entityPos.getX() + i, entityPos.getY() + j, entityPos.getZ() + k);
+                    BlockState blockState = world.getBlockState(blockType);
+                    if (!blockState.getFluidState().isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     public static boolean checkForBoatEntityUnderPlayer(ServerPlayerEntity player, PlayerMoveC2SPacketView packet) {
@@ -121,6 +133,8 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
     @Override
     public void onMovement(PAPlayer player, PlayerMoveC2SPacketView packet, MoveCause cause) {
         if (player.isCreative() || player.isSpectator()) return;
+        if(player.getTracked(Trackers.PLAYER_LAST_TELEPORT_TRACKER).lastTeleport < 1000) return;
+
         GlideCheckData data = player.getOrCreateData(GlideCheckData.class, GlideCheckData::new);
         long curTime = System.currentTimeMillis();
         long timeSinceLastPacket = curTime - data.lastPacket;
@@ -172,7 +186,7 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
                 int violations = data.violations.get();
 
                 if (violations >= 50) {
-                    if( /* (System.currentTimeMillis() - player.getTracked(Trackers.PLAYER_LAST_TELEPORT_TRACKER).lastTeleport < 1000) && */System.currentTimeMillis() - data.startAfter  > 500 )
+                    if(System.currentTimeMillis() - data.startAfter  > 500 )
                     {
                         player.asMcPlayer().kill();
                         data.violations.set(0);
@@ -182,7 +196,6 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
                 }else{
                     if(violations > 15) {
                         if (!(data.lastX == 0 && data.lastY == 0 && data.lastZ == 0)) {
-                            LoggerThread.info("GLIDE ROLLBACK " + player.asMcPlayer().getName());
                             if (packet.getY() + 1 < data.lastY && !blockUnder(player.asMcEntity())) {
                                 player.asMcPlayer().kill();
                             } else {

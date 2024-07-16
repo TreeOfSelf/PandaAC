@@ -1,6 +1,5 @@
 package me.sebastian420.PandaAC.modules.movement.elytra;
 
-import me.sebastian420.PandaAC.LoggerThread;
 import me.sebastian420.PandaAC.events.PlayerMovementListener;
 import me.sebastian420.PandaAC.modules.PAModule;
 import me.sebastian420.PandaAC.objects.PlayerMoveC2SPacketView;
@@ -49,7 +48,6 @@ public class ElytraMaxHorizontalSpeedCheck extends PAModule implements PlayerMov
                             player.asMcPlayer().sendEquipmentBreakStatus(elytra.getItem(), EquipmentSlot.CHEST);
                         }
                     }
-                    LoggerThread.info("ELYTRA HOR ROLLBACK");
                     player.asMcPlayer().teleport(player.getWorld().toServerWorld(),data.lastX,data.lastY,data.lastZ, player.asMcEntity().getYaw(), player.asMcEntity().getPitch());
                 }
             }else{
