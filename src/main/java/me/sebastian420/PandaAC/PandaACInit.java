@@ -17,7 +17,6 @@ public class PandaACInit implements ModInitializer {
 		ServerLifecycleEvents.SERVER_STOPPED.register(this::serverStopped);
 		LOGGER.info("PandaAC Started!");
 		EventManager.init();
-		Trackers.init();
 		ModuleManager.init();
 		PandaACThread.INSTANCE.start();
 	}

@@ -26,5 +26,5 @@ public class ModuleManager {
     public static List<PAModule> getModules() {
         return MODULES;
     }
-    
+
 }
