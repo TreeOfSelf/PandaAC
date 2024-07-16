@@ -22,11 +22,10 @@ public class MovementModule {
 
             long timeDifMs = time - playerData.getLastCheck();
             double distance = MathUtil.getDistance(playerData.getX(), playerData.getZ(), packetView.getX(), packetView.getZ());
+            BlockState blockUnder = PandaACThread.threadedWorldManager.getWorld(player.getServerWorld()).getBlockState(new BlockPos(player.getBlockPos().offset(Direction.DOWN)));
             double speedMps = (distance * 1000.0) / timeDifMs;
             PandaAC.LOGGER.info("Raw values - Distance: {} blocks, Time: {} ms", distance, timeDifMs);
             PandaAC.LOGGER.info("Moving at speed: {} m/s", speedMps);
-
-            BlockState blockUnder = PandaACThread.threadedWorldManager.getWorld(player.getServerWorld()).getBlockState(new BlockPos(player.getBlockPos().offset(Direction.DOWN)));
             PandaAC.LOGGER.info("Block Under: {}", blockUnder);
             playerData.setNew(packetView, time);
         }

@@ -4,7 +4,6 @@ import me.sebastian420.PandaAC.Modules.MovementModule;
 import me.sebastian420.PandaAC.Objects.ThreadedWorldManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -97,7 +96,10 @@ public class PandaACThread extends Thread {
                 break;
             case PLAYER_MOVE:
                 Object[] moveData = (Object[]) event.data;
-                MovementModule.read((ServerPlayerEntity) moveData[0], (PlayerMoveC2SPacket) moveData[1]);
+                ServerPlayerEntity player = (ServerPlayerEntity) moveData[0];
+                if (!player.isDisconnected()) {
+                    MovementModule.read(player, (PlayerMoveC2SPacket) moveData[1]);
+                }
                 break;
         }
     }

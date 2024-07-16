@@ -1,13 +1,14 @@
 {
-	"required": true,
-	"package": "me.sebastian420.PandaAC.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-      "Connection.ClientConnectionMixin",
-		"Entity.OnSpawnMixin",
-		"Connection.PlayerMoveC2SPacketMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "me.sebastian420.PandaAC.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "Block.BlockChangeMixin",
+    "Connection.ClientConnectionMixin",
+    "Connection.PlayerMoveC2SPacketMixin",
+    "Entity.OnSpawnMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
