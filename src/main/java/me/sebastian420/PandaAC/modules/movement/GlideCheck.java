@@ -157,7 +157,6 @@ public class GlideCheck extends PAModule implements PlayerMovementListener, Play
             if(!solidBlockCheck(player.asMcEntity(),packet) && packet.isChangePosition()){
                 onGround = false;
                 player.asMcPlayer().setOnGround(false);
-                LoggerThread.info("FAKED "+player.asMcPlayer().getName());
                 data.fakeGround+=1;
                 player.asMcPlayer().damage(player.asMcPlayer().getWorld().getDamageSources().generic(), data.fakeGround+2);
 
