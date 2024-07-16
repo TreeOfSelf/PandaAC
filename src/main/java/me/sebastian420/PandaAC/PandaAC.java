@@ -1,5 +1,7 @@
 package me.sebastian420.PandaAC;
 
+import me.sebastian420.PandaAC.Events.ServerStopEvent;
+import me.sebastian420.PandaAC.Events.WorldLoadEvent;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
@@ -12,12 +14,9 @@ public class PandaAC implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("PandaAC Started!");
-		ServerLifecycleEvents.SERVER_STOPPED.register(this::serverStopped);
+		WorldLoadEvent.register();
+		ServerStopEvent.register();
 		PandaACThread.INSTANCE.start();
-	}
-
-	private void serverStopped(MinecraftServer minecraftServer) {
-		PandaACThread.running = false;
 	}
 
 }
