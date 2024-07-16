@@ -8,6 +8,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -26,7 +27,7 @@ public class ClientConnectionMixin {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet, CallbackInfo cb) {
         if (packetListener instanceof ServerPlayNetworkHandler) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-            PandaACThread.PACKET_QUEUE.add(new Pair<>(serverPlayerEntity,packet));
+            PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet);
         }
     }
 

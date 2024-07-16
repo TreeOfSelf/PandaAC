@@ -8,13 +8,17 @@ import java.util.HashMap;
 
 public class ThreadedWorldManager {
 
-    private static final HashMap<Identifier, ThreadedWorld> worldMap = new HashMap<>();
+    public ThreadedWorldManager() {
 
-    public static void createWorld(ServerWorld world){
+    }
+
+    private final HashMap<Identifier, ThreadedWorld> worldMap = new HashMap<>();
+
+    public void createWorld(ServerWorld world){
         worldMap.computeIfAbsent(world.getRegistryKey().getRegistry(), identifier -> new ThreadedWorld());
     }
 
-    public static ThreadedWorld getWorld(ServerWorld world){
+    public ThreadedWorld getWorld(ServerWorld world){
         return worldMap.get(world.getRegistryKey().getRegistry());
     }
 

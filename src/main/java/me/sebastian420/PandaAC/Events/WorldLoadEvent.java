@@ -1,6 +1,6 @@
 package me.sebastian420.PandaAC.Events;
 
-import me.sebastian420.PandaAC.Objects.ThreadedWorldManager;
+import me.sebastian420.PandaAC.PandaACThread;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
@@ -12,8 +12,7 @@ public class WorldLoadEvent {
     }
 
     private static void onWorldLoad(MinecraftServer minecraftServer, ServerWorld serverWorld) {
-        ThreadedWorldManager.createWorld(serverWorld);
+        PandaACThread.queueWorldLoad(serverWorld);
     }
-
 
 }

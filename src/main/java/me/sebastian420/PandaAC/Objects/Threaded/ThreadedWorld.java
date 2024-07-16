@@ -1,8 +1,9 @@
 package me.sebastian420.PandaAC.Objects.Threaded;
 
-import net.minecraft.world.World;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +17,26 @@ public class ThreadedWorld {
 
     }
 
-    public void updateChunkData(World world, int i, int j) {
-        Chunk chunk = world.getChunk(i, j, ChunkStatus.FULL);
-        ThreadedChunk threadedChunk = new ThreadedChunk(chunk.getSectionArray());
-        chunkMap.put(new ChunkCoordinate(i, j), threadedChunk);
+    public void updateChunkData(Chunk chunk) {
+        ChunkPos chunkPos = chunk.getPos();
+        ThreadedChunk threadedChunk = new ThreadedChunk(chunk);
+        chunkMap.put(new ChunkCoordinate(chunkPos.x, chunkPos.z), threadedChunk);
+    }
+
+    public void deleteChunkData(Chunk chunk) {
+        ChunkPos chunkPos = chunk.getPos();
+        chunkMap.remove(new ChunkCoordinate(chunkPos.x, chunkPos.z));
+    }
+
+    public ThreadedChunk getChunk(BlockPos blockPos){
+        int i = blockPos.getX()/16;
+        int j = blockPos.getZ()/16;
+        return chunkMap.get(new ChunkCoordinate(i, j));
+    }
+
+    public BlockState getBlockState(BlockPos pos) {
+            ThreadedChunk threadedChunk = this.getChunk(pos);
+            return threadedChunk.getBlockState(pos);
     }
 
     private record ChunkCoordinate(int i, int j) {
