@@ -2,10 +2,13 @@ package me.sebastian420.PandaAC;
 
 import me.sebastian420.PandaAC.Modules.MovementModule;
 import me.sebastian420.PandaAC.Objects.ThreadedWorldManager;
+import net.minecraft.block.BlockState;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.concurrent.BlockingQueue;
@@ -27,7 +30,8 @@ public class PandaACThread extends Thread {
         WORLD_LOAD,
         CHUNK_LOAD,
         CHUNK_UNLOAD,
-        PLAYER_MOVE
+        PLAYER_MOVE,
+        BLOCK_CHANGE,
     }
 
     private static class QueuedEvent {
@@ -56,6 +60,10 @@ public class PandaACThread extends Thread {
         EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet}));
     }
 
+    public static void queueBlockChange(World world, BlockPos blockPos, BlockState state) {
+        EVENT_QUEUE.offer(new QueuedEvent(EventType.BLOCK_CHANGE, new Object[]{world, blockPos, state}));
+    }
+
     @Override
     public void run() {
         while (running) {
@@ -82,6 +90,10 @@ public class PandaACThread extends Thread {
             case CHUNK_UNLOAD:
                 Object[] chunkUnloadData = (Object[]) event.data;
                 threadedWorldManager.getWorld((ServerWorld) chunkUnloadData[0]).deleteChunkData((Chunk) chunkUnloadData[1]);
+                break;
+            case BLOCK_CHANGE:
+                Object[] blockChangeData = (Object[]) event.data;
+                threadedWorldManager.setBlockState((World) blockChangeData[0], (BlockPos) blockChangeData[1], (BlockState) blockChangeData[2]);
                 break;
             case PLAYER_MOVE:
                 Object[] moveData = (Object[]) event.data;

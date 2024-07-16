@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.mixin;
+package me.sebastian420.PandaAC.mixin.Connection;
 
 import me.sebastian420.PandaAC.PacketViews.PlayerMoveC2SPacketView;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;

@@ -1,6 +1,5 @@
 package me.sebastian420.PandaAC.Events;
 
-import com.mojang.datafixers.util.Pair;
 import me.sebastian420.PandaAC.PandaACThread;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
 import net.minecraft.server.world.ServerWorld;

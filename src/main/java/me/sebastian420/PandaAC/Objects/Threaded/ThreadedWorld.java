@@ -40,6 +40,11 @@ public class ThreadedWorld {
             return threadedChunk.getBlockState(pos);
     }
 
+    public void setBlockState(BlockPos pos, BlockState state) {
+        ThreadedChunk threadedChunk = this.getChunk(pos);
+        threadedChunk.setBlockState(pos, state);
+    }
+
     private record ChunkCoordinate(int i, int j) {
 
         @Override

@@ -1,6 +1,5 @@
-package me.sebastian420.PandaAC.mixin;
+package me.sebastian420.PandaAC.mixin.Connection;
 
-import com.mojang.datafixers.util.Pair;
 import me.sebastian420.PandaAC.PandaAC;
 import io.netty.channel.ChannelHandlerContext;
 import me.sebastian420.PandaAC.PandaACThread;

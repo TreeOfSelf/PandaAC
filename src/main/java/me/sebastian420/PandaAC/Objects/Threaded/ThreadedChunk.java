@@ -1,7 +1,6 @@
 package me.sebastian420.PandaAC.Objects.Threaded;
 
 import io.netty.buffer.Unpooled;
-import me.sebastian420.PandaAC.PandaAC;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.PacketByteBuf;
@@ -22,21 +21,14 @@ public class ThreadedChunk {
     public ThreadedChunk(MinecraftServer minecraftServer, Chunk chunk) {
         this.sectionArray = new ChunkSection[chunk.getHeightLimitView().countVerticalSections()];
 
-        long timeBefore = System.currentTimeMillis();
-
         fillSectionArray(minecraftServer.getRegistryManager().get(RegistryKeys.BIOME), this.sectionArray);
-
 
         ChunkSection[] otherSectionArray = chunk.getSectionArray();
         for (var y = 0; y < otherSectionArray.length; y++){
-
             PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
-
             otherSectionArray[y].toPacket(packetByteBuf);
             this.sectionArray[y].readDataPacket(packetByteBuf);
         }
-
-        PandaAC.LOGGER.info("TIME TAKEN {}", System.currentTimeMillis() - timeBefore);
 
         this.bottomY = chunk.getBottomY();
         this.topY = chunk.getTopY();
@@ -63,6 +55,14 @@ public class ThreadedChunk {
         return this.sectionCoordToIndex(ChunkSectionPos.getSectionCoord(y));
     }
 
+    public ChunkSection[] getSectionArray() {
+        return this.sectionArray;
+    }
+
+    public ChunkSection getSection(int yIndex) {
+        return this.getSectionArray()[yIndex];
+    }
+
     public BlockState getBlockState(BlockPos pos) {
         int i = pos.getX();
         int j = pos.getY();
@@ -78,4 +78,14 @@ public class ThreadedChunk {
 
         return Blocks.AIR.getDefaultState();
     }
+
+    public void setBlockState(BlockPos pos, BlockState state) {
+        int i = pos.getY();
+        int j = pos.getX() & 15;
+        int k = i & 15;
+        int l = pos.getZ() & 15;
+        ChunkSection chunkSection = this.getSection(this.getSectionIndex(i));
+        chunkSection.setBlockState(j, k, l, state);
+    }
+
 }
