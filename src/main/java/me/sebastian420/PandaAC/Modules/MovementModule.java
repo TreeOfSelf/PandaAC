@@ -10,11 +10,21 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class MovementModule {
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet) {
+        long time = System.currentTimeMillis();
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
-        PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
 
-        double distance = MathUtil.getDistanceSquared(playerData.getX(), playerData.getZ(), packetView.getX(), packetView.getZ());
-        PandaAC.LOGGER.info("Went distance: {}", distance);
-        playerData.setNew(packetView);
+        if (packetView.isChangePosition()) {
+            PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
+
+            long timeDifMs = time - playerData.getLastCheck();
+            double distance = MathUtil.getDistance(playerData.getX(), playerData.getZ(), packetView.getX(), packetView.getZ());
+            double speedMps = (distance * 1000.0) / timeDifMs;
+            PandaAC.LOGGER.info("Raw values - Distance: {} blocks, Time: {} ms", distance, timeDifMs);
+
+
+
+            PandaAC.LOGGER.info("Moving at speed: {} m/s", speedMps);
+            playerData.setNew(packetView, time);
+        }
     }
 }

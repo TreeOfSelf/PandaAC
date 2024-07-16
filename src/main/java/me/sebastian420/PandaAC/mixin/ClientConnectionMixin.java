@@ -22,7 +22,7 @@ public class ClientConnectionMixin {
     @Shadow
     private PacketListener packetListener;
 
-    @Inject(method = "channelRead0", at = @At("HEAD"))
+    @Inject(method = "channelRead0*", at = @At("HEAD"))
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet, CallbackInfo cb) {
         if (packetListener instanceof ServerPlayNetworkHandler) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();

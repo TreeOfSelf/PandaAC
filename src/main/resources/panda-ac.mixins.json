@@ -5,10 +5,7 @@
 	"mixins": [
 		"ClientConnectionMixin",
 		"ServerPlayerEntityMixin",
-		"PlayerMoveC2SPacketMixin",
-		"EntityMixin",
-		"VehicleMoveS2CPacketMixin",
-		"ServerPlayNetworkHandlerAccessor"
+		"PlayerMoveC2SPacketMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
