@@ -2,6 +2,8 @@ package me.sebastian420.PandaAC.Events;
 
 import me.sebastian420.PandaAC.PandaACThread;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 

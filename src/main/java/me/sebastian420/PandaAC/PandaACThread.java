@@ -3,6 +3,7 @@ package me.sebastian420.PandaAC;
 import me.sebastian420.PandaAC.Modules.MovementModule;
 import me.sebastian420.PandaAC.Objects.ThreadedWorldManager;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
@@ -76,7 +77,7 @@ public class PandaACThread extends Thread {
                 break;
             case CHUNK_LOAD:
                 Object[] chunkLoadData = (Object[]) event.data;
-                threadedWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData((Chunk) chunkLoadData[1]);
+                threadedWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData(((ServerWorld) chunkLoadData[0]).getServer(),(Chunk) chunkLoadData[1]);
                 break;
             case CHUNK_UNLOAD:
                 Object[] chunkUnloadData = (Object[]) event.data;

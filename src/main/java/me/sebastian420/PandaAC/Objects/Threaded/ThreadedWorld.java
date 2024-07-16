@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.Objects.Threaded;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
@@ -17,9 +18,9 @@ public class ThreadedWorld {
 
     }
 
-    public void updateChunkData(Chunk chunk) {
+    public void updateChunkData(MinecraftServer minecraftServer, Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
-        ThreadedChunk threadedChunk = new ThreadedChunk(chunk);
+        ThreadedChunk threadedChunk = new ThreadedChunk(minecraftServer, chunk);
         chunkMap.put(new ChunkCoordinate(chunkPos.x, chunkPos.z), threadedChunk);
     }
 
