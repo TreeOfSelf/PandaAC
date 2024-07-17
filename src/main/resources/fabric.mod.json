@@ -1,34 +1,31 @@
 {
-	"schemaVersion": 1,
-	"id": "panda-ac",
-	"version": "${version}",
-	"name": "panda-ac",
-	"description": "Fabric AntiCheat",
-	"authors": [
-		"Sebastian420"
-	],
-	"contact": {
-		"homepage": "",
-		"sources": ""
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/panda-ac/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-          "me.sebastian420.PandaAC.PandaAC"
-		]
-	},
-	"mixins": [
-		"panda-ac.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21",
-		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+  "schemaVersion": 1,
+  "id": "panda-ac",
+  "version": "${version}",
+  "name": "PandaAC",
+  "description": "An anti-exploit and anti-cheat for Fabric",
+  "authors": [
+    "samo_lego",
+    "Sebastian420"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/panda-ac/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.sebastian420.PandaAC.PandaAC"
+    ]
+  },
+  "mixins": [
+    "panda-ac.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.5"
+  }
 }

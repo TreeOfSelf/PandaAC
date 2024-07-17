@@ -1,12 +1,33 @@
 {
   "required": true,
+  "minVersion": "0.8",
   "package": "me.sebastian420.PandaAC.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "Connection.ClientConnectionMixin",
-    "Connection.PlayerMoveC2SPacketMixin"
+    "illegal_action.PistonMixin_PreventDestruction",
+    "entity.ServerPlayerEntityMixinCast_Player",
+    "accessor.EntityEquipmentUpdateS2CPacketAccessor",
+    "accessor.EntityPositionS2CPacketAccessor",
+    "accessor.InventoryS2CPacketAccessor",
+    "accessor.ItemEntityAccessor",
+    "accessor.LivingEntityAccessor",
+    "accessor.PlayerEntityAccessor",
+    "accessor.PlayerMoveC2SPacketAccessor",
+    "accessor.PlaySoundS2CPacketAccessor",
+    "accessor.ScreenHandlerSlotUpdateS2CPacketAccessor",
+    "duplication.FallingBlockEntityMixin_GravityBlockDupe",
+    "duplication.ServerPlayerEntityMixin_NoConnectionDeath",
+    "duplication.StringTagMixin_StringWriteLimit",
+    "illegal_action.ServerPlayerEntityMixin_InventoryClose",
+    "movement.EntityMixin_NetherRoofDamage",
+    "movement.ServerPlayNetworkHandler_OnGroundCheck",
+    "connection.ClientConnectionMixin_PacketHandler",
+    "connection.PlayerMoveC2SPacketMixin_GetData",
+    "connection.ServerCommonNetworkHandlerMixin_EntityDataPatch",
+    "connection.ServerPlayerEntityMixin_CreativeInventoryPatch",
+    "connection.ServerPlayNetworkHandlerMixin_PacketEvents"
   ],
   "injectors": {
     "defaultRequire": 1
-	}
+  }
 }

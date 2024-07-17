@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.View;
+package me.sebastian420.PandaAC.view;
 
 public interface PlayerMoveC2SPacketView {
     double getX();

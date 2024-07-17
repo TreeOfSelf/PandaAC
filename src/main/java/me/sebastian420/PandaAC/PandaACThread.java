@@ -1,10 +1,10 @@
 package me.sebastian420.PandaAC;
 
-import me.sebastian420.PandaAC.Modules.SpeedCheck;
-import me.sebastian420.PandaAC.Objects.Data.PlayerMovementData;
-import me.sebastian420.PandaAC.Objects.MovementManager;
-import me.sebastian420.PandaAC.Objects.FasterWorldManager;
-import me.sebastian420.PandaAC.Objects.PlayerMovementDataManager;
+import me.sebastian420.PandaAC.check.SpeedCheck;
+import me.sebastian420.PandaAC.manager.FasterWorldManager;
+import me.sebastian420.PandaAC.manager.MovementManager;
+import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
+import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.MinecraftServer;
@@ -114,7 +114,7 @@ public class PandaACThread extends Thread {
                 break;
             case TICK:
                 tickCount++;
-                //Handle every 5 ticks
+                //Handle every 20 ticks
                 if (tickCount % 5 == 0) {
                     long time = System.currentTimeMillis();
                     for (ServerPlayerEntity serverPlayerEntity : minecraftServer.getPlayerManager().getPlayerList()) {

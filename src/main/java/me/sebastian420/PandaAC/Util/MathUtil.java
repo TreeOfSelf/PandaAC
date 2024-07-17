@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.Util;
+package me.sebastian420.PandaAC.util;
 
 public class MathUtil {
     public static double getDistanceSquared(double x1, double z1, double x2, double z2) {
