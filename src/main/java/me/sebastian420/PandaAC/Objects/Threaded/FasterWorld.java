@@ -1,7 +1,7 @@
 package me.sebastian420.PandaAC.Objects.Threaded;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
@@ -9,19 +9,23 @@ import net.minecraft.world.chunk.Chunk;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+I don't know why, but world.getBlockState or anything that calls world.getChunk is INCREDIBLY slow
+It is literally hundreds of times faster, to just cache chunks based on X/Z in a hashmap and pull the chunks from that
+than to use ANYTHING that calls world.getChunk
+*/
 
-public class ThreadedWorld {
+public class FasterWorld {
 
-    private final Map<ChunkCoordinate, ThreadedChunk> chunkMap = new HashMap<>();
+    private final Map<ChunkCoordinate, Chunk> chunkMap = new HashMap<>();
 
-    public ThreadedWorld(){
+    public FasterWorld(){
 
     }
 
-    public void updateChunkData(MinecraftServer minecraftServer, Chunk chunk) {
+    public void updateChunkData(Chunk chunk) {
         ChunkPos chunkPos = chunk.getPos();
-        ThreadedChunk threadedChunk = new ThreadedChunk(minecraftServer, chunk);
-        chunkMap.put(new ChunkCoordinate(chunkPos.x, chunkPos.z), threadedChunk);
+        chunkMap.put(new ChunkCoordinate(chunkPos.x, chunkPos.z), chunk);
     }
 
     public void deleteChunkData(Chunk chunk) {
@@ -29,20 +33,16 @@ public class ThreadedWorld {
         chunkMap.remove(new ChunkCoordinate(chunkPos.x, chunkPos.z));
     }
 
-    public ThreadedChunk getChunk(BlockPos blockPos){
+    public Chunk getChunk(BlockPos blockPos){
         int i = blockPos.getX()/16;
         int j = blockPos.getZ()/16;
         return chunkMap.get(new ChunkCoordinate(i, j));
     }
 
     public BlockState getBlockState(BlockPos pos) {
-            ThreadedChunk threadedChunk = this.getChunk(pos);
-            return threadedChunk.getBlockState(pos);
-    }
-
-    public void setBlockState(BlockPos pos, BlockState state) {
-        ThreadedChunk threadedChunk = this.getChunk(pos);
-        threadedChunk.setBlockState(pos, state);
+        Chunk threadedChunk = this.getChunk(pos);
+        if (threadedChunk == null) return Blocks.AIR.getDefaultState();
+        return threadedChunk.getBlockState(pos);
     }
 
     private record ChunkCoordinate(int i, int j) {

@@ -1,7 +1,7 @@
 package me.sebastian420.PandaAC.Objects.Data;
 
 import me.sebastian420.PandaAC.Objects.PlayerMovementDataManager;
-import me.sebastian420.PandaAC.PacketViews.PlayerMoveC2SPacketView;
+import me.sebastian420.PandaAC.View.PlayerMoveC2SPacketView;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class PlayerMovementData {

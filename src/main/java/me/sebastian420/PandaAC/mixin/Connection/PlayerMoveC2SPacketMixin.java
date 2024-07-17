@@ -1,6 +1,6 @@
 package me.sebastian420.PandaAC.mixin.Connection;
 
-import me.sebastian420.PandaAC.PacketViews.PlayerMoveC2SPacketView;
+import me.sebastian420.PandaAC.View.PlayerMoveC2SPacketView;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

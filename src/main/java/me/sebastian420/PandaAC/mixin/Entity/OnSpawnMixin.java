@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class OnSpawnMixin {
-    @Inject(at = @At("TAIL"), method = "onSpawn", cancellable = true)
+    @Inject(at = @At("TAIL"), method = "onSpawn")
     public void onSpawn(CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
         PlayerMovementDataManager.getPlayer(player);

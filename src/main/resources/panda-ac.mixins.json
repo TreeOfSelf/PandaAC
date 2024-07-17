@@ -3,10 +3,8 @@
   "package": "me.sebastian420.PandaAC.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "Block.BlockChangeMixin",
     "Connection.ClientConnectionMixin",
-    "Connection.PlayerMoveC2SPacketMixin",
-    "Entity.OnSpawnMixin"
+    "Connection.PlayerMoveC2SPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1
