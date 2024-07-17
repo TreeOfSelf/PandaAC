@@ -1,9 +1,6 @@
 package me.sebastian420.PandaAC;
 
-import me.sebastian420.PandaAC.Events.ChunkLoadEvent;
-import me.sebastian420.PandaAC.Events.ChunkUnloadEvent;
-import me.sebastian420.PandaAC.Events.ServerStopEvent;
-import me.sebastian420.PandaAC.Events.WorldLoadEvent;
+import me.sebastian420.PandaAC.Events.*;
 import net.fabricmc.api.ModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +11,7 @@ public class PandaAC implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("PandaAC Started!");
-		PandaACThread.INSTANCE.start();
+		ServerStartEvent.register();
 		WorldLoadEvent.register();
 		ServerStopEvent.register();
 		ChunkLoadEvent.register();

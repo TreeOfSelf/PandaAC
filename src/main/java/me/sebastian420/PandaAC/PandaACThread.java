@@ -1,8 +1,13 @@
 package me.sebastian420.PandaAC;
 
-import me.sebastian420.PandaAC.Modules.MovementModuleOld;
+import me.sebastian420.PandaAC.Modules.SpeedCheck;
+import me.sebastian420.PandaAC.Objects.Data.PlayerMovementData;
+import me.sebastian420.PandaAC.Objects.MovementManager;
 import me.sebastian420.PandaAC.Objects.FasterWorldManager;
+import me.sebastian420.PandaAC.Objects.PlayerMovementDataManager;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
@@ -11,15 +16,19 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class PandaACThread extends Thread {
-    public static final PandaACThread INSTANCE = new PandaACThread();
+    public static PandaACThread INSTANCE;
     private static final BlockingQueue<QueuedEvent> EVENT_QUEUE = new LinkedBlockingQueue<>();
-    public static final FasterWorldManager threadedWorldManager = new FasterWorldManager();
+    public static final FasterWorldManager fasterWorldManager = new FasterWorldManager();
+
+    private final MinecraftServer minecraftServer;
+
+    private int tickCount = 0;
 
     public static boolean running = true;
 
-    static {
-        INSTANCE.setName("PandaAC");
-        INSTANCE.setDaemon(true);
+
+    public PandaACThread(MinecraftServer minecraftServer) {
+        this.minecraftServer = minecraftServer;
     }
 
     private enum EventType {
@@ -27,6 +36,7 @@ public class PandaACThread extends Thread {
         CHUNK_LOAD,
         CHUNK_UNLOAD,
         PLAYER_MOVE,
+        TICK,
     }
 
     private static class QueuedEvent {
@@ -55,6 +65,18 @@ public class PandaACThread extends Thread {
         EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet}));
     }
 
+    public static void initialize(MinecraftServer minecraftServer) {
+
+        INSTANCE = new PandaACThread(minecraftServer);
+        INSTANCE.setName("PandaAC");
+        INSTANCE.setDaemon(true);
+        INSTANCE.start();
+
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            EVENT_QUEUE.offer(new QueuedEvent(EventType.TICK, null));
+        });
+    }
+
 
     @Override
     public void run() {
@@ -73,21 +95,33 @@ public class PandaACThread extends Thread {
         switch (event.type) {
             case WORLD_LOAD:
                 ServerWorld world = (ServerWorld) event.data;
-                threadedWorldManager.createWorld(world);
+                fasterWorldManager.createWorld(world);
                 break;
             case CHUNK_LOAD:
                 Object[] chunkLoadData = (Object[]) event.data;
-                threadedWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData((Chunk) chunkLoadData[1]);
+                fasterWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData((Chunk) chunkLoadData[1]);
                 break;
             case CHUNK_UNLOAD:
                 Object[] chunkUnloadData = (Object[]) event.data;
-                threadedWorldManager.getWorld((ServerWorld) chunkUnloadData[0]).deleteChunkData((Chunk) chunkUnloadData[1]);
+                fasterWorldManager.getWorld((ServerWorld) chunkUnloadData[0]).deleteChunkData((Chunk) chunkUnloadData[1]);
                 break;
             case PLAYER_MOVE:
                 Object[] moveData = (Object[]) event.data;
                 ServerPlayerEntity player = (ServerPlayerEntity) moveData[0];
                 if (!player.isDisconnected()) {
-                    MovementModuleOld.read(player, (PlayerMoveC2SPacket) moveData[1]);
+                    MovementManager.read(player, (PlayerMoveC2SPacket) moveData[1]);
+                }
+                break;
+            case TICK:
+                tickCount++;
+                //Handle every 5 ticks
+                if (tickCount % 5 == 0) {
+                    long time = System.currentTimeMillis();
+                    for (ServerPlayerEntity serverPlayerEntity : minecraftServer.getPlayerManager().getPlayerList()) {
+                        PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(serverPlayerEntity);
+                        SpeedCheck.check(serverPlayerEntity, playerData, time);
+                        playerData.moveCurrentToLast(time);
+                    }
                 }
                 break;
         }

@@ -5,6 +5,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerMovementDataManager {
     public static HashMap<UUID, PlayerMovementData> playerMovementMap = new HashMap<>();
