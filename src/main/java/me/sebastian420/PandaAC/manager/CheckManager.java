@@ -56,6 +56,6 @@ public class CheckManager {
 
     public static void rollBack(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData){
         serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
-        playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
+        playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), System.currentTimeMillis());
     }
 }

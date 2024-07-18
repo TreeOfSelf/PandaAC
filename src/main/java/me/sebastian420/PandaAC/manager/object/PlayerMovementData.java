@@ -36,6 +36,8 @@ public class PlayerMovementData {
     private long lastPacketTime;
 
     private long lastCheck;
+    private long airTimeStartTime;
+
     private boolean changed;
 
     private boolean possibleTimer;
@@ -60,6 +62,8 @@ public class PlayerMovementData {
         lastAttachedZ = player.getZ();
 
         lastAttachedState = Blocks.AIR.getDefaultState();
+
+        airTimeStartTime = 0;
 
         carriedPotential = 0;
 
@@ -91,6 +95,7 @@ public class PlayerMovementData {
     public double getLastAttachedY(){return lastAttachedY;}
     public double getLastAttachedZ(){return lastAttachedZ;}
 
+    public long getAirTimeStartTime(){return airTimeStartTime;}
 
     public boolean getChanged(){return changed;}
     public long getLastCheck(){return lastCheck;}
@@ -140,13 +145,14 @@ public class PlayerMovementData {
         packetCount ++;
     }
 
-    public void teleport(double x, double y, double z) {
+    public void teleport(double x, double y, double z, long time) {
         currentX = x;
         currentY = y;
         currentZ = z;
         lastX = x;
         lastY = y;
         lastZ = z;
+        airTimeStartTime = time;
     }
 
     public void setSpeedPotential(double speed) {
@@ -159,11 +165,12 @@ public class PlayerMovementData {
         this.carriedPotential = carriedPotential;
     }
 
-    public void setLastAttached(double x, double y, double z, BlockState belowState, double velocity) {
+    public void setLastAttached(double x, double y, double z, BlockState belowState, double velocity, long time) {
         lastAttachedX = x;
         lastAttachedY = y;
         lastAttachedZ = z;
         lastAttachedState = belowState;
         lastAttachedVelocity = Math.abs(velocity);
+        airTimeStartTime = time;
     }
 }

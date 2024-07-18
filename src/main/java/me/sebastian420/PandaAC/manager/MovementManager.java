@@ -44,7 +44,7 @@ public class MovementManager {
 
             if(packetView.isOnGround() || PacketUtil.checkClimbable(fasterWorld, packetView)) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
-                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY());
+                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             }
 
             playerData.setSpeedPotential(speedPotential);
@@ -55,6 +55,6 @@ public class MovementManager {
 
     public static void receiveTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket teleportData) {
         PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
-        playerData.teleport(teleportData.getX(), teleportData.getY(), teleportData.getZ());
+        playerData.teleport(teleportData.getX(), teleportData.getY(), teleportData.getZ(), System.currentTimeMillis());
     }
 }
