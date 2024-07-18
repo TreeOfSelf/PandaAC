@@ -20,7 +20,7 @@ public class FasterChunk {
     private final int bottomY;
 
     public FasterChunk(MinecraftServer minecraftServer, Chunk chunk) {
-        this.sectionArray = new ChunkSection[chunk.getHeightLimitView().countVerticalSections()];
+        /*this.sectionArray = new ChunkSection[chunk.getHeightLimitView().countVerticalSections()];
 
         fillSectionArray(minecraftServer.getRegistryManager().get(RegistryKeys.BIOME), this.sectionArray);
 
@@ -29,7 +29,8 @@ public class FasterChunk {
             PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
             otherSectionArray[y].toPacket(packetByteBuf);
             this.sectionArray[y].readDataPacket(packetByteBuf);
-        }
+        }*/
+        this.sectionArray = chunk.getSectionArray();
 
         this.bottomY = chunk.getBottomY();
     }
