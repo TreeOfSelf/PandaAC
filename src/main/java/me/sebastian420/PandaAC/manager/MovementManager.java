@@ -20,17 +20,13 @@ public class MovementManager {
         if (packetView.isChangePosition()) {
             PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
-
-
+            
             double speedPotential;
 
-            PandaLogger.getLogger().info(fasterWorld.getBlockState(player.getBlockPos().offset(Direction.DOWN,1)));
-
-            if (player.isSprinting() || true) {
-                if (playerData.getY() % 1 != 0 || player.getVelocity().getY() > 0 || true) {
+            if (player.isSprinting()) {
+                if (playerData.getY() % 1 != 0 || player.getVelocity().getY() > 0) {
                     if (PacketUtil.checkPassage(fasterWorld, packetView)) {
                         speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
-                        //PandaLogger.getLogger().info("SPRINTING AND JUMPING IN PASSAGE");
                     } else {
                         speedPotential = SpeedLimits.SPRINT_AND_JUMP;
                     }

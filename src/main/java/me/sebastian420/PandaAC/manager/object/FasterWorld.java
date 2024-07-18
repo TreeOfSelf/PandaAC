@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class FasterWorld {
 
-    private final Map<ChunkPos, FasterChunk> chunkMap = new HashMap<>();
+    private final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
     public final ServerWorld realWorld;
 
     public FasterWorld(ServerWorld realWorld){
@@ -23,21 +23,21 @@ public class FasterWorld {
     }
 
     public void updateChunkData(MinecraftServer server, Chunk chunk) {
-        chunkMap.put(chunk.getPos(), new FasterChunk(server,chunk));
+        chunkMap.put(chunk.getPos(), chunk);
     }
 
     public void deleteChunkData(Chunk chunk) {
         chunkMap.remove(chunk.getPos());
     }
 
-    public FasterChunk getChunk(BlockPos blockPos){
+    public Chunk getChunk(BlockPos blockPos){
         int i = ChunkSectionPos.getSectionCoord(blockPos.getX());
         int j = ChunkSectionPos.getSectionCoord(blockPos.getZ());
         return chunkMap.get(new ChunkPos(i, j));
     }
 
     public BlockState getBlockState(BlockPos pos) {
-        FasterChunk chunk = this.getChunk(pos);
+        Chunk chunk = this.getChunk(pos);
         if (chunk == null) return Blocks.AIR.getDefaultState();
         return chunk.getBlockState(pos);
     }
