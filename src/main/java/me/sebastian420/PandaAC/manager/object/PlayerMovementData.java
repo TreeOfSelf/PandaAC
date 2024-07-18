@@ -17,11 +17,20 @@ public class PlayerMovementData {
     private double currentY;
     private double currentZ;
 
+    private double lastAttachedX;
+    private double lastAttachedY;
+    private double lastAttachedZ;
+
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
 
+    private double carriedPotential = 0;
+
     private int packetCount;
-    private long lastShortCheck;
+
+    private long firstPacketTime;
+    private long lastPacketTime;
+
     private long lastCheck;
     private boolean changed;
 
@@ -42,12 +51,27 @@ public class PlayerMovementData {
         currentY = player.getY();
         currentZ = player.getZ();
 
+        lastAttachedX = player.getX();
+        lastAttachedY = player.getY();
+        lastAttachedZ = player.getZ();
+
+        carriedPotential = 0;
+
         changed = true;
         packetCount = 0;
         lastCheck = time;
-        lastShortCheck = time;
+
+        firstPacketTime = 0;
+        lastPacketTime = time;
 
         possibleTimer = false;
+
+        if (player.getHungerManager().getFoodLevel() > 6) {
+            Arrays.fill(speedPotential, SpeedLimits.SPRINT_AND_JUMP);
+        } else {
+            Arrays.fill(speedPotential, SpeedLimits.WALKING);
+        }
+
     }
 
     public double getX(){return currentX;}
@@ -56,11 +80,21 @@ public class PlayerMovementData {
     public double getLastX(){return lastX;}
     public double getLastY(){return lastY;}
     public double getLastZ(){return lastZ;}
+
+    public double getLastAttachedX(){return lastAttachedX;}
+    public double getLastAttachedY(){return lastAttachedY;}
+    public double getLastAttachedZ(){return lastAttachedZ;}
+
+
     public boolean getChanged(){return changed;}
     public long getLastCheck(){return lastCheck;}
-    public long getLastShortCheck(){return lastShortCheck;}
+
+    public long getLastPacketTime(){return lastPacketTime;}
+    public long getFirstPacketTime(){return firstPacketTime;}
+
     public int getPacketCount(){return packetCount;}
     public boolean getPossibleTimer(){return possibleTimer;}
+    public double getCarriedPotential(){return carriedPotential;}
 
 
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
@@ -68,7 +102,10 @@ public class PlayerMovementData {
 
 
     public double getSpeedPotential(double timeModifier){
-        return (Arrays.stream(speedPotential).sum() * timeModifier * SpeedLimits.FUDGE);
+
+        //double timeDif = lastPacketTime - firstPacketTime;
+
+        return (Arrays.stream(speedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
     }
 
 
@@ -78,6 +115,7 @@ public class PlayerMovementData {
         lastZ = currentZ;
         changed = false;
         lastCheck = time;
+        firstPacketTime = 0;
         Arrays.fill(speedPotential, 0);
         packetCount = 0;
         save();
@@ -92,7 +130,8 @@ public class PlayerMovementData {
         currentY = packetView.getY();
         currentZ = packetView.getZ();
         changed = true;
-        lastShortCheck = time;
+        if (firstPacketTime == 0) firstPacketTime = time;
+        lastPacketTime = time;
         packetCount ++;
         save();
     }
@@ -113,4 +152,13 @@ public class PlayerMovementData {
         if (speedPotentialPointer > speedPotential.length-1) speedPotentialPointer = 0;
     }
 
+    public void setCarriedPotential(double carriedPotential) {
+        this.carriedPotential = carriedPotential;
+    }
+
+    public void setLastAttached(double x, double y, double z) {
+        lastAttachedX = x;
+        lastAttachedY = y;
+        lastAttachedZ = z;
+    }
 }

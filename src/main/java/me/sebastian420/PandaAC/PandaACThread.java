@@ -1,10 +1,13 @@
 package me.sebastian420.PandaAC;
 
-import me.sebastian420.PandaAC.check.SpeedCheck;
+import me.sebastian420.PandaAC.check.HorizontalSpeedCheck;
+import me.sebastian420.PandaAC.check.HoverCheck;
+import me.sebastian420.PandaAC.check.JumpHeightCheck;
 import me.sebastian420.PandaAC.manager.FasterWorldManager;
 import me.sebastian420.PandaAC.manager.MovementManager;
 import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
@@ -132,13 +135,33 @@ public class PandaACThread extends Thread {
                 break;
             case TICK:
                 tickCount++;
-                //Handle every 20 ticks
+                //Handle every 5 ticks
                 if (tickCount % 5 == 0) {
                     long time = System.currentTimeMillis();
                     for (ServerPlayerEntity serverPlayerEntity : minecraftServer.getPlayerManager().getPlayerList()) {
-                        PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(serverPlayerEntity);
-                        SpeedCheck.check(serverPlayerEntity, playerData, time);
-                        playerData.moveCurrentToLast(time);
+                        if (!serverPlayerEntity.isDisconnected()) {
+                            PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(serverPlayerEntity);
+
+                            if (HoverCheck.check(serverPlayerEntity, playerData)) {
+                                PandaLogger.getLogger().warn("Flagged Hover");
+                                playerData.moveCurrentToLast(time);
+                                continue;
+                            }
+
+                            if (HorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                                PandaLogger.getLogger().warn("Flagged Horizontal Speed");
+                                playerData.moveCurrentToLast(time);
+                                continue;
+                            }
+
+                            if (JumpHeightCheck.check(serverPlayerEntity, playerData)) {
+                                PandaLogger.getLogger().warn("Jump Height");
+                                playerData.moveCurrentToLast(time);
+                                continue;
+                            }
+
+                            playerData.moveCurrentToLast(time);
+                        }
                     }
                 }
                 break;

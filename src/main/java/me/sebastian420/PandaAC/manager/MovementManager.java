@@ -23,7 +23,7 @@ public class MovementManager {
 
             double speedPotential;
 
-            if(player.isSneaking()) {
+            if(!player.isSneaking()) {
                 //If they have enough hunger assume they are sprinting
                 if (player.getHungerManager().getFoodLevel() > 6) {
                     //If they are in a 2 block tall passage assume they are jumping
@@ -41,6 +41,9 @@ public class MovementManager {
                 speedPotential = SpeedLimits.SNEAKING;
             }
 
+            if(packetView.isOnGround() || PacketUtil.checkClimbable(fasterWorld, packetView)) {
+                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ());
+            }
 
             playerData.setSpeedPotential(speedPotential);
             playerData.setNew(packetView, time);
