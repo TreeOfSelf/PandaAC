@@ -1,8 +1,6 @@
 package me.sebastian420.PandaAC.manager;
 
-import me.sebastian420.PandaAC.check.HorizontalSpeedCheck;
-import me.sebastian420.PandaAC.check.HoverCheck;
-import me.sebastian420.PandaAC.check.JumpHeightCheck;
+import me.sebastian420.PandaAC.check.*;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -32,7 +30,21 @@ public class CheckManager {
 
             if (serverPlayerEntity.isDisconnected()) break;
             if (JumpHeightCheck.check(serverPlayerEntity, playerData)) {
-                PandaLogger.getLogger().warn("Jump Height");
+                PandaLogger.getLogger().warn("Flagged Jump Height");
+                playerData.moveCurrentToLast(time);
+                break;
+            }
+
+            if (serverPlayerEntity.isDisconnected()) break;
+            if (VerticalSpeedCheckUp.check(serverPlayerEntity, playerData, time)) {
+                PandaLogger.getLogger().warn("Flagged Speed Check Up");
+                playerData.moveCurrentToLast(time);
+                break;
+            }
+
+            if (serverPlayerEntity.isDisconnected()) break;
+            if (VerticalSpeedCheckDown.check(serverPlayerEntity, playerData, time)) {
+                PandaLogger.getLogger().warn("Flagged Speed Check Down");
                 playerData.moveCurrentToLast(time);
                 break;
             }

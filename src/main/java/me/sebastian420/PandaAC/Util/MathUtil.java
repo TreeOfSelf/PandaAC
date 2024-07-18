@@ -14,6 +14,11 @@ public class MathUtil {
         return Math.round((deltaX * deltaX) + (deltaY * deltaY)  + (deltaZ * deltaZ));
     }
 
+    public static double getDistance(double x1, double x2) {
+        double dx = x2 - x1;
+        return Math.abs(dx);
+    }
+
     public static double getDistance(double x1, double z1, double x2, double z2) {
         double dx = x2 - x1;
         double dz = z2 - z1;

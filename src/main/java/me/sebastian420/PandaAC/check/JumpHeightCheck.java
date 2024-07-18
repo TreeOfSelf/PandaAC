@@ -22,9 +22,6 @@ public class JumpHeightCheck {
 
             if (playerData.getY() - playerData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
             playerData.getY() > playerData.getLastY()) {
-
-                PandaLogger.getLogger().info("Checkheight {} Velocity {}", checkHeight, playerData.getLastAttachedVelocity());
-
                 serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
                 playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
                 flagged = true;
