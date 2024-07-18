@@ -36,7 +36,6 @@ public class FasterWorld {
         return chunkMap.get(new ChunkPos(i, j));
     }
 
-
     public BlockState getBlockState(BlockPos pos) {
         FasterChunk chunk = this.getChunk(pos);
         if (chunk == null) return Blocks.AIR.getDefaultState();
