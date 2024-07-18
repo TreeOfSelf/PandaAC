@@ -3,6 +3,7 @@ package me.sebastian420.PandaAC;
 import me.sebastian420.PandaAC.check.HorizontalSpeedCheck;
 import me.sebastian420.PandaAC.check.HoverCheck;
 import me.sebastian420.PandaAC.check.JumpHeightCheck;
+import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.FasterWorldManager;
 import me.sebastian420.PandaAC.manager.MovementManager;
 import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
@@ -140,27 +141,7 @@ public class PandaACThread extends Thread {
                     long time = System.currentTimeMillis();
                     for (ServerPlayerEntity serverPlayerEntity : minecraftServer.getPlayerManager().getPlayerList()) {
                         if (!serverPlayerEntity.isDisconnected()) {
-                            PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(serverPlayerEntity);
-
-                            if (HoverCheck.check(serverPlayerEntity, playerData)) {
-                                PandaLogger.getLogger().warn("Flagged Hover");
-                                playerData.moveCurrentToLast(time);
-                                continue;
-                            }
-
-                            if (HorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
-                                PandaLogger.getLogger().warn("Flagged Horizontal Speed");
-                                playerData.moveCurrentToLast(time);
-                                continue;
-                            }
-
-                            if (JumpHeightCheck.check(serverPlayerEntity, playerData)) {
-                                PandaLogger.getLogger().warn("Jump Height");
-                                playerData.moveCurrentToLast(time);
-                                continue;
-                            }
-
-                            playerData.moveCurrentToLast(time);
+                            CheckManager.run(serverPlayerEntity, time);
                         }
                     }
                 }

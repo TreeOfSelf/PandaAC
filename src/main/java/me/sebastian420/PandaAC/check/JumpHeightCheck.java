@@ -8,7 +8,7 @@ public class JumpHeightCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData) {
         boolean flagged = false;
         if (playerData.getChanged()) {
-            if (playerData.getY() - playerData.getLastAttachedY() > JumpHeights.NORMAL) {
+            if (playerData.getY() - playerData.getLastAttachedY() > JumpHeights.NORMAL * JumpHeights.FUDGE) {
                 serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
                 flagged = true;
             }
