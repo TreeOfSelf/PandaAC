@@ -15,7 +15,7 @@ public class FasterWorldManager {
     private final HashMap<Identifier, FasterWorld> worldMap = new HashMap<>();
 
     public void createWorld(ServerWorld world){
-        worldMap.computeIfAbsent(world.getRegistryKey().getRegistry(), identifier -> new FasterWorld());
+        worldMap.computeIfAbsent(world.getRegistryKey().getRegistry(), identifier -> new FasterWorld(world));
     }
 
     public FasterWorld getWorld(ServerWorld world){

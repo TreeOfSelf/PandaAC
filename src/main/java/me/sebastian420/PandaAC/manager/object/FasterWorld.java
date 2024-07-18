@@ -1,7 +1,9 @@
 package me.sebastian420.PandaAC.manager.object;
 
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
@@ -11,46 +13,31 @@ import java.util.Map;
 
 public class FasterWorld {
 
-    private final Map<ChunkCoordinate, Chunk> chunkMap = new HashMap<>();
+    private final Map<ChunkPos, Chunk> chunkMap = new HashMap<>();
+    public final ServerWorld realWorld;
 
-    public FasterWorld(){
-
+    public FasterWorld(ServerWorld realWorld){
+        this.realWorld = realWorld;
     }
 
     public void updateChunkData(Chunk chunk) {
-        ChunkPos chunkPos = chunk.getPos();
-        chunkMap.put(new ChunkCoordinate(chunkPos.x, chunkPos.z), chunk);
+        chunkMap.put(chunk.getPos(), chunk);
     }
 
     public void deleteChunkData(Chunk chunk) {
-        ChunkPos chunkPos = chunk.getPos();
-        chunkMap.remove(new ChunkCoordinate(chunkPos.x, chunkPos.z));
+        chunkMap.remove(chunk.getPos());
     }
 
     public Chunk getChunk(BlockPos blockPos){
         int i = blockPos.getX()/16;
         int j = blockPos.getZ()/16;
-        return chunkMap.get(new ChunkCoordinate(i, j));
+        return chunkMap.get(new ChunkPos(i, j));
     }
 
     public BlockState getBlockState(BlockPos pos) {
-        Chunk threadedChunk = this.getChunk(pos);
-        if (threadedChunk == null) return Blocks.AIR.getDefaultState();
-        return threadedChunk.getBlockState(pos);
+        Chunk chunk = this.getChunk(pos);
+        if (chunk == null) return Blocks.AIR.getDefaultState();
+        return chunk.getBlockState(pos);
     }
 
-    private record ChunkCoordinate(int i, int j) {
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            ChunkCoordinate that = (ChunkCoordinate) o;
-
-            if (i != that.i) return false;
-            return j == that.j;
-        }
-
-    }
 }

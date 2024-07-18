@@ -21,7 +21,6 @@ public class SpeedCheck {
 
 
             double speedPotential = playerData.getSpeedPotential((double) timeDifMs / 1000d);
-            PandaLogger.getLogger().info((double) timeDifMs / 1000d);
 
             if (speedMps > speedPotential || playerData.getPossibleTimer()) {
                 serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());

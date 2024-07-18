@@ -11,6 +11,7 @@ import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Direction;
 
 public class MovementManager {
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long time) {
@@ -23,8 +24,10 @@ public class MovementManager {
 
             double speedPotential;
 
-            if (player.isSprinting()) {
-                if (playerData.getY() % 1 != 0 || player.getVelocity().getY() > 0) {
+            PandaLogger.getLogger().info(fasterWorld.getBlockState(player.getBlockPos().offset(Direction.DOWN,1)));
+
+            if (player.isSprinting() || true) {
+                if (playerData.getY() % 1 != 0 || player.getVelocity().getY() > 0 || true) {
                     if (PacketUtil.checkPassage(fasterWorld, packetView)) {
                         speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
                         PandaLogger.getLogger().info("SPRINTING AND JUMPING IN PASSAGE");

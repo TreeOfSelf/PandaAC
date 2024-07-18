@@ -26,6 +26,8 @@ public class PacketUtil {
             for (int i = 1; i <= 2; i++) {
                 BlockPos checkPos = pos.offset(Direction.UP, i);
                 if (world.getBlockState(checkPos).getBlock() != Blocks.AIR) {
+                    System.out.println("GOT BLOCK ABOVE: "+world.getBlockState((checkPos)));
+                    System.out.println(checkPos);
                     for (double[] belowOffset : offsets) {
                         BlockPos belowPos = new BlockPos((int) (x + belowOffset[0]), (int) y, (int) (z + belowOffset[1]));
                         BlockPos belowCheckPos = belowPos.offset(Direction.DOWN, 1);
