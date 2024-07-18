@@ -81,4 +81,5 @@ public class PacketUtil {
 
         return climbable != null;
     }
+
 }
