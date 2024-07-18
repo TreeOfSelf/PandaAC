@@ -20,21 +20,25 @@ public class MovementManager {
         if (packetView.isChangePosition()) {
             PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
-            
+
             double speedPotential;
 
-            if (player.isSprinting()) {
-                if (playerData.getY() % 1 != 0 || player.getVelocity().getY() > 0) {
+            if(player.isSneaking()) {
+                //If they have enough hunger assume they are sprinting
+                if (player.getHungerManager().getFoodLevel() > 6) {
+                    //If they are in a 2 block tall passage assume they are jumping
                     if (PacketUtil.checkPassage(fasterWorld, packetView)) {
                         speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
                     } else {
+                        //Assume sprint and jumping
                         speedPotential = SpeedLimits.SPRINT_AND_JUMP;
                     }
+                    //Walking
                 } else {
-                    speedPotential = SpeedLimits.SPRINT;
+                    speedPotential = SpeedLimits.WALKING;
                 }
             } else {
-                speedPotential = SpeedLimits.WALKING;
+                speedPotential = SpeedLimits.SNEAKING;
             }
 
 
