@@ -33,7 +33,7 @@ public class VerticalSpeedCheckDown {
 
             PandaLogger.getLogger().info("Speed down {} calculated {} Time dif {}", speedMps, calculatedVelocity, airTimeDif);
 
-            if ( (solidBlockTimeDif > 1000 && speedMps < 2 && airTimeDif > 500)) {
+            if ( (solidBlockTimeDif > 1000 && speedMps < (airTimeDif * 2) && airTimeDif > 500)) {
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }

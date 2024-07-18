@@ -41,8 +41,8 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
     private void checkOnGround(PlayerMoveC2SPacket packet, CallbackInfo ci) {
         if (PandaAC.pandaConfig.movement.patchNoFall && packet.isOnGround()) {
 
-            ((PlayerMoveC2SPacketAccessor) packet).setOnGround(PacketUtil.checkGround(player, (PlayerMoveC2SPacketView) packet));
-            /*
+            //((PlayerMoveC2SPacketAccessor) packet).setOnGround(PacketUtil.checkGround(player, (PlayerMoveC2SPacketView) packet));
+
 
             Entity bottomEntity = player.getRootVehicle();
             if (bottomEntity == null) {
@@ -68,7 +68,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             if(!((Player) player).isNearGround()) {
                 // Player isn't on ground but client packet says it is
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
-            }*/
+            }
         }
     }
 }
