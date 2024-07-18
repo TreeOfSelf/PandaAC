@@ -8,9 +8,12 @@ import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +30,7 @@ public class ClientConnectionMixin_PacketHandler {
         if (packetListener instanceof ServerPlayNetworkHandler) {
             if (packet instanceof PlayerMoveC2SPacket) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-                PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet);
+                PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet, System.currentTimeMillis());
             }
         }
     }
@@ -41,5 +44,13 @@ public class ClientConnectionMixin_PacketHandler {
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     public void exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable throwable, CallbackInfo cb) {
         PandaLogger.getLogger().warn(ExceptionUtils.getStackTrace(throwable));
+    }
+
+    @Inject(method = "send(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/PacketCallbacks;Z)V", at = @At("HEAD"))
+    public void send(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
+        if (packet instanceof PlayerPositionLookS2CPacket) {
+            ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
+            PandaACThread.queuePlayerTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
+        }
     }
 }

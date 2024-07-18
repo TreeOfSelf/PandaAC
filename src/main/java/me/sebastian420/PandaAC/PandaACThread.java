@@ -7,6 +7,7 @@ import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -31,11 +32,14 @@ public class PandaACThread extends Thread {
         this.minecraftServer = minecraftServer;
     }
 
+
+
     private enum EventType {
         WORLD_LOAD,
         CHUNK_LOAD,
         CHUNK_UNLOAD,
         PLAYER_MOVE,
+        PLAYER_TELEPORT,
         TICK,
     }
 
@@ -61,8 +65,12 @@ public class PandaACThread extends Thread {
         EVENT_QUEUE.offer(new QueuedEvent(EventType.CHUNK_UNLOAD, new Object[]{world, chunk}));
     }
 
-    public static void queuePlayerMove(ServerPlayerEntity player, PlayerMoveC2SPacket packet) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet}));
+    public static void queuePlayerMove(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long packetTime) {
+        EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet, packetTime}));
+    }
+
+    public static void queuePlayerTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket packet) {
+        EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_TELEPORT, new Object[]{player, packet}));
     }
 
     public static void initialize(MinecraftServer minecraftServer) {
@@ -92,6 +100,9 @@ public class PandaACThread extends Thread {
     }
 
     private void processEvent(QueuedEvent event) {
+
+        ServerPlayerEntity player;
+
         switch (event.type) {
             case WORLD_LOAD:
                 ServerWorld world = (ServerWorld) event.data;
@@ -107,9 +118,16 @@ public class PandaACThread extends Thread {
                 break;
             case PLAYER_MOVE:
                 Object[] moveData = (Object[]) event.data;
-                ServerPlayerEntity player = (ServerPlayerEntity) moveData[0];
+                player = (ServerPlayerEntity) moveData[0];
                 if (!player.isDisconnected()) {
-                    MovementManager.read(player, (PlayerMoveC2SPacket) moveData[1]);
+                    MovementManager.read(player, (PlayerMoveC2SPacket) moveData[1], (long) moveData[2]);
+                }
+                break;
+            case PLAYER_TELEPORT:
+                Object[] teleportData = (Object[]) event.data;
+                player = (ServerPlayerEntity) teleportData[0];
+                if (!player.isDisconnected()) {
+                    MovementManager.teleport(player, (PlayerPositionLookS2CPacket) teleportData[1]);
                 }
                 break;
             case TICK:

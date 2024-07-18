@@ -1,5 +1,6 @@
 package me.sebastian420.PandaAC.manager.object;
 
+import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -59,15 +60,15 @@ public class PlayerMovementData {
     public long getLastCheck(){return lastCheck;}
     public long getLastShortCheck(){return lastShortCheck;}
     public int getPacketCount(){return packetCount;}
-    public boolean getPossibleTImer(){return possibleTimer;}
+    public boolean getPossibleTimer(){return possibleTimer;}
 
 
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
 
 
 
-    public double getSpeedPotential(){
-        return (Arrays.stream(speedPotential).sum());
+    public double getSpeedPotential(double timeModifier){
+        return (Arrays.stream(speedPotential).sum() * timeModifier * SpeedLimits.FUDGE);
     }
 
 
@@ -78,7 +79,7 @@ public class PlayerMovementData {
         changed = false;
         lastCheck = time;
         Arrays.fill(speedPotential, 0);
-        packetCount =0;
+        packetCount = 0;
         save();
     }
 
@@ -96,11 +97,13 @@ public class PlayerMovementData {
         save();
     }
 
-    public void rollBack() {
-        currentX = lastX;
-        currentY = lastY;
-        currentZ = lastZ;
-        packetCount = 0;
+    public void teleport(double x, double y, double z) {
+        currentX = x;
+        currentY = y;
+        currentZ = z;
+        lastX = x;
+        lastY = y;
+        lastZ = z;
         save();
     }
 
@@ -108,6 +111,6 @@ public class PlayerMovementData {
         speedPotential[speedPotentialPointer] = speed;
         speedPotentialPointer++;
         if (speedPotentialPointer > speedPotential.length-1) speedPotentialPointer = 0;
-
     }
+
 }
