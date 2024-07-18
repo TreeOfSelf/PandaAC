@@ -13,8 +13,12 @@ public class JumpHeightCheck {
         if (playerData.getChanged()) {
 
             double checkHeight = JumpHeights.NORMAL;
-            if (playerData.getLastAttachedState().isIn(BlockTags.BEDS)) checkHeight = JumpHeights.BED * playerData.getLastAttachedVelocity();
-            if (playerData.getLastAttachedState().getBlock() == Blocks.SLIME_BLOCK) checkHeight = JumpHeights.SLIME * playerData.getLastAttachedVelocity();
+
+            if (playerData.getLastAttachedState().isIn(BlockTags.BEDS)) {
+                checkHeight = JumpHeights.NORMAL + JumpHeights.BED * playerData.getLastAttachedVelocity();
+            } else if  (playerData.getLastAttachedState().getBlock() == Blocks.SLIME_BLOCK) {
+                checkHeight = JumpHeights.NORMAL + JumpHeights.SLIME * playerData.getLastAttachedVelocity();
+            }
 
             if (playerData.getY() - playerData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
             playerData.getY() > playerData.getLastY()) {

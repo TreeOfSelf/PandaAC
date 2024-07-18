@@ -166,11 +166,11 @@ public class PlayerMovementData {
         this.carriedPotential = carriedPotential;
     }
 
-    public void setLastAttached(double x, double y, double z, BlockState belowState, double v) {
+    public void setLastAttached(double x, double y, double z, BlockState belowState, double velocity) {
         lastAttachedX = x;
         lastAttachedY = y;
         lastAttachedZ = z;
         lastAttachedState = belowState;
-        lastAttachedVelocity = v;
+        lastAttachedVelocity = Math.abs(velocity);
     }
 }
