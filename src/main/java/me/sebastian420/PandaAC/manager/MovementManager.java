@@ -30,7 +30,7 @@ public class MovementManager {
                 if (playerData.getY() % 1 != 0 || player.getVelocity().getY() > 0 || true) {
                     if (PacketUtil.checkPassage(fasterWorld, packetView)) {
                         speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
-                        PandaLogger.getLogger().info("SPRINTING AND JUMPING IN PASSAGE");
+                        //PandaLogger.getLogger().info("SPRINTING AND JUMPING IN PASSAGE");
                     } else {
                         speedPotential = SpeedLimits.SPRINT_AND_JUMP;
                     }

@@ -110,7 +110,7 @@ public class PandaACThread extends Thread {
                 break;
             case CHUNK_LOAD:
                 Object[] chunkLoadData = (Object[]) event.data;
-                fasterWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData((Chunk) chunkLoadData[1]);
+                fasterWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData(((ServerWorld) chunkLoadData[0]).getServer(),(Chunk) chunkLoadData[1]);
                 break;
             case CHUNK_UNLOAD:
                 Object[] chunkUnloadData = (Object[]) event.data;
