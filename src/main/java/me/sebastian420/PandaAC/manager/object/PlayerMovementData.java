@@ -38,6 +38,7 @@ public class PlayerMovementData {
 
     private long lastCheck;
     private long airTimeStartTime;
+    private long lastSolidTouch;
 
     private boolean changed;
 
@@ -65,7 +66,7 @@ public class PlayerMovementData {
         lastAttachedState = Blocks.AIR.getDefaultState();
 
         airTimeStartTime = 0;
-
+        lastSolidTouch =0;
         carriedPotential = 0;
 
         changed = true;
@@ -97,6 +98,7 @@ public class PlayerMovementData {
     public double getLastAttachedZ(){return lastAttachedZ;}
 
     public long getAirTimeStartTime(){return airTimeStartTime;}
+    public long getLastSolidTouch() {return lastSolidTouch;}
 
     public boolean getChanged(){return changed;}
     public long getLastCheck(){return lastCheck;}
@@ -173,5 +175,13 @@ public class PlayerMovementData {
         lastAttachedState = belowState;
         lastAttachedVelocity = Math.abs(velocity);
         airTimeStartTime = time;
+        lastSolidTouch = time;
     }
+
+    public void setAirTimeStartTime(long time) {
+        airTimeStartTime = time;
+        lastSolidTouch = time;
+    }
+
+
 }

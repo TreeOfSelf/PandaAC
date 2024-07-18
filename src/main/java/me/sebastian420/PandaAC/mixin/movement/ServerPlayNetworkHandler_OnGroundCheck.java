@@ -3,6 +3,9 @@ package me.sebastian420.PandaAC.mixin.movement;
 import me.sebastian420.PandaAC.PandaAC;
 import me.sebastian420.PandaAC.cast.Player;
 import me.sebastian420.PandaAC.mixin.accessor.PlayerMoveC2SPacketAccessor;
+import me.sebastian420.PandaAC.util.BlockUtil;
+import me.sebastian420.PandaAC.util.PacketUtil;
+import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -37,6 +40,10 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
     )
     private void checkOnGround(PlayerMoveC2SPacket packet, CallbackInfo ci) {
         if (PandaAC.pandaConfig.movement.patchNoFall && packet.isOnGround()) {
+
+            ((PlayerMoveC2SPacketAccessor) packet).setOnGround(PacketUtil.checkGround(player, (PlayerMoveC2SPacketView) packet));
+            /*
+
             Entity bottomEntity = player.getRootVehicle();
             if (bottomEntity == null) {
                 bottomEntity = player;
@@ -61,7 +68,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             if(!((Player) player).isNearGround()) {
                 // Player isn't on ground but client packet says it is
                 ((PlayerMoveC2SPacketAccessor) packet).setOnGround(false);
-            }
+            }*/
         }
     }
 }

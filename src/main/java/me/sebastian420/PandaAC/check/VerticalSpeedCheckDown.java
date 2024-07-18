@@ -21,16 +21,19 @@ public class VerticalSpeedCheckDown {
 
             long airTimeDif = time - playerData.getAirTimeStartTime();
             double tickTime = (airTimeDif / 1000d) * 20;
-            double calculatedVelocity = (0.98 * Math.floor(tickTime) - 1) * 0.5;
+            double calculatedVelocity = Math.abs((0.98 * Math.floor(tickTime) - 1) * 0.25);
 
             long timeDifMs = time - playerData.getLastCheck();
             double distance = MathUtil.getDistance(playerData.getLastY(), playerData.getY());
             double speedMps = (distance * 1000.0) / timeDifMs;
 
+            long solidBlockTimeDif = time - playerData.getLastSolidTouch();
+
+
 
             PandaLogger.getLogger().info("Speed down {} calculated {} Time dif {}", speedMps, calculatedVelocity, airTimeDif);
 
-            if (speedMps < calculatedVelocity) {
+            if ( (solidBlockTimeDif > 1000 && speedMps < 2 && airTimeDif > 500)) {
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }

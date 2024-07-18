@@ -1,10 +1,13 @@
 package me.sebastian420.PandaAC.util;
 
+import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
+import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
 public class PacketUtil {
@@ -108,6 +111,18 @@ public class PacketUtil {
         BlockState climbable = checkVicinityClimbable(world, x, y, z);
 
         return climbable != null;
+    }
+
+    public static boolean checkGround(ServerPlayerEntity serverPlayerEntity, PlayerMoveC2SPacketView packetView) {
+
+        FasterWorld world = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld());
+        int x = (int) Math.round(packetView.getX());
+        int y = (int) Math.round(packetView.getY());
+        int z = (int) Math.round(packetView.getZ());
+
+        BlockState blockBelow = checkVicinity(world, x, y - 1, z);
+
+        return blockBelow != null;
     }
 
 }

@@ -3,7 +3,9 @@ package me.sebastian420.PandaAC.manager;
 import me.sebastian420.PandaAC.check.*;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.PandaLogger;
+import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 
 public class CheckManager {
 
@@ -55,7 +57,10 @@ public class CheckManager {
     }
 
     public static void rollBack(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData){
+        long time = System.currentTimeMillis();
+        Vec3d velocity = serverPlayerEntity.getVelocity();
         serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
-        playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), System.currentTimeMillis());
+        playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), time);
+        serverPlayerEntity.setVelocity(velocity);
     }
 }
