@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.check;
 
 import me.sebastian420.PandaAC.data.SpeedLimits;
+import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
@@ -18,11 +19,7 @@ public class VerticalSpeedCheckUp {
             double speedMps = (distance * 1000.0) / timeDifMs;
 
             if (speedMps > SpeedLimits.UP_SPEED) {
-
-                PandaLogger.getLogger().warn("Jump Speed: {} Speed Limit: {}", speedMps, SpeedLimits.UP_SPEED);
-
-                serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
-                playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
+                CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }
 

@@ -1,5 +1,6 @@
 package me.sebastian420.PandaAC.check;
 
+import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
@@ -24,8 +25,7 @@ public class HorizontalSpeedCheck {
             double totalPotential = speedPotential + playerData.getCarriedPotential();
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
-                serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
-                playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
+                CheckManager.rollBack(serverPlayerEntity, playerData);
                 playerData.setCarriedPotential(0);
                 flagged = true;
             } else {

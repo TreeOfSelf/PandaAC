@@ -128,11 +128,6 @@ public class PlayerMovementData {
         firstPacketTime = 0;
         Arrays.fill(speedPotential, 0);
         packetCount = 0;
-        save();
-    }
-
-    public void save(){
-        PlayerMovementDataManager.save(this.player, this);
     }
 
     public void setNew(PlayerMoveC2SPacketView packetView, long time) {
@@ -143,7 +138,6 @@ public class PlayerMovementData {
         if (firstPacketTime == 0) firstPacketTime = time;
         lastPacketTime = time;
         packetCount ++;
-        save();
     }
 
     public void teleport(double x, double y, double z) {
@@ -153,7 +147,6 @@ public class PlayerMovementData {
         lastX = x;
         lastY = y;
         lastZ = z;
-        save();
     }
 
     public void setSpeedPotential(double speed) {

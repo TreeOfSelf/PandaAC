@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.check;
 
 import me.sebastian420.PandaAC.data.JumpHeights;
+import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.Blocks;
@@ -22,8 +23,7 @@ public class JumpHeightCheck {
 
             if (playerData.getY() - playerData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
             playerData.getY() > playerData.getLastY()) {
-                serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
-                playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
+                CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }
         }

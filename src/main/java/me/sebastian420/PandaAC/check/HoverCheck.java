@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.check;
 
 import me.sebastian420.PandaAC.PandaACThread;
+import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
@@ -13,9 +14,7 @@ public class HoverCheck {
         if (playerData.getChanged()) {
             if (!BlockUtil.checkGround(serverPlayerEntity, playerData)) {
                 if (playerData.getLastY() == playerData.getY()) {
-                    serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
-                    playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
-
+                    CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
                 }
             }

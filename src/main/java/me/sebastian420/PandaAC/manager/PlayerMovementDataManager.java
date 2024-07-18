@@ -13,7 +13,4 @@ public class PlayerMovementDataManager {
         return playerMovementMap.computeIfAbsent(player.getUuid(), uuid -> new PlayerMovementData(player));
     }
 
-    public static void save(ServerPlayerEntity player, PlayerMovementData data) {
-        playerMovementMap.put(player.getUuid(), data);
-    }
 }
