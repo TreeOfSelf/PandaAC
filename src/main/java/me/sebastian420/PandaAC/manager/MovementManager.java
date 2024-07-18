@@ -50,7 +50,8 @@ public class MovementManager {
         }
     }
 
-    public static void teleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket teleportData) {
+
+    public static void receiveTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket teleportData) {
         PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
         playerData.teleport(teleportData.getX(), teleportData.getY(), teleportData.getZ());
     }

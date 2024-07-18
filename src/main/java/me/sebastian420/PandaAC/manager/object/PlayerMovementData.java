@@ -2,6 +2,7 @@ package me.sebastian420.PandaAC.manager.object;
 
 import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -50,6 +51,8 @@ public class PlayerMovementData {
         currentX = player.getX();
         currentY = player.getY();
         currentZ = player.getZ();
+
+        PandaLogger.getLogger().info("made new player datA");
 
         lastAttachedX = player.getX();
         lastAttachedY = player.getY();
@@ -157,6 +160,8 @@ public class PlayerMovementData {
     }
 
     public void setLastAttached(double x, double y, double z) {
+
+        PandaLogger.getLogger().info("Set new attach");
         lastAttachedX = x;
         lastAttachedY = y;
         lastAttachedZ = z;

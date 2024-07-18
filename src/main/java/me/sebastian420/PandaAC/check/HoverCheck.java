@@ -14,6 +14,8 @@ public class HoverCheck {
             if (!BlockUtil.checkGround(serverPlayerEntity, playerData)) {
                 if (playerData.getLastY() == playerData.getY()) {
                     serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
+                    playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
+
                     flagged = true;
                 }
             }

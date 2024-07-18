@@ -131,7 +131,7 @@ public class PandaACThread extends Thread {
                 Object[] teleportData = (Object[]) event.data;
                 player = (ServerPlayerEntity) teleportData[0];
                 if (!player.isDisconnected()) {
-                    MovementManager.teleport(player, (PlayerPositionLookS2CPacket) teleportData[1]);
+                    MovementManager.receiveTeleport(player, (PlayerPositionLookS2CPacket) teleportData[1]);
                 }
                 break;
             case TICK:

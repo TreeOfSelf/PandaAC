@@ -16,18 +16,21 @@ public class CheckManager {
         while (running) {
             PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(serverPlayerEntity);
 
+            if (serverPlayerEntity.isDisconnected()) break;
             if (HoverCheck.check(serverPlayerEntity, playerData)) {
                 PandaLogger.getLogger().warn("Flagged Hover");
                 playerData.moveCurrentToLast(time);
                 break;
             }
 
+            if (serverPlayerEntity.isDisconnected()) break;
             if (HorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
                 PandaLogger.getLogger().warn("Flagged Horizontal Speed");
                 playerData.moveCurrentToLast(time);
                 break;
             }
 
+            if (serverPlayerEntity.isDisconnected()) break;
             if (JumpHeightCheck.check(serverPlayerEntity, playerData)) {
                 PandaLogger.getLogger().warn("Jump Height");
                 playerData.moveCurrentToLast(time);

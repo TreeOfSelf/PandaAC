@@ -25,6 +25,7 @@ public class HorizontalSpeedCheck {
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
                 serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
+                playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
                 playerData.setCarriedPotential(0);
                 flagged = true;
             } else {
