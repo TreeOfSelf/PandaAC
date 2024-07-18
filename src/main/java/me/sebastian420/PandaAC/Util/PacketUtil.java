@@ -4,6 +4,7 @@ import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 
 public class PacketUtil {
@@ -13,6 +14,18 @@ public class PacketUtil {
             for (int zz = -1; zz <= 1; zz++) {
                 BlockState state = world.getBlockState(new BlockPos(x + xx, y, z + zz));
                 if (state.getBlock() != Blocks.AIR) {
+                    return state;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static BlockState checkVicinityBouncy(FasterWorld world, int x, int y, int z){
+        for(int xx = -1; xx <= 1; xx ++) {
+            for (int zz = -1; zz <= 1; zz++) {
+                BlockState state = world.getBlockState(new BlockPos(x + xx, y, z + zz));
+                if (state.isIn(BlockTags.BEDS) || state.getBlock() == Blocks.SLIME_BLOCK) {
                     return state;
                 }
             }
@@ -69,6 +82,21 @@ public class PacketUtil {
         }
 
         return false;
+    }
+
+
+    public static BlockState checkBouncyBelow(FasterWorld world, PlayerMoveC2SPacketView packetView) {
+        int x = (int) Math.round(packetView.getX());
+        int y = (int) Math.round(packetView.getY());
+        int z = (int) Math.round(packetView.getZ());
+
+        BlockState blockBelow = checkVicinityBouncy(world, x, y - 1, z);
+
+        if (blockBelow != null) {
+            return  blockBelow;
+        }
+
+        return Blocks.AIR.getDefaultState();
     }
 
 

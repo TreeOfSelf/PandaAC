@@ -8,6 +8,7 @@ import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PacketUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
+import net.minecraft.block.BlockState;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,7 +43,8 @@ public class MovementManager {
             }
 
             if(packetView.isOnGround() || PacketUtil.checkClimbable(fasterWorld, packetView)) {
-                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ());
+                BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
+                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY());
             }
 
             playerData.setSpeedPotential(speedPotential);

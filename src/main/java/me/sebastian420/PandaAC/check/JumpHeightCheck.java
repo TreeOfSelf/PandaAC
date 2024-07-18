@@ -2,14 +2,25 @@ package me.sebastian420.PandaAC.check;
 
 import me.sebastian420.PandaAC.data.JumpHeights;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
+import me.sebastian420.PandaAC.util.PandaLogger;
+import net.minecraft.block.Blocks;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class JumpHeightCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData) {
         boolean flagged = false;
         if (playerData.getChanged()) {
-            if (playerData.getY() - playerData.getLastAttachedY() > JumpHeights.NORMAL * JumpHeights.FUDGE &&
+
+            double checkHeight = JumpHeights.NORMAL;
+            if (playerData.getLastAttachedState().isIn(BlockTags.BEDS)) checkHeight = JumpHeights.BED * playerData.getLastAttachedVelocity();
+            if (playerData.getLastAttachedState().getBlock() == Blocks.SLIME_BLOCK) checkHeight = JumpHeights.SLIME * playerData.getLastAttachedVelocity();
+
+            if (playerData.getY() - playerData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
             playerData.getY() > playerData.getLastY()) {
+
+                PandaLogger.getLogger().info("Checkheight {} Velocity {}", checkHeight, playerData.getLastAttachedVelocity());
+
                 serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
                 playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
                 flagged = true;

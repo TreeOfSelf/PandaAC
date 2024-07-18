@@ -2,8 +2,9 @@ package me.sebastian420.PandaAC.manager.object;
 
 import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
-import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Arrays;
@@ -21,6 +22,8 @@ public class PlayerMovementData {
     private double lastAttachedX;
     private double lastAttachedY;
     private double lastAttachedZ;
+    private BlockState lastAttachedState;
+    private double lastAttachedVelocity;
 
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
@@ -52,11 +55,11 @@ public class PlayerMovementData {
         currentY = player.getY();
         currentZ = player.getZ();
 
-        PandaLogger.getLogger().info("made new player datA");
-
         lastAttachedX = player.getX();
         lastAttachedY = player.getY();
         lastAttachedZ = player.getZ();
+
+        lastAttachedState = Blocks.AIR.getDefaultState();
 
         carriedPotential = 0;
 
@@ -94,6 +97,10 @@ public class PlayerMovementData {
 
     public long getLastPacketTime(){return lastPacketTime;}
     public long getFirstPacketTime(){return firstPacketTime;}
+
+    public BlockState getLastAttachedState(){return lastAttachedState;}
+    public double getLastAttachedVelocity(){return lastAttachedVelocity;}
+
 
     public int getPacketCount(){return packetCount;}
     public boolean getPossibleTimer(){return possibleTimer;}
@@ -159,11 +166,11 @@ public class PlayerMovementData {
         this.carriedPotential = carriedPotential;
     }
 
-    public void setLastAttached(double x, double y, double z) {
-
-        PandaLogger.getLogger().info("Set new attach");
+    public void setLastAttached(double x, double y, double z, BlockState belowState, double v) {
         lastAttachedX = x;
         lastAttachedY = y;
         lastAttachedZ = z;
+        lastAttachedState = belowState;
+        lastAttachedVelocity = v;
     }
 }
