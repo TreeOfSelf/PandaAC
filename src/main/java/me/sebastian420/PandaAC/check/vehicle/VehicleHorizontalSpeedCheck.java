@@ -23,7 +23,7 @@ public class VehicleHorizontalSpeedCheck {
                 vehicleData.setPossibleTimer(false);
             }
 
-            double speedPotential = 6.0;
+            double speedPotential = vehicleData.getSpeedPotential((double) timeDifMs / 1000d);
             double totalPotential = speedPotential + vehicleData.getCarriedPotential();
 
             if (speedMps > totalPotential || vehicleData.getPossibleTimer()) {

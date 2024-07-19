@@ -35,8 +35,27 @@ public class BlockUtil {
         return null;
     }
 
+    public static boolean checkGroundVehicle(Entity entity, double y){
 
-    public static boolean betterCheckGround(ServerPlayerEntity player, double y){
+        Entity bottomEntity = entity.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = entity;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, y - entity.getY() - 0.25005D, 0);
+
+        Iterable<VoxelShape> collidingBlocks = entity.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        boolean blockCollisions = collidingBlocks.iterator().hasNext();
+
+        Entity finalBottomEntity = bottomEntity;
+        List<Entity> collidingEntities = entity.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> !finalBottomEntity.equals(foundEntity));
+        boolean entityCollisions = collidingEntities.iterator().hasNext();
+
+        return blockCollisions || entityCollisions;
+    }
+
+
+
+    public static boolean checkGround(ServerPlayerEntity player, double y){
 
         Entity bottomEntity = player.getRootVehicle();
         if (bottomEntity == null) {
@@ -48,7 +67,6 @@ public class BlockUtil {
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
         if (blockCollisions) {
-            // Preferring block collisions over entity ones
             ((Player) player).setEntityCollisions(false);
             ((Player) player).setBlockCollisions(true);
         } else {
@@ -60,22 +78,10 @@ public class BlockUtil {
         }
 
         if(!((Player) player).isNearGround()) {
-            // Player isn't on ground but client packet says it is
             return false;
         }
 
         return true;
     }
 
-
-    public static boolean checkGround(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData) {
-        FasterWorld world = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld());
-        int x = (int) Math.round(playerData.getX());
-        int y = (int) Math.round(playerData.getY());
-        int z = (int) Math.round(playerData.getZ());
-
-        BlockState blockBelow = checkVicinityGround(world, x, y - 1, z);
-
-        return blockBelow != null;
-    }
 }

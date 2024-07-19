@@ -1,7 +1,10 @@
 package me.sebastian420.PandaAC.manager.object;
 
+import me.sebastian420.PandaAC.data.SpeedLimits;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+
+import java.util.Arrays;
 
 
 public class VehicleMovementData {
@@ -14,13 +17,15 @@ public class VehicleMovementData {
     private double currentY;
     private double currentZ;
 
+    public double[] speedPotential = new double[100];
+    int speedPotentialPointer = 0;
+
     private double carriedPotential;
 
     private boolean changed;
     private boolean possibleTimer;
 
     private int packetCount = 0;
-
 
     private long lastCheck;
 
@@ -56,6 +61,7 @@ public class VehicleMovementData {
         changed = false;
         packetCount = 0;
         lastCheck = time;
+        Arrays.fill(speedPotential, 0);
     }
 
     public void teleport(double x, double y, double z, long time) {
@@ -85,5 +91,16 @@ public class VehicleMovementData {
 
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
     public void setCarriedPotential(double carriedPotential) {this.carriedPotential = carriedPotential;}
+
+    public void setSpeedPotential(double speed) {
+        speedPotential[speedPotentialPointer] = speed;
+        speedPotentialPointer++;
+        if (speedPotentialPointer > speedPotential.length-1) speedPotentialPointer = 0;
+    }
+
+    public double getSpeedPotential(double timeModifier){
+        return (Arrays.stream(speedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
+    }
+
 }
 

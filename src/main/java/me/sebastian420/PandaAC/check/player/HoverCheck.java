@@ -9,7 +9,7 @@ public class HoverCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData) {
         boolean flagged = false;
         if (playerData.getChanged()) {
-            if (!BlockUtil.betterCheckGround(serverPlayerEntity, playerData.getY())) {
+            if (!BlockUtil.checkGround(serverPlayerEntity, playerData.getY())) {
                 if (playerData.getLastY() == playerData.getY()) {
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
