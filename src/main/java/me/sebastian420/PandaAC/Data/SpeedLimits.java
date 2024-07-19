@@ -9,4 +9,7 @@ public class SpeedLimits {
     public static final double SPRINT_AND_JUMP_PASSAGE = 9.346;
 
     public static final double UP_SPEED = 5.2;
+
+    //Probably should have a seperate/vertical/hor
+    public static final double SWIM_SPEED = 8;
 }

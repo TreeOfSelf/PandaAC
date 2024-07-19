@@ -17,23 +17,16 @@ public class VerticalSpeedCheckDown {
                 //If we are not currently attached (falling)
                 && playerData.getLastAttachedY() != playerData.getY()) {
 
-
-
             long airTimeDif = time - playerData.getAirTimeStartTime();
-            double tickTime = (airTimeDif / 1000d) * 20;
-            double calculatedVelocity = Math.abs((0.98 * Math.floor(tickTime) - 1) * 0.25);
-
+            double minVelocity = ((double) airTimeDif / 1000 * 4);
+            
             long timeDifMs = time - playerData.getLastCheck();
             double distance = MathUtil.getDistance(playerData.getLastY(), playerData.getY());
             double speedMps = (distance * 1000.0) / timeDifMs;
 
             long solidBlockTimeDif = time - playerData.getLastSolidTouch();
-
-
-
-            PandaLogger.getLogger().info("Speed down {} calculated {} Time dif {}", speedMps, calculatedVelocity, airTimeDif);
-
-            if ( (solidBlockTimeDif > 1000 && speedMps < (airTimeDif * 2) && airTimeDif > 500)) {
+            
+            if ( (solidBlockTimeDif > 1000 && speedMps < minVelocity && airTimeDif > 500)) {
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }

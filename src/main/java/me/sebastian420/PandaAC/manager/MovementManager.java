@@ -9,9 +9,11 @@ import me.sebastian420.PandaAC.util.PacketUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class MovementManager {
@@ -24,23 +26,33 @@ public class MovementManager {
 
             double speedPotential;
 
-            if(!player.isSneaking()) {
-                //If they have enough hunger assume they are sprinting
-                if (player.getHungerManager().getFoodLevel() > 6) {
-                    //If they are in a 2 block tall passage assume they are jumping
-                    if (PacketUtil.checkPassage(fasterWorld, packetView)) {
-                        speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
-                    } else {
-                        //Assume sprint and jumping
-                        speedPotential = SpeedLimits.SPRINT_AND_JUMP;
-                    }
-                    //Walking
-                } else {
-                    speedPotential = SpeedLimits.WALKING;
-                }
+            BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
+            BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld()).getBlockState(lastBlockPos);
+
+            if (lastBlockState.getBlock() == Blocks.WATER ||
+                    lastBlockState.getBlock() == Blocks.LAVA) {
+                speedPotential = SpeedLimits.SWIM_SPEED;
             } else {
-                speedPotential = SpeedLimits.SNEAKING;
+                if (!player.isSneaking()) {
+                    //If they have enough hunger assume they are sprinting
+                    if (player.getHungerManager().getFoodLevel() > 6) {
+                        //If they are in a 2 block tall passage assume they are jumping
+                        if (PacketUtil.checkPassage(fasterWorld, packetView)) {
+                            speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
+                        } else {
+                            //Assume sprint and jumping
+                            speedPotential = SpeedLimits.SPRINT_AND_JUMP;
+                        }
+                        //Walking
+                    } else {
+                        speedPotential = SpeedLimits.WALKING;
+                    }
+                } else {
+                    speedPotential = SpeedLimits.SNEAKING;
+                }
             }
+
+
 
             if(packetView.isOnGround() || PacketUtil.checkClimbable(fasterWorld, packetView)) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
