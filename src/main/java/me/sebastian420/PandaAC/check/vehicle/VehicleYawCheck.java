@@ -25,8 +25,6 @@ public class VehicleYawCheck {
                 CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                 flagged = true;
             }
-
-
         }
         return flagged;
     }

@@ -68,7 +68,7 @@ public class VehicleMovementManager {
                     yawPotential = SpeedLimits.BOAT_YAW_WATER;
                 } else {
                     speedPotential = SpeedLimits.BOAT_AIR;
-                    yawPotential = SpeedLimits.BOAT_YAW_AIR;
+                    yawPotential = SpeedLimits.BOAT_YAW_LAND;
                 }
             }
         }
