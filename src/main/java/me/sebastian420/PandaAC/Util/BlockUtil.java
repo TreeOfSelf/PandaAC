@@ -53,6 +53,36 @@ public class BlockUtil {
         return savedState;
     }
 
+    public static BlockState checkVicinityIce(FasterWorld world, int x, int y, int z){
+        int fastestSpeedLevel = 0;
+        BlockState savedState = Blocks.AIR.getDefaultState();
+
+        for(int xx = -1; xx <= 1; xx ++) {
+            for (int zz = -1; zz <= 1; zz++) {
+                for (int yy = -1; yy <= 1; yy++){
+                    BlockPos pos = new BlockPos(x + xx, y + yy, z + zz);
+                    BlockState state = world.getBlockState(pos);
+                    BlockPos onTopPos = pos.offset(Direction.UP, 1);
+                    BlockState stateTop = world.getBlockState(onTopPos);
+                    if (state.isIn(BlockTags.ICE) &&
+                            stateTop.getCollisionShape(world.realWorld, onTopPos).isEmpty()) {
+                       if (state.isIn(BlockTags.ICE)) {
+                            if (state.getBlock() == Blocks.BLUE_ICE && fastestSpeedLevel < 3) {
+                                fastestSpeedLevel = 3;
+                                savedState = state;
+                            } else if (fastestSpeedLevel < 2) {
+                                fastestSpeedLevel = 2;
+                                savedState = state;
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        return savedState;
+    }
+
     public static boolean checkGroundVehicle(Entity vehicle, double y) {
         Entity bottomEntity = vehicle.getRootVehicle();
         if (bottomEntity == null) {

@@ -7,6 +7,11 @@ public class SpeedLimits {
     public static final double SPRINT = 5.612;
     public static final double SPRINT_AND_JUMP = 7.127;
     public static final double SPRINT_AND_JUMP_PASSAGE = 9.346;
+    public static final double SPRINT_ON_ICE = 10;
+    public static final double SPRINT_ON_BLUE_ICE = 13;
+    public static final double SPRINT_AND_JUMP_PASSAGE_ICE = 14;
+    public static final double SPRINT_AND_JUMP_PASSAGE_BLUE_ICE = 18;
+
 
     public static final double UP_SPEED = 5.2;
 

@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -48,14 +49,32 @@ public class MovementManager {
                 speedPotential = SpeedLimits.SWIM_SPEED_LAVA;
                 inLiquid = true;
             } else if (!player.isSneaking()) {
+                BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld,(int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
                 //If they have enough hunger assume they are sprinting
                 if (player.getHungerManager().getFoodLevel() > 6) {
                     //If they are in a 2 block tall passage assume they are jumping
                     if (PacketUtil.checkPassage(fasterWorld, packetView)) {
-                        speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
+
+                        if (blockStateUnder.isIn(BlockTags.ICE)) {
+                            if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
+                                speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_BLUE_ICE;
+                            } else {
+                                speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_ICE;
+                            }
+                        } else {
+                            speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
+                        }
                     } else {
                         //Assume sprint and jumping
-                        speedPotential = SpeedLimits.SPRINT_AND_JUMP;
+                        if (blockStateUnder.isIn(BlockTags.ICE)) {
+                            if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
+                                speedPotential = SpeedLimits.SPRINT_ON_BLUE_ICE;
+                            } else {
+                                speedPotential = SpeedLimits.SPRINT_ON_ICE;
+                            }
+                        } else {
+                            speedPotential = SpeedLimits.SPRINT_AND_JUMP;
+                        }
                     }
                     //Walking
                 } else {
