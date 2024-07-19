@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.check;
+package me.sebastian420.PandaAC.check.player;
 
 import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.CheckManager;

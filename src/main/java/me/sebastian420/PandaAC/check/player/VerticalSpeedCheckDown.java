@@ -1,9 +1,8 @@
-package me.sebastian420.PandaAC.check;
+package me.sebastian420.PandaAC.check.player;
 
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
-import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class VerticalSpeedCheckDown {

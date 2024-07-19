@@ -16,12 +16,22 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class MovementManager {
+
+    public static HashMap<UUID, PlayerMovementData> playerMovementMap = new HashMap<>();
+
+    public static PlayerMovementData getPlayer(ServerPlayerEntity player) {
+        return playerMovementMap.computeIfAbsent(player.getUuid(), uuid -> new PlayerMovementData(player));
+    }
+
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long time) {
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
 
         if (packetView.isChangePosition()) {
-            PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
+            PlayerMovementData playerData = getPlayer(player);
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
 
             double speedPotential;
@@ -73,7 +83,7 @@ public class MovementManager {
 
 
     public static void receiveTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket teleportData) {
-        PlayerMovementData playerData = PlayerMovementDataManager.getPlayer(player);
+        PlayerMovementData playerData = getPlayer(player);
         playerData.teleport(teleportData.getX(), teleportData.getY(), teleportData.getZ(), System.currentTimeMillis());
     }
 }

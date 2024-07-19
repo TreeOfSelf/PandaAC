@@ -1,11 +1,8 @@
-package me.sebastian420.PandaAC.check;
+package me.sebastian420.PandaAC.check.player;
 
-import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.CheckManager;
-import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
-import me.sebastian420.PandaAC.util.PacketUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class HoverCheck {

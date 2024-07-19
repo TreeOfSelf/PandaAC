@@ -1,16 +1,9 @@
 package me.sebastian420.PandaAC;
 
-import me.sebastian420.PandaAC.check.HorizontalSpeedCheck;
-import me.sebastian420.PandaAC.check.HoverCheck;
-import me.sebastian420.PandaAC.check.JumpHeightCheck;
-import me.sebastian420.PandaAC.manager.CheckManager;
-import me.sebastian420.PandaAC.manager.FasterWorldManager;
-import me.sebastian420.PandaAC.manager.MovementManager;
-import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
-import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
-import me.sebastian420.PandaAC.util.PandaLogger;
+import me.sebastian420.PandaAC.manager.*;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,6 +37,7 @@ public class PandaACThread extends Thread {
         CHUNK_UNLOAD,
         PLAYER_MOVE,
         PLAYER_TELEPORT,
+        VEHICLE_MOVE,
         TICK,
     }
 
@@ -71,6 +65,10 @@ public class PandaACThread extends Thread {
 
     public static void queuePlayerMove(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long packetTime) {
         EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet, packetTime}));
+    }
+
+    public static void queueVehicleMove(ServerPlayerEntity player, VehicleMoveC2SPacket packet, long packetTime) {
+        EVENT_QUEUE.offer(new QueuedEvent(EventType.VEHICLE_MOVE, new Object[]{player, packet, packetTime}));
     }
 
     public static void queuePlayerTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket packet) {
@@ -132,6 +130,12 @@ public class PandaACThread extends Thread {
                 player = (ServerPlayerEntity) teleportData[0];
                 if (!player.isDisconnected()) {
                     MovementManager.receiveTeleport(player, (PlayerPositionLookS2CPacket) teleportData[1]);
+                }
+            case VEHICLE_MOVE:
+                Object[] vehicleMoveData = (Object[]) event.data;
+                player = (ServerPlayerEntity) vehicleMoveData[0];
+                if (!player.isDisconnected()) {
+                    VehicleMovementManager.read(player, (VehicleMoveC2SPacket) vehicleMoveData[1], (long) vehicleMoveData[2]);
                 }
                 break;
             case TICK:

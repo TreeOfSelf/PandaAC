@@ -78,12 +78,6 @@ public class PlayerMovementData {
 
         possibleTimer = false;
 
-        if (player.getHungerManager().getFoodLevel() > 6) {
-            Arrays.fill(speedPotential, SpeedLimits.SPRINT_AND_JUMP);
-        } else {
-            Arrays.fill(speedPotential, SpeedLimits.WALKING);
-        }
-
     }
 
     public double getX(){return currentX;}
