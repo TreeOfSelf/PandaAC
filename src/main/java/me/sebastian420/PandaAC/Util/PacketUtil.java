@@ -8,8 +8,26 @@ import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 public class PacketUtil {
+
+    private static BlockState checkVicinityGround(FasterWorld world, int x, int y, int z){
+        for(int xx = -1; xx <= 1; xx ++) {
+            for (int zz = -1; zz <= 1; zz++) {
+                BlockPos pos = new BlockPos(x + xx, y, z + zz);
+                BlockState state = world.getBlockState(pos);
+                BlockPos onTopPos = pos.offset(Direction.UP,1);
+                BlockState stateTop = world.getBlockState(onTopPos);
+
+                if (!state.getCollisionShape(world.realWorld,pos).isEmpty() &&
+                        stateTop.getCollisionShape(world.realWorld,onTopPos).isEmpty()){
+                    return state;
+                }
+            }
+        }
+        return null;
+    }
 
     private static BlockState checkVicinity(FasterWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
@@ -121,7 +139,7 @@ public class PacketUtil {
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());
 
-        BlockState blockBelow = checkVicinity(world, x, y - 1, z);
+        BlockState blockBelow = checkVicinityGround(world, x, y - 1, z);
 
         return blockBelow != null;
     }

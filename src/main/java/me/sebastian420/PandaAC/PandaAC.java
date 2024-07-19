@@ -1,17 +1,16 @@
 package me.sebastian420.PandaAC;
 
+import me.sebastian420.PandaAC.event.player.BlockBreak;
 import me.sebastian420.PandaAC.event.server.ServerStartedEvent;
 import me.sebastian420.PandaAC.event.server.ServerStopEvent;
 import me.sebastian420.PandaAC.event.world.ChunkLoadEvent;
 import me.sebastian420.PandaAC.event.world.ChunkUnloadEvent;
-import me.sebastian420.PandaAC.event.world.IllegalBlockBreakCheck;
 import me.sebastian420.PandaAC.event.S2CPacket.S2CPacketModule;
 import me.sebastian420.PandaAC.event.combat.CombatModule;
 import me.sebastian420.PandaAC.event.world.WorldLoadEvent;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import me.sebastian420.PandaAC.command.PandaCommand;
 import me.sebastian420.PandaAC.storage.PandaConfig;
@@ -40,6 +39,6 @@ public class PandaAC implements ModInitializer {
 		ChunkUnloadEvent.register();
 		CombatModule.registerEvents();
 		S2CPacketModule.registerEvents();
-		PlayerBlockBreakEvents.BEFORE.register(new IllegalBlockBreakCheck());
+		BlockBreak.register();
 	}
 }
