@@ -54,17 +54,12 @@ public class MovementManager {
                 speedPotential = SpeedLimits.SNEAKING;
             }
 
-            PandaLogger.getLogger().info("Time since last touch {}, y Difference{} , inLiquid {}",
-                    time - playerData.getLastSolidTouch(),
-                    packetView.getY() > playerData.getLastY(),
-                    inLiquid);
 
-            if(packetView.isOnGround() || PacketUtil.checkClimbable(fasterWorld, packetView)) {
-                PandaLogger.getLogger().info("setting TOCUHED {}", packetView.isOnGround());
+            if( PacketUtil.checkGround(player, packetView) || PacketUtil.checkClimbable(fasterWorld, packetView)) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
-                    packetView.getY() > playerData.getLastY() && !inLiquid) {
+                    packetView.getY() > playerData.getLastY() && !inLiquid && time - playerData.getLastWaterTime() > 500) {
                 CheckManager.rollBack(player ,playerData);
                 return;
             } else if (inLiquid) {

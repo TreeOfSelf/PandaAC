@@ -1,8 +1,6 @@
 package me.sebastian420.PandaAC.manager.object;
 
 import me.sebastian420.PandaAC.data.SpeedLimits;
-import me.sebastian420.PandaAC.manager.PlayerMovementDataManager;
-import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -35,6 +33,8 @@ public class PlayerMovementData {
 
     private long firstPacketTime;
     private long lastPacketTime;
+
+    private long lastWaterTime;
 
     private long lastCheck;
     private long airTimeStartTime;
@@ -105,6 +105,9 @@ public class PlayerMovementData {
 
     public long getLastPacketTime(){return lastPacketTime;}
     public long getFirstPacketTime(){return firstPacketTime;}
+
+
+    public long getLastWaterTime() {return lastWaterTime;}
 
     public BlockState getLastAttachedState(){return lastAttachedState;}
     public double getLastAttachedVelocity(){return lastAttachedVelocity;}
@@ -186,6 +189,7 @@ public class PlayerMovementData {
         lastAttachedState = Blocks.AIR.getDefaultState();
         lastAttachedVelocity = 0;
         airTimeStartTime = time;
+        lastWaterTime = time;
     }
 
     public void setAirTimeStartTime(long time) {
