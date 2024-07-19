@@ -58,7 +58,7 @@ public class MovementManager {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             } else if (player.isSubmergedInWater() || player.isTouchingWater() || player.isInsideWaterOrBubbleColumn()) {
-                playerData.setAirTimeStartTime(time);
+                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), Blocks.AIR.getDefaultState(), player.getVelocity().getY(), time);
             } else if (time - playerData.getLastSolidTouch() > 1000 &&
                     packetView.getY() > playerData.getLastY()) {
                 CheckManager.rollBack(player ,playerData);
