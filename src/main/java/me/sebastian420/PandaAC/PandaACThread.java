@@ -131,6 +131,7 @@ public class PandaACThread extends Thread {
                 if (!player.isDisconnected()) {
                     MovementManager.receiveTeleport(player, (PlayerPositionLookS2CPacket) teleportData[1]);
                 }
+                break;
             case VEHICLE_MOVE:
                 Object[] vehicleMoveData = (Object[]) event.data;
                 player = (ServerPlayerEntity) vehicleMoveData[0];

@@ -24,7 +24,7 @@ public class CheckManager {
         while (running) {
 
             //Not in vehicle checks
-            if (serverPlayerEntity.getVehicle() != null) {
+            if (!serverPlayerEntity.hasVehicle()) {
 
                 PlayerMovementData playerData = MovementManager.getPlayer(serverPlayerEntity);
 
@@ -97,7 +97,7 @@ public class CheckManager {
                 }
 
                 vehicleData.moveCurrentToLast(time);
-
+                running = false;
             }
         }
     }

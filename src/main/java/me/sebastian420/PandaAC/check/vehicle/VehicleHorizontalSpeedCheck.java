@@ -12,6 +12,7 @@ public class VehicleHorizontalSpeedCheck {
         //If the player has since had a movement packet
         boolean flagged = false;
 
+
         if (vehicleData.getChanged()) {
 
             long timeDifMs = time - vehicleData.getLastCheck();

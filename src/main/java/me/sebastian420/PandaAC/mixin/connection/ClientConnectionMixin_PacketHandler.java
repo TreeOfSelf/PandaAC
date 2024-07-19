@@ -32,7 +32,7 @@ public class ClientConnectionMixin_PacketHandler {
             if (packet instanceof PlayerMoveC2SPacket) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
                 PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet, System.currentTimeMillis());
-            }
+            } else
             if (packet instanceof VehicleMoveC2SPacket) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
                 PandaACThread.queueVehicleMove(serverPlayerEntity, (VehicleMoveC2SPacket) packet, System.currentTimeMillis());
