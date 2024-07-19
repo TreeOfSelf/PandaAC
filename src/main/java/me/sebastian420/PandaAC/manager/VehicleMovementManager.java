@@ -34,8 +34,10 @@ public class VehicleMovementManager {
         EntityType<?> type = vehicle.getType();
 
         double speedPotential = 0;
+        double yawPotential = 0;
 
         if (type == EntityType.BOAT) {
+            yawPotential = SpeedLimits.BOAT_YAW_WATER;
             boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
             if (blockUnder) {
                 speedPotential = SpeedLimits.BOAT_LAND;
@@ -45,6 +47,7 @@ public class VehicleMovementManager {
         }
 
         vehicleData.setSpeedPotential(speedPotential);
+        vehicleData.setYawPotential(yawPotential);
         vehicleData.setNew(packet, vehicle.getUuid());
         //FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
     }
