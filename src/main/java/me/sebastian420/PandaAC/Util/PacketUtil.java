@@ -2,7 +2,6 @@ package me.sebastian420.PandaAC.util;
 
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
-import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -15,8 +14,9 @@ public class PacketUtil {
     private static BlockState checkVicinity(FasterWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
-                BlockState state = world.getBlockState(new BlockPos(x + xx, y, z + zz));
-                if (state.getBlock() != Blocks.AIR) {
+                BlockPos pos = new BlockPos(x + xx, y, z + zz);
+                BlockState state = world.getBlockState(pos);
+                if (!state.getCollisionShape(world.realWorld,pos).isEmpty()) {
                     return state;
                 }
             }
@@ -39,9 +39,10 @@ public class PacketUtil {
     private static BlockState checkVicinityAbove(FasterWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
-                BlockState state = world.getBlockState(new BlockPos(x + xx, y, z + zz));
+                BlockPos pos = new BlockPos(x + xx, y, z + zz);
+                BlockState state = world.getBlockState(pos);
                 BlockState oneBelowState = world.getBlockState(new BlockPos(x + xx, y - 1, z + zz));
-                if (state.getBlock() != Blocks.AIR && oneBelowState.getBlock() == Blocks.AIR) {
+                if (!state.getCollisionShape(world.realWorld, pos).isEmpty() && oneBelowState.getBlock() == Blocks.AIR) {
                     return state;
                 }
             }

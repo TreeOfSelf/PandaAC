@@ -25,14 +25,17 @@ public class MovementManager {
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
 
             double speedPotential;
+            boolean inLiquid = false;
 
             BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
             BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld()).getBlockState(lastBlockPos);
 
             if (lastBlockState.getBlock() == Blocks.WATER) {
                 speedPotential = SpeedLimits.SWIM_SPEED_WATER;
+                inLiquid = true;
             } else if (lastBlockState.getBlock() == Blocks.LAVA) {
                 speedPotential = SpeedLimits.SWIM_SPEED_LAVA;
+                inLiquid = true;
             } else if (!player.isSneaking()) {
                 //If they have enough hunger assume they are sprinting
                 if (player.getHungerManager().getFoodLevel() > 6) {
@@ -54,12 +57,12 @@ public class MovementManager {
             if(packetView.isOnGround() || PacketUtil.checkClimbable(fasterWorld, packetView)) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
-            } else if (player.isSubmergedInWater() || player.isTouchingWater() || player.isInsideWaterOrBubbleColumn()) {
-                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), Blocks.AIR.getDefaultState(), player.getVelocity().getY(), time);
-            } else if (time - playerData.getLastSolidTouch() > 1000 &&
-                    packetView.getY() > playerData.getLastY()) {
+            }else if (time - playerData.getLastSolidTouch() > 1000 &&
+                    packetView.getY() > playerData.getLastY() && !inLiquid) {
                 CheckManager.rollBack(player ,playerData);
                 return;
+            } else if (inLiquid) {
+                playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), Blocks.AIR.getDefaultState(), player.getVelocity().getY(), time);
             }
 
             playerData.setSpeedPotential(speedPotential);
