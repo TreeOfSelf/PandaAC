@@ -11,5 +11,7 @@ public class SpeedLimits {
     public static final double UP_SPEED = 5.2;
 
     //Probably should have a seperate/vertical/hor
-    public static final double SWIM_SPEED = 8;
+    public static final double SWIM_SPEED_WATER = 8;
+    public static final double SWIM_SPEED_LAVA = 4;
+
 }

@@ -29,30 +29,27 @@ public class MovementManager {
             BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
             BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld()).getBlockState(lastBlockPos);
 
-            if (lastBlockState.getBlock() == Blocks.WATER ||
-                    lastBlockState.getBlock() == Blocks.LAVA) {
-                speedPotential = SpeedLimits.SWIM_SPEED;
-            } else {
-                if (!player.isSneaking()) {
-                    //If they have enough hunger assume they are sprinting
-                    if (player.getHungerManager().getFoodLevel() > 6) {
-                        //If they are in a 2 block tall passage assume they are jumping
-                        if (PacketUtil.checkPassage(fasterWorld, packetView)) {
-                            speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
-                        } else {
-                            //Assume sprint and jumping
-                            speedPotential = SpeedLimits.SPRINT_AND_JUMP;
-                        }
-                        //Walking
+            if (lastBlockState.getBlock() == Blocks.WATER) {
+                speedPotential = SpeedLimits.SWIM_SPEED_WATER;
+            } else if (lastBlockState.getBlock() == Blocks.LAVA) {
+                speedPotential = SpeedLimits.SWIM_SPEED_LAVA;
+            } else if (!player.isSneaking()) {
+                //If they have enough hunger assume they are sprinting
+                if (player.getHungerManager().getFoodLevel() > 6) {
+                    //If they are in a 2 block tall passage assume they are jumping
+                    if (PacketUtil.checkPassage(fasterWorld, packetView)) {
+                        speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
                     } else {
-                        speedPotential = SpeedLimits.WALKING;
+                        //Assume sprint and jumping
+                        speedPotential = SpeedLimits.SPRINT_AND_JUMP;
                     }
+                    //Walking
                 } else {
-                    speedPotential = SpeedLimits.SNEAKING;
+                    speedPotential = SpeedLimits.WALKING;
                 }
+            } else {
+                speedPotential = SpeedLimits.SNEAKING;
             }
-
-
 
             if(packetView.isOnGround() || PacketUtil.checkClimbable(fasterWorld, packetView)) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
