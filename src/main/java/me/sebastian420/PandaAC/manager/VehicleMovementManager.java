@@ -1,13 +1,19 @@
 package me.sebastian420.PandaAC.manager;
 
+import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
+import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -37,12 +43,33 @@ public class VehicleMovementManager {
         double yawPotential = 0;
 
         if (type == EntityType.BOAT) {
-            yawPotential = SpeedLimits.BOAT_YAW_WATER;
+
+            FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
+            BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY(), (int) packet.getZ());
             boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
+
             if (blockUnder) {
                 speedPotential = SpeedLimits.BOAT_LAND;
+                yawPotential = SpeedLimits.BOAT_YAW_LAND;
+
+               if (blockStateUnder.isIn(BlockTags.ICE)) {
+
+                    yawPotential = SpeedLimits.BOAT_YAW_ICE;
+
+                    if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
+                        speedPotential = SpeedLimits.BOAT_BLUE_ICE;
+                    } else {
+                        speedPotential = SpeedLimits.BOAT_ICE;
+                    }
+                }
             } else {
-                speedPotential = SpeedLimits.BOAT_AIR;
+                if (blockStateUnder.getBlock() == Blocks.WATER) {
+                    speedPotential = SpeedLimits.BOAT_WATER;
+                    yawPotential = SpeedLimits.BOAT_YAW_WATER;
+                } else {
+                    speedPotential = SpeedLimits.BOAT_AIR;
+                    yawPotential = SpeedLimits.BOAT_YAW_AIR;
+                }
             }
         }
 

@@ -1,14 +1,10 @@
 package me.sebastian420.PandaAC.util;
 
-import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.cast.Player;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
-import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
-import me.sebastian420.PandaAC.mixin.accessor.PlayerMoveC2SPacketAccessor;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.session.report.ReporterEnvironment;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -19,7 +15,7 @@ import java.util.List;
 
 public class BlockUtil {
 
-    private static BlockState checkVicinityGround(FasterWorld world, int x, int y, int z){
+    public static BlockState checkVicinityBoat(FasterWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
                 BlockPos pos = new BlockPos(x + xx, y, z + zz);
@@ -27,13 +23,18 @@ public class BlockUtil {
                 BlockPos onTopPos = pos.offset(Direction.UP,1);
                 BlockState stateTop = world.getBlockState(onTopPos);
 
-                if (!state.getCollisionShape(world.realWorld,pos).isEmpty() &&
+                if ((state.getBlock() == Blocks.WATER ||
+                        state.getBlock() == Blocks.ICE ||
+                        state.getBlock() == Blocks.BLUE_ICE ||
+                        state.getBlock() == Blocks.FROSTED_ICE ||
+                        state.getBlock() == Blocks.PACKED_ICE
+                ) &&
                         stateTop.getCollisionShape(world.realWorld,onTopPos).isEmpty()){
                     return state;
                 }
             }
         }
-        return null;
+        return Blocks.AIR.getDefaultState();
     }
 
     public static boolean checkGroundVehicle(Entity vehicle, double y) {

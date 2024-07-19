@@ -15,8 +15,15 @@ public class SpeedLimits {
     public static final double SWIM_SPEED_LAVA = 4;
 
     public static final double BOAT_LAND = 3.5;
+    public static final double BOAT_WATER = 7.0;
     public static final double BOAT_AIR = 8.0;
-    public static final double BOAT_YAW_WATER = 200;
+    public static final double BOAT_ICE = 40.0;
+    public static final double BOAT_BLUE_ICE = 80.0;
+
     public static final double BOAT_YAW_LAND = 75;
+    public static final double BOAT_YAW_WATER = 200;
+    public static final double BOAT_YAW_AIR = 200;
+    public static final double BOAT_YAW_ICE = 9999999;
+
 
 }
