@@ -178,6 +178,16 @@ public class PlayerMovementData {
         lastSolidTouch = time;
     }
 
+
+    public void setLastAttachedLiquid(double x, double y, double z, long time) {
+        lastAttachedX = x;
+        lastAttachedY = y;
+        lastAttachedZ = z;
+        lastAttachedState = Blocks.AIR.getDefaultState();
+        lastAttachedVelocity = 0;
+        airTimeStartTime = time;
+    }
+
     public void setAirTimeStartTime(long time) {
         airTimeStartTime = time;
         lastSolidTouch = time;
