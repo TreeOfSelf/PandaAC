@@ -4,6 +4,7 @@ import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
+import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PacketUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
@@ -65,7 +66,7 @@ public class MovementManager {
             }
 
 
-            if( PacketUtil.checkGround(player, packetView) || PacketUtil.checkClimbable(fasterWorld, packetView)) {
+            if( BlockUtil.betterCheckGround(player, packetView.getY()) || PacketUtil.checkClimbable(fasterWorld, packetView)) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&

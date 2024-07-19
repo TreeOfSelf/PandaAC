@@ -58,8 +58,13 @@ public class VehicleMovementData {
         lastCheck = time;
     }
 
-    public void teleport(double lastX, double lastY, double lastZ, long time) {
-
+    public void teleport(double x, double y, double z, long time) {
+        currentX = x;
+        currentY = y;
+        currentZ = z;
+        lastX = x;
+        lastY = y;
+        lastZ = z;
     }
 
 

@@ -15,6 +15,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.List;
+
 public class CheckManager {
 
     public static void run(ServerPlayerEntity serverPlayerEntity, long time) {
@@ -116,9 +118,12 @@ public class CheckManager {
         Entity vehicle = serverPlayerEntity.getVehicle();
         if (vehicle == null) return;
 
-        Vec3d velocity = vehicle.getVelocity();
+        List<Entity> passengers = vehicle.getPassengerList();
+        passengers.iterator().forEachRemaining(Entity::dismountVehicle);
+
         vehicle.teleport((ServerWorld) vehicle.getWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.VALUES, vehicle.getYaw(), vehicle.getPitch());
         vehicleData.teleport(vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), time);
-        vehicle.setVelocity(velocity);
+
+        vehicle.setVelocity(new Vec3d(0,0,0));
     }
 }
