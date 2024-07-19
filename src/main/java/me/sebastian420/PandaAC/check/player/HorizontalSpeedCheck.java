@@ -17,7 +17,8 @@ public class HorizontalSpeedCheck {
             double distance = MathUtil.getDistance(playerData.getLastX(), playerData.getLastZ(), playerData.getX(), playerData.getZ());
             double speedMps = (distance * 1000.0) / timeDifMs;
 
-            if (playerData.getPacketCount() <= 6) {
+            //We should do a better timer check
+            if (playerData.getPacketCount() <= 7) {
                 playerData.setPossibleTimer(false);
             }
 
@@ -35,7 +36,7 @@ public class HorizontalSpeedCheck {
                 playerData.setCarriedPotential(speedPotential - speedMps);
             }
 
-            if (playerData.getPacketCount() > 6) {
+            if (playerData.getPacketCount() > 7) {
                 playerData.setPossibleTimer(true);
             }
 
