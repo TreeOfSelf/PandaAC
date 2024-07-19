@@ -41,7 +41,7 @@ public class BlockUtil {
         if (bottomEntity == null) {
             bottomEntity = entity;
         }
-        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, y - entity.getY() - 0.25005D, 0);
+        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.1D, 0).offset(0, y - entity.getY() - 0.1D, 0);
 
         Iterable<VoxelShape> collidingBlocks = entity.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();

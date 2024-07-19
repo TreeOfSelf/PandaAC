@@ -17,13 +17,17 @@ public class VehicleMovementManager {
     public static HashMap<UUID, VehicleMovementData> vehicleMovementMap = new HashMap<>();
 
     public static VehicleMovementData getPlayer(ServerPlayerEntity player) {
-        return vehicleMovementMap.computeIfAbsent(player.getUuid(), uuid -> new VehicleMovementData(player));
+        Entity vehicle = player.getVehicle();
+        return vehicleMovementMap.computeIfAbsent(player.getUuid(), uuid -> new VehicleMovementData(player, vehicle));
     }
 
     public static void read(ServerPlayerEntity player, VehicleMoveC2SPacket packet, long time) {
-        VehicleMovementData vehicleData = getPlayer(player);
 
         Entity vehicle = player.getVehicle();
+
+
+        VehicleMovementData vehicleData = getPlayer(player);
+
 
         if (vehicle == null) return;
 
@@ -35,13 +39,15 @@ public class VehicleMovementManager {
             boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
             if (blockUnder) {
                 speedPotential = SpeedLimits.BOAT_LAND;
+                PandaLogger.getLogger().info("LAND");
             } else {
                 speedPotential = SpeedLimits.BOAT_AIR;
+                PandaLogger.getLogger().info("AIR");
             }
         }
 
         vehicleData.setSpeedPotential(speedPotential);
-        vehicleData.setNew(packet, time);
+        vehicleData.setNew(packet, vehicle.getUuid());
         //FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
     }
 }

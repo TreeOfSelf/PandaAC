@@ -1,10 +1,12 @@
 package me.sebastian420.PandaAC.manager.object;
 
 import me.sebastian420.PandaAC.data.SpeedLimits;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 
 public class VehicleMovementData {
@@ -29,29 +31,43 @@ public class VehicleMovementData {
 
     private long lastCheck;
 
+    private UUID vehicleUUID;
+
     private final ServerPlayerEntity player;
 
-    public VehicleMovementData(ServerPlayerEntity player){
+    public VehicleMovementData(ServerPlayerEntity player, Entity vehicle){
         this.player = player;
 
-        lastX = player.getX();
-        lastY = player.getY();
-        lastZ = player.getZ();
+        if (vehicle != null) {
+            lastX = vehicle.getX();
+            lastY = vehicle.getY();
+            lastZ = vehicle.getZ();
 
-        currentX = player.getX();
-        currentY = player.getY();
-        currentZ = player.getZ();
+            currentX = vehicle.getX();
+            currentY = vehicle.getY();
+            currentZ = vehicle.getZ();
+        }
 
         lastCheck = System.currentTimeMillis();
 
     }
 
-    public void setNew(VehicleMoveC2SPacket packet, long time) {
+    public void setNew(VehicleMoveC2SPacket packet, UUID vehicleUUID) {
         currentX = packet.getX();
         currentY = packet.getY();
         currentZ = packet.getZ();
         changed = true;
         packetCount++;
+
+        if (!vehicleUUID.equals(this.vehicleUUID)) {
+            this.vehicleUUID = vehicleUUID;
+            lastX = currentX;
+            lastY = currentY;
+            lastZ = currentZ;
+        }
+
+
+
     }
 
     public void moveCurrentToLast(long time) {
