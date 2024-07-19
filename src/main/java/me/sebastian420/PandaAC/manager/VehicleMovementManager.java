@@ -45,30 +45,37 @@ public class VehicleMovementManager {
         if (type == EntityType.BOAT) {
 
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
-            BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY(), (int) packet.getZ());
+            BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY() - 1, (int) packet.getZ());
+
+            //This function needs to be updated to find the MOST fast block underneath and return that
             boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
 
             if (blockUnder) {
-                speedPotential = SpeedLimits.BOAT_LAND;
-                yawPotential = SpeedLimits.BOAT_YAW_LAND;
 
-               if (blockStateUnder.isIn(BlockTags.ICE)) {
-
+                if (blockStateUnder.isIn(BlockTags.ICE)) {
                     yawPotential = SpeedLimits.BOAT_YAW_ICE;
 
                     if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
                         speedPotential = SpeedLimits.BOAT_BLUE_ICE;
+                        PandaLogger.getLogger().info("BLUE ICE");
                     } else {
                         speedPotential = SpeedLimits.BOAT_ICE;
+                        PandaLogger.getLogger().info("ICE");
                     }
+                } else {
+                    speedPotential = SpeedLimits.BOAT_LAND;
+                    yawPotential = SpeedLimits.BOAT_YAW_LAND;
                 }
+
             } else {
                 if (blockStateUnder.getBlock() == Blocks.WATER) {
                     speedPotential = SpeedLimits.BOAT_WATER;
                     yawPotential = SpeedLimits.BOAT_YAW_WATER;
+                    PandaLogger.getLogger().info("WATER");
                 } else {
                     speedPotential = SpeedLimits.BOAT_AIR;
                     yawPotential = SpeedLimits.BOAT_YAW_LAND;
+                    PandaLogger.getLogger().info("AIR");
                 }
             }
         }

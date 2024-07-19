@@ -2,9 +2,11 @@ package me.sebastian420.PandaAC.util;
 
 import me.sebastian420.PandaAC.cast.Player;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
+import net.minecraft.SaveVersion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -16,25 +18,39 @@ import java.util.List;
 public class BlockUtil {
 
     public static BlockState checkVicinityBoat(FasterWorld world, int x, int y, int z){
+        int fastestSpeedLevel = 0;
+        BlockState savedState = Blocks.AIR.getDefaultState();
+
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
-                BlockPos pos = new BlockPos(x + xx, y, z + zz);
-                BlockState state = world.getBlockState(pos);
-                BlockPos onTopPos = pos.offset(Direction.UP,1);
-                BlockState stateTop = world.getBlockState(onTopPos);
+                for (int yy = -1; yy <= 1; yy++){
+                    BlockPos pos = new BlockPos(x + xx, y + yy, z + zz);
+                    BlockState state = world.getBlockState(pos);
+                    BlockPos onTopPos = pos.offset(Direction.UP, 1);
+                    BlockState stateTop = world.getBlockState(onTopPos);
 
-                if ((state.getBlock() == Blocks.WATER ||
-                        state.getBlock() == Blocks.ICE ||
-                        state.getBlock() == Blocks.BLUE_ICE ||
-                        state.getBlock() == Blocks.FROSTED_ICE ||
-                        state.getBlock() == Blocks.PACKED_ICE
-                ) &&
-                        stateTop.getCollisionShape(world.realWorld,onTopPos).isEmpty()){
-                    return state;
+                    if ((state.getBlock() == Blocks.WATER ||
+                            state.isIn(BlockTags.ICE)) &&
+                            stateTop.getCollisionShape(world.realWorld, onTopPos).isEmpty()) {
+
+                        if (state.getBlock() == Blocks.WATER && fastestSpeedLevel < 1) {
+                            fastestSpeedLevel = 1;
+                            savedState = state;
+                        } else if (state.isIn(BlockTags.ICE)) {
+                            if (state.getBlock() == Blocks.BLUE_ICE && fastestSpeedLevel < 3) {
+                                fastestSpeedLevel = 3;
+                                savedState = state;
+                            } else if (fastestSpeedLevel < 2) {
+                                fastestSpeedLevel = 2;
+                                savedState = state;
+                            }
+
+                        }
+                    }
                 }
             }
         }
-        return Blocks.AIR.getDefaultState();
+        return savedState;
     }
 
     public static boolean checkGroundVehicle(Entity vehicle, double y) {
