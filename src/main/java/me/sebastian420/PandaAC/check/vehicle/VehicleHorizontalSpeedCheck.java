@@ -30,7 +30,7 @@ public class VehicleHorizontalSpeedCheck {
 
                 PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, vehicleData.getPacketCount());
 
-                CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
+                //CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                 vehicleData.setCarriedPotential(0);
                 flagged = true;
             } else {

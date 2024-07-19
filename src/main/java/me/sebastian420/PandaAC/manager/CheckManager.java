@@ -93,7 +93,7 @@ public class CheckManager {
 
                 if (serverPlayerEntity.isDisconnected()) break;
                 if (VehicleHorizontalSpeedCheck.check(serverPlayerEntity, vehicleData, time)) {
-                    PandaLogger.getLogger().warn("Flagged Vehicle Speed Check Up");
+                    PandaLogger.getLogger().warn("Flagged Vehicle Horizontal Speed Check");
                     vehicleData.moveCurrentToLast(time);
                     break;
                 }

@@ -8,6 +8,7 @@ import me.sebastian420.PandaAC.mixin.accessor.PlayerMoveC2SPacketAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.session.report.ReporterEnvironment;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -35,19 +36,23 @@ public class BlockUtil {
         return null;
     }
 
-    public static boolean checkGroundVehicle(Entity entity, double y){
-
-        Entity bottomEntity = entity.getRootVehicle();
+    public static boolean checkGroundVehicle(Entity vehicle, double y) {
+        Entity bottomEntity = vehicle.getRootVehicle();
         if (bottomEntity == null) {
-            bottomEntity = entity;
+            bottomEntity = vehicle;
         }
-        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.1D, 0).offset(0, y - entity.getY() - 0.1D, 0);
+        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, y - vehicle.getY() - 0.25005D, 0);
 
-        Iterable<VoxelShape> collidingBlocks = entity.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        Iterable<VoxelShape> collidingBlocks = vehicle.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
         Entity finalBottomEntity = bottomEntity;
-        List<Entity> collidingEntities = entity.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> !finalBottomEntity.equals(foundEntity));
+        List<Entity> collidingEntities = vehicle.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
+            if (finalBottomEntity.equals(foundEntity)) {
+                return false;
+            }
+            return !(finalBottomEntity).hasPassenger(foundEntity);
+        });
         boolean entityCollisions = collidingEntities.iterator().hasNext();
 
         return blockCollisions || entityCollisions;

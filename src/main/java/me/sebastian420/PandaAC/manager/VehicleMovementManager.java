@@ -39,10 +39,8 @@ public class VehicleMovementManager {
             boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
             if (blockUnder) {
                 speedPotential = SpeedLimits.BOAT_LAND;
-                PandaLogger.getLogger().info("LAND");
             } else {
                 speedPotential = SpeedLimits.BOAT_AIR;
-                PandaLogger.getLogger().info("AIR");
             }
         }
 
