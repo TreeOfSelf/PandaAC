@@ -39,6 +39,5 @@ public class PandaAC implements ModInitializer {
 		ChunkUnloadEvent.register();
 		CombatModule.registerEvents();
 		S2CPacketModule.registerEvents();
-		BlockBreak.register();
 	}
 }
