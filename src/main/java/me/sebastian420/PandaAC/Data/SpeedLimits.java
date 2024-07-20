@@ -1,6 +1,13 @@
 package me.sebastian420.PandaAC.data;
 
 public class SpeedLimits {
+
+    /*
+    CRTICAL GLITCH
+    GO IN WATER, SET FLIGHT SPEED TO SOMETHING SUPER HIGH AND HOLD SPACE
+    IT WILL LOCK YOUR LOCATION IN THE AIR SOMETHING TO DO WITH IN-GAME ROLLBACK?
+     */
+
     public static final double FUDGE = 1.0;
     public static final double SNEAKING = 1.6;
     public static final double WALKING = 4.317;
@@ -21,8 +28,9 @@ public class SpeedLimits {
 
     //This has to be quite high for when you slam into liquid from high up
     //Better to use potential that gained from velocity while in air
-    public static final double SWIM_SPEED_VERTICAL_WATER = 80;
-    public static final double SWIM_SPEED_VERTICAL_LAVA = 60;
+    //Or even simpler, only check water vertical speed after you have been in it for x amount of time
+    public static final double SWIM_SPEED_VERTICAL_WATER = 150;
+    public static final double SWIM_SPEED_VERTICAL_LAVA = 100;
 
     public static final double BOAT_LAND = 3.5;
     public static final double BOAT_WATER = 7.0;
