@@ -20,7 +20,8 @@ public class SpeedLimits {
     public static final double SPRINT_AND_JUMP_PASSAGE_BLUE_ICE = 18;
 
 
-    public static final double UP_SPEED = 5.2;
+    public static final double UP_SPEED = 6;
+    public static final double UP_STAIRS_SPEED = 9.0;
 
     //Probably should have a seperate/vertical/hor
     public static final double SWIM_SPEED_HORIZONTAL_WATER = 6;
@@ -35,6 +36,8 @@ public class SpeedLimits {
     public static final double SWIM_SPEED_VERTICAL_WATER_UP = 16;
     public static final double SWIM_SPEED_VERTICAL_LAVA_UP= 8;
 
+
+    //Boat sped fucky when smahsing into others
     public static final double BOAT_LAND = 3.5;
     public static final double BOAT_WATER = 7.0;
     public static final double BOAT_AIR = 8.0;
