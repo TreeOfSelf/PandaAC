@@ -3,6 +3,7 @@ package me.sebastian420.PandaAC.check.player;
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class VerticalSpeedCheckDown {
@@ -24,8 +25,8 @@ public class VerticalSpeedCheckDown {
             double speedMps = (distance * 1000.0) / timeDifMs;
 
             long solidBlockTimeDif = time - playerData.getLastSolidTouch();
-            
             if ( (solidBlockTimeDif > 1000 && speedMps < minVelocity && airTimeDif > 500)) {
+                PandaLogger.getLogger().info("speedMps {} minVelocity {}", speedMps, minVelocity);
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }
