@@ -11,7 +11,8 @@ public class VerticalSpeedCheckUp {
         boolean flagged = false;
 
         //If we have moved up since last
-        if (playerData.getChanged() && playerData.getY() > playerData.getLastY()) {
+        if (playerData.getChanged() && playerData.getY() > playerData.getLastY() &&
+                time - playerData.getLastWaterTime() > 500) {
 
             long timeDifMs = time - playerData.getLastCheck();
             double distance = MathUtil.getDistance(playerData.getLastY(), playerData.getY());
