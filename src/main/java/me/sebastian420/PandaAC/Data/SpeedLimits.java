@@ -23,8 +23,8 @@ public class SpeedLimits {
     public static final double UP_SPEED = 5.2;
 
     //Probably should have a seperate/vertical/hor
-    public static final double SWIM_SPEED_HORIZONTAL_WATER = 4;
-    public static final double SWIM_SPEED_HORIZONTAL_LAVA = 2;
+    public static final double SWIM_SPEED_HORIZONTAL_WATER = 6;
+    public static final double SWIM_SPEED_HORIZONTAL_LAVA = 3;
 
     //This has to be quite high for when you slam into liquid from high up
     //Better to use potential that gained from velocity while in air
