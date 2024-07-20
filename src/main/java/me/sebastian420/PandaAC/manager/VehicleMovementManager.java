@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
@@ -51,7 +52,7 @@ public class VehicleMovementManager {
             boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
 
             if (blockUnder || blockStateUnder != Blocks.AIR.getDefaultState()) {
-                if (blockStateUnder.getBlock() == Blocks.WATER) {
+                if (blockStateUnder.getFluidState().isIn(FluidTags.WATER)) {
                     speedPotential = SpeedLimits.BOAT_WATER;
                     yawPotential = SpeedLimits.BOAT_YAW_WATER;
                 } else if (blockStateUnder.isIn(BlockTags.ICE)) {

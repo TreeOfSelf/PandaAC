@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -37,13 +38,20 @@ public class CheckManager {
 
                 BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
 
-                //Water checks
-                if (lastBlockState.getBlock() == Blocks.WATER ||
-                        lastBlockState.getBlock() == Blocks.LAVA) {
+                //Liquid checks
+                if (lastBlockState.getFluidState().isIn(FluidTags.WATER) ||
+                        lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
 
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (WaterMovementCheck.check(serverPlayerEntity, playerData, time)) {
-                        PandaLogger.getLogger().warn("Flagged WaterSpeed");
+                    if (LiquidHorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                        PandaLogger.getLogger().warn("Flagged Horizontal Water Speed");
+                        playerData.moveCurrentToLast(time);
+                        break;
+                    }
+
+                    if (serverPlayerEntity.isDisconnected()) break;
+                    if (LiquidVerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                        PandaLogger.getLogger().warn("Flagged Vertical Water Speed");
                         playerData.moveCurrentToLast(time);
                         break;
                     }

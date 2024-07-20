@@ -6,7 +6,7 @@ import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class WaterMovementCheck {
+public class LiquidHorizontalSpeedCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData, long time) {
         //If the player has since had a movement packet
         boolean flagged = false;
@@ -15,8 +15,8 @@ public class WaterMovementCheck {
 
             long timeDifMs = time - playerData.getLastCheck();
             double distance = MathUtil.getDistance(
-                    playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(),
-                    playerData.getX(), playerData.getY(), playerData.getZ());
+                    playerData.getLastX(), playerData.getLastZ(),
+                    playerData.getX(), playerData.getZ());
 
             double speedMps = (distance * 1000.0) / timeDifMs;
 
@@ -29,7 +29,7 @@ public class WaterMovementCheck {
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
 
-                PandaLogger.getLogger().warn("Swim Speed {} Potential {} Count {}", speedMps, totalPotential, playerData.getPacketCount());
+                PandaLogger.getLogger().warn("Swim Horizontal Speed {} Potential {} Count {}", speedMps, totalPotential, playerData.getPacketCount());
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 playerData.setCarriedPotential(0);
                 flagged = true;

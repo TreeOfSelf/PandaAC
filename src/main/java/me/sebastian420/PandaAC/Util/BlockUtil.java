@@ -7,6 +7,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -29,11 +30,11 @@ public class BlockUtil {
                     BlockPos onTopPos = pos.offset(Direction.UP, 1);
                     BlockState stateTop = world.getBlockState(onTopPos);
 
-                    if ((state.getBlock() == Blocks.WATER ||
+                    if ((state.getFluidState().isIn(FluidTags.WATER) ||
                             state.isIn(BlockTags.ICE)) &&
                             stateTop.getCollisionShape(world.realWorld, onTopPos).isEmpty()) {
 
-                        if (state.getBlock() == Blocks.WATER && fastestSpeedLevel < 1) {
+                        if (state.getFluidState().isIn(FluidTags.WATER) && fastestSpeedLevel < 1) {
                             fastestSpeedLevel = 1;
                             savedState = state;
                         } else if (state.isIn(BlockTags.ICE)) {

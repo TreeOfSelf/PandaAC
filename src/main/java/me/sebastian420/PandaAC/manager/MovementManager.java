@@ -14,6 +14,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -42,11 +43,11 @@ public class MovementManager {
             BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
             BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld()).getBlockState(lastBlockPos);
 
-            if (lastBlockState.getBlock() == Blocks.WATER) {
-                speedPotential = SpeedLimits.SWIM_SPEED_WATER;
+            if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
+                speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
                 inLiquid = true;
-            } else if (lastBlockState.getBlock() == Blocks.LAVA) {
-                speedPotential = SpeedLimits.SWIM_SPEED_LAVA;
+            } else if (lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
+                speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
                 inLiquid = true;
             } else if (!player.isSneaking()) {
                 BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld,(int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
