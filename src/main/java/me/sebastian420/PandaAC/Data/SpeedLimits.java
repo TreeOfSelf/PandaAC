@@ -32,8 +32,8 @@ public class SpeedLimits {
     public static final double SWIM_SPEED_VERTICAL_WATER_DOWN = 150;
     public static final double SWIM_SPEED_VERTICAL_LAVA_DOWN= 100;
 
-    public static final double SWIM_SPEED_VERTICAL_WATER_UP = 10;
-    public static final double SWIM_SPEED_VERTICAL_LAVA_UP= 5;
+    public static final double SWIM_SPEED_VERTICAL_WATER_UP = 16;
+    public static final double SWIM_SPEED_VERTICAL_LAVA_UP= 8;
 
     public static final double BOAT_LAND = 3.5;
     public static final double BOAT_WATER = 7.0;
