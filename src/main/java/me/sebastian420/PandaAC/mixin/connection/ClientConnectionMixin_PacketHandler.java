@@ -2,6 +2,7 @@ package me.sebastian420.PandaAC.mixin.connection;
 
 import io.netty.channel.ChannelHandlerContext;
 import me.sebastian420.PandaAC.PandaACThread;
+import me.sebastian420.PandaAC.manager.MovementManager;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketCallbacks;
@@ -56,6 +57,7 @@ public class ClientConnectionMixin_PacketHandler {
         if (packet instanceof PlayerPositionLookS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
             PandaACThread.queuePlayerTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
+            MovementManager.receiveTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
         }
     }
 }

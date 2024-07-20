@@ -8,7 +8,6 @@ import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.registry.tag.FluidTags;
@@ -31,13 +30,11 @@ public class CheckManager {
             if (!serverPlayerEntity.hasVehicle()) {
 
                 PlayerMovementData playerData = MovementManager.getPlayer(serverPlayerEntity);
-
-                BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()),
-                        (int) Math.floor(playerData.getY()),
-                        (int) Math.floor(playerData.getZ()));
+                BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getLastX()),
+                        (int) Math.floor(playerData.getLastY()),
+                        (int) Math.floor(playerData.getLastZ()));
 
                 BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
-
                 //Liquid checks
                 if (lastBlockState.getFluidState().isIn(FluidTags.WATER) ||
                         lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {

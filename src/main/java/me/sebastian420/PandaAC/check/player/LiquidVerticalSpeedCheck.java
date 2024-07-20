@@ -18,7 +18,7 @@ public class LiquidVerticalSpeedCheck {
 
         if (playerData.getChanged()) {
 
-            BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
+            BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getLastX()), (int) Math.floor(playerData.getLastY()), (int) Math.floor(playerData.getLastZ()));
             BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
 
             long timeDifMs = time - playerData.getLastCheck();
@@ -30,10 +30,21 @@ public class LiquidVerticalSpeedCheck {
 
             double speedPotential;
 
-            if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
-                speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER;
+
+            //moving down
+            if (playerData.getY() < playerData.getLastY()) {
+                if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
+                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_DOWN;
+                } else {
+                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_DOWN;
+                }
+            //moving up
             } else {
-                speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA;
+                if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
+                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP;
+                } else {
+                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP;
+                }
             }
 
 
