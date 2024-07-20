@@ -136,4 +136,33 @@ public class BlockUtil {
         return true;
     }
 
+    public static boolean checkGroundThicc(ServerPlayerEntity player){
+
+        Entity bottomEntity = player.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = player;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(0.25, 0.25, 0.25);
+
+        Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        boolean blockCollisions = collidingBlocks.iterator().hasNext();
+
+        if (blockCollisions) {
+            ((Player) player).setEntityCollisions(false);
+            ((Player) player).setBlockCollisions(true);
+        } else {
+            Entity finalBottomEntity = bottomEntity;
+            List<Entity> collidingEntities = player.getEntityWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
+
+            ((Player) player).setEntityCollisions(!collidingEntities.isEmpty());
+            ((Player) player).setBlockCollisions(false);
+        }
+
+        if(!((Player) player).isNearGround()) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
