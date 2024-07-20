@@ -36,8 +36,8 @@ public class LiquidVerticalSpeedCheck {
                 speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA;
             }
 
-            if (speedMps > speedPotential ) {
 
+            if (speedMps > speedPotential) {
                 PandaLogger.getLogger().warn("Swim Vertical Speed {} Potential {}", speedMps, speedPotential);
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 playerData.setCarriedPotential(0);
