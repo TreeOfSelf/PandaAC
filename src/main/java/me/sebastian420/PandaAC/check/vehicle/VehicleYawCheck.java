@@ -2,6 +2,7 @@ package me.sebastian420.PandaAC.check.vehicle;
 
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
+import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,7 +13,7 @@ public class VehicleYawCheck {
         boolean flagged = false;
 
 
-        if (vehicleData.getChanged()) {
+        if (vehicleData.getChanged() && !BlockUtil.checkOtherEntityVehicle(serverPlayerEntity, vehicleData.getY())) {
 
             long timeDifMs = time - vehicleData.getLastCheck();
             double distance = MathUtil.getDistance(vehicleData.getLastYaw(), vehicleData.getYaw());

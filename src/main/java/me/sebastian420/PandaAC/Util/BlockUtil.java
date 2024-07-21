@@ -108,6 +108,26 @@ public class BlockUtil {
         return blockCollisions || entityCollisions;
     }
 
+    public static boolean checkOtherEntityVehicle(Entity vehicle, double y) {
+        Entity bottomEntity = vehicle.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = vehicle;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(0.25, 0.25005D, 0.25).offset(0, y - vehicle.getY() - 0.25005D, 0);
+
+
+        Entity finalBottomEntity = bottomEntity;
+        List<Entity> collidingEntities = vehicle.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
+            if (finalBottomEntity.equals(foundEntity)) {
+                return false;
+            }
+            return !(finalBottomEntity).hasPassenger(foundEntity);
+        });
+
+        return collidingEntities.iterator().hasNext();
+    }
+
+
 
 
     public static boolean checkGround(ServerPlayerEntity player, double y){
