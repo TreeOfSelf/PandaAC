@@ -108,7 +108,11 @@ public class MovementManager {
                             verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
                         }
                     } else {
-                        verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
+                        if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
+                            verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
+                        } else {
+                            verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP + Math.abs(player.getVelocity().getY()) * 20;
+                        }
                     }
                 } else {
                     verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20;
