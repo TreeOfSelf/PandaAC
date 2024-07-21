@@ -22,10 +22,10 @@ public class SpeedLimits {
 
     //Probably should have a seperate/vertical/hor
     public static final double SWIM_SPEED_HORIZONTAL_WATER = 6;
-    public static final double SWIM_SPEED_HORIZONTAL_LAVA = 3;
+    public static final double SWIM_SPEED_HORIZONTAL_LAVA = 2;
 
     public static final double SWIM_SPEED_VERTICAL_WATER_UP = 16;
-    public static final double SWIM_SPEED_VERTICAL_LAVA_UP= 8;
+    public static final double SWIM_SPEED_VERTICAL_LAVA_UP= 4;
 
 
     //Boat sped fucky when smahsing into others
