@@ -5,6 +5,8 @@ import me.sebastian420.PandaAC.check.player.*;
 import me.sebastian420.PandaAC.check.player.fluid.FluidHorizontalSpeedCheck;
 import me.sebastian420.PandaAC.check.player.fluid.FluidVerticalSpeedCheck;
 import me.sebastian420.PandaAC.check.vehicle.VehicleHorizontalSpeedCheck;
+import me.sebastian420.PandaAC.check.vehicle.VehicleHoverCheck;
+import me.sebastian420.PandaAC.check.vehicle.VehicleJumpHeightCheck;
 import me.sebastian420.PandaAC.check.vehicle.VehicleYawCheck;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
@@ -113,6 +115,21 @@ public class CheckManager {
                     vehicleData.moveCurrentToLast(time);
                     break;
                 }
+
+                if (serverPlayerEntity.isDisconnected()) break;
+                if (VehicleHoverCheck.check(serverPlayerEntity, vehicleData)) {
+                    PandaLogger.getLogger().warn("Flagged Vehicle Hover Check");
+                    vehicleData.moveCurrentToLast(time);
+                    break;
+                }
+
+                if (serverPlayerEntity.isDisconnected()) break;
+                if (VehicleJumpHeightCheck.check(serverPlayerEntity, vehicleData)) {
+                    PandaLogger.getLogger().warn("Flagged Vehicle Jump Height Check");
+                    vehicleData.moveCurrentToLast(time);
+                    break;
+                }
+                
 
                 vehicleData.moveCurrentToLast(time);
                 running = false;
