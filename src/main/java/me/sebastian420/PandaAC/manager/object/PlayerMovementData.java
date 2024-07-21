@@ -127,7 +127,7 @@ public class PlayerMovementData {
         return (Arrays.stream(verticalSpeedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
     }
 
-    public boolean getHover() {return hover}
+    public boolean getHover() {return hover;}
     public void setHover(boolean hover){this.hover = hover;}
 
 
