@@ -160,7 +160,6 @@ public class PlayerMovementData {
         lastX = x;
         lastY = y;
         lastZ = z;
-        hover = false;
         airTimeStartTime = time;
         Arrays.fill(speedPotential, 0);
         Arrays.fill(verticalSpeedPotential, 0);
