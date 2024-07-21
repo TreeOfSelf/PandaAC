@@ -27,6 +27,9 @@ public class PlayerMovementData {
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
 
+    public double[] verticalSpeedPotential = new double[100];
+    int verticalSpeedPotentialPointer = 0;
+
     private double carriedPotential = 0;
 
     private int packetCount;
@@ -114,13 +117,12 @@ public class PlayerMovementData {
 
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
 
-
-
     public double getSpeedPotential(double timeModifier){
-
-        //double timeDif = lastPacketTime - firstPacketTime;
-
         return (Arrays.stream(speedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
+    }
+
+    public double getVerticalSpeedPotential(double timeModifier){
+        return (Arrays.stream(verticalSpeedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
     }
 
 
@@ -132,6 +134,7 @@ public class PlayerMovementData {
         lastCheck = time;
         firstPacketTime = 0;
         Arrays.fill(speedPotential, 0);
+        Arrays.fill(verticalSpeedPotential, 0);
         packetCount = 0;
     }
 
@@ -159,6 +162,12 @@ public class PlayerMovementData {
         speedPotential[speedPotentialPointer] = speed;
         speedPotentialPointer++;
         if (speedPotentialPointer > speedPotential.length-1) speedPotentialPointer = 0;
+    }
+
+    public void setVerticalSpeedPotential(double speed) {
+        verticalSpeedPotential[verticalSpeedPotentialPointer] = speed;
+        verticalSpeedPotentialPointer++;
+        if (verticalSpeedPotentialPointer > verticalSpeedPotential.length-1) verticalSpeedPotentialPointer = 0;
     }
 
     public void setCarriedPotential(double carriedPotential) {

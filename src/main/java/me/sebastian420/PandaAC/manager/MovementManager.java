@@ -38,6 +38,8 @@ public class MovementManager {
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
 
             double speedPotential;
+            double verticalSpeedPotential = SpeedLimits.UP_SPEED;
+
             boolean inLiquid = false;
 
             BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
@@ -46,9 +48,11 @@ public class MovementManager {
             if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
                 inLiquid = true;
+                speedPotential += Math.abs(player.getVelocity().getY());
             } else if (lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
                 inLiquid = true;
+                speedPotential += Math.abs(player.getVelocity().getY());
             } else if (!player.isSneaking()) {
                 BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld,(int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
                 //If they have enough hunger assume they are sprinting
@@ -85,6 +89,13 @@ public class MovementManager {
                 speedPotential = SpeedLimits.SNEAKING;
             }
 
+            if (!inLiquid) {
+                if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())){
+                    verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS;
+                }
+            }
+
+
 
             if( BlockUtil.checkGround(player, packetView.getY()) || PacketUtil.checkClimbable(fasterWorld, packetView)) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
@@ -98,6 +109,7 @@ public class MovementManager {
             }
 
             playerData.setSpeedPotential(speedPotential);
+            playerData.setVerticalSpeedPotential(verticalSpeedPotential);
             playerData.setNew(packetView, time);
         }
     }

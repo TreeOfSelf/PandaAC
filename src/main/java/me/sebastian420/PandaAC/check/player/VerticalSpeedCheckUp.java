@@ -5,6 +5,7 @@ import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.FluidTags;
@@ -25,8 +26,11 @@ public class VerticalSpeedCheckUp {
             double distance = MathUtil.getDistance(playerData.getLastY(), playerData.getY());
             double speedMps = (distance * 1000.0) / timeDifMs;
 
+            double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d);
 
-            if (speedMps > SpeedLimits.UP_SPEED) {
+
+            if (speedMps > speedPotential) {
+                PandaLogger.getLogger().warn("Speed {} Potential {}", speedMps, speedPotential);
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }

@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.check.player;
+package me.sebastian420.PandaAC.check.player.liquid;
 
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;

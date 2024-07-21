@@ -166,4 +166,23 @@ public class BlockUtil {
         return true;
     }
 
+    public static boolean checkVicinityStairs(FasterWorld world, int x, int y, int z){
+
+        for(int xx = -1; xx <= 1; xx ++) {
+            for (int zz = -1; zz <= 1; zz++) {
+                for (int yy = -1; yy <= 1; yy++){
+                    BlockPos pos = new BlockPos(x + xx, y + yy, z + zz);
+                    BlockState state = world.getBlockState(pos);
+                    BlockPos onTopPos = pos.offset(Direction.UP, 1);
+                    BlockState stateTop = world.getBlockState(onTopPos);
+
+                    if (state.isIn(BlockTags.STAIRS) && stateTop.getCollisionShape(world.realWorld, onTopPos).isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

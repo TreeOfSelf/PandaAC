@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.check.player;
+package me.sebastian420.PandaAC.check.player.liquid;
 
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
@@ -28,8 +28,12 @@ public class LiquidVerticalSpeedCheck {
 
             double speedMps = (distance * 1000.0) / timeDifMs;
 
-            double speedPotential;
 
+            double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d);
+
+
+            /*
+             double speedPotential;
 
             //moving down
             if (playerData.getY() < playerData.getLastY()) {
@@ -45,7 +49,8 @@ public class LiquidVerticalSpeedCheck {
                 } else {
                     speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP;
                 }
-            }
+            }*/
+
 
 
             if (speedMps > speedPotential) {

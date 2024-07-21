@@ -2,6 +2,8 @@ package me.sebastian420.PandaAC.manager;
 
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.check.player.*;
+import me.sebastian420.PandaAC.check.player.liquid.LiquidHorizontalSpeedCheck;
+import me.sebastian420.PandaAC.check.player.liquid.LiquidVerticalSpeedCheck;
 import me.sebastian420.PandaAC.check.vehicle.VehicleHorizontalSpeedCheck;
 import me.sebastian420.PandaAC.check.vehicle.VehicleYawCheck;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
