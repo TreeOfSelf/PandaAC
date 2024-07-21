@@ -61,7 +61,7 @@ public class MovementManager {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
                 inLiquid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
-            } else if (!player.isSneaking()) {
+            } else if (!player.isSneaking() && !player.isCrawling()) {
                 BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld,(int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
                 //If they have enough hunger assume they are sprinting
                 if (player.getHungerManager().getFoodLevel() > 6) {
@@ -94,7 +94,11 @@ public class MovementManager {
                     speedPotential = SpeedLimits.WALKING;
                 }
             } else {
-                speedPotential = SpeedLimits.SNEAKING;
+                if (player.isSneaking()) {
+                    speedPotential = SpeedLimits.SNEAKING;
+                } else {
+                    speedPotential = SpeedLimits.CRAWLING;
+                }
             }
 
             if (!inLiquid) {

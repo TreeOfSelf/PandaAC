@@ -4,6 +4,7 @@ public class SpeedLimits {
 
 
     public static final double FUDGE = 1.0;
+    public static final double CRAWLING = 1.0;
     public static final double SNEAKING = 1.6;
     public static final double WALKING = 4.317;
     public static final double SPRINT = 5.612;
