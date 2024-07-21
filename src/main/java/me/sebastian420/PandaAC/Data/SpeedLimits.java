@@ -16,7 +16,7 @@ public class SpeedLimits {
 
 
     public static final double UP_SPEED_CLIMB = 3;
-    public static final double UP_SPEED = 6;
+    public static final double UP_SPEED = 8;
     public static final double UP_SPEED_STAIRS = 12;
 
     //Probably should have a seperate/vertical/hor
