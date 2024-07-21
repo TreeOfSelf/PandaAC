@@ -79,8 +79,8 @@ public class CheckManager {
                     }
 
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (VerticalSpeedCheckUp.check(serverPlayerEntity, playerData, time)) {
-                        PandaLogger.getLogger().warn("Flagged Speed Check Up");
+                    if (VerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                        PandaLogger.getLogger().warn("Flagged Vertical Speed Check");
                         playerData.moveCurrentToLast(time);
                         break;
                     }
@@ -91,6 +91,7 @@ public class CheckManager {
                         playerData.moveCurrentToLast(time);
                         break;
                     }
+
                 }
                 playerData.moveCurrentToLast(time);
                 running = false;

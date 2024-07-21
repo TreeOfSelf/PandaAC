@@ -156,6 +156,8 @@ public class PlayerMovementData {
         lastY = y;
         lastZ = z;
         airTimeStartTime = time;
+        Arrays.fill(speedPotential, 0);
+        Arrays.fill(verticalSpeedPotential, 0);
     }
 
     public void setSpeedPotential(double speed) {

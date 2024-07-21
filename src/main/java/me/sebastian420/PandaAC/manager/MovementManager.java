@@ -32,10 +32,10 @@ public class MovementManager {
 
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long time) {
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
+        PlayerMovementData playerData = getPlayer(player);
+        FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
 
         if (packetView.isChangePosition()) {
-            PlayerMovementData playerData = getPlayer(player);
-            FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
 
             double speedPotential;
             double verticalSpeedPotential = SpeedLimits.UP_SPEED;
@@ -90,8 +90,16 @@ public class MovementManager {
             }
 
             if (!inLiquid) {
-                if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())){
-                    verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS;
+                if (player.getVelocity().getY() > 0 || Math.abs(player.getVelocity().getY()) < 0.1) {
+                    if (!inLiquid) {
+                        if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
+                            verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS;
+                        }
+                    } else {
+                        verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP;
+                    }
+                } else {
+                    verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20;
                 }
             }
 
