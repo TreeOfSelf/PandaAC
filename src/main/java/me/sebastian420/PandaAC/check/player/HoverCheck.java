@@ -11,8 +11,13 @@ public class HoverCheck {
         if (playerData.getChanged()) {
             if (!BlockUtil.checkGroundThicc(serverPlayerEntity)) {
                 if (playerData.getLastY() == playerData.getY()) {
-                    CheckManager.rollBack(serverPlayerEntity, playerData);
-                    flagged = true;
+                    if (playerData.getHover()) {
+                        CheckManager.rollBack(serverPlayerEntity, playerData);
+                        flagged = true;
+                    }
+                    playerData.setHover(true);
+                } else {
+                    playerData.setHover(false);
                 }
             }
         }

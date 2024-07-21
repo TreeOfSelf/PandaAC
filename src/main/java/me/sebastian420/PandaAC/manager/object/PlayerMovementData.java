@@ -45,6 +45,7 @@ public class PlayerMovementData {
     private long lastSolidTouch;
 
     private boolean changed;
+    private boolean hover;
 
     private boolean possibleTimer;
 
@@ -126,6 +127,9 @@ public class PlayerMovementData {
         return (Arrays.stream(verticalSpeedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
     }
 
+    public boolean getHover() {return hover}
+    public void setHover(boolean hover){this.hover = hover;}
+
 
     public void moveCurrentToLast(long time){
         lastX = currentX;
@@ -156,6 +160,7 @@ public class PlayerMovementData {
         lastX = x;
         lastY = y;
         lastZ = z;
+        hover = false;
         airTimeStartTime = time;
         Arrays.fill(speedPotential, 0);
         Arrays.fill(verticalSpeedPotential, 0);
@@ -186,6 +191,7 @@ public class PlayerMovementData {
         lastAttachedVelocity = Math.abs(velocity);
         airTimeStartTime = time;
         lastSolidTouch = time;
+        hover = false;
     }
 
 
@@ -197,12 +203,14 @@ public class PlayerMovementData {
         lastAttachedVelocity = 0;
         airTimeStartTime = time;
         lastWaterTime = time;
+        hover = false;
     }
 
     public void setAirTimeStartTime(long time) {
         airTimeStartTime = time;
         lastSolidTouch = time;
     }
+
 
 
 }
