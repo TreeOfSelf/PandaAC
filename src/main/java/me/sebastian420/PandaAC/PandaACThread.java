@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -38,6 +39,7 @@ public class PandaACThread extends Thread {
         PLAYER_MOVE,
         PLAYER_TELEPORT,
         VEHICLE_MOVE,
+        SERVER_VEHICLE_MOVE,
         TICK,
     }
 
@@ -73,6 +75,10 @@ public class PandaACThread extends Thread {
 
     public static void queuePlayerTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket packet) {
         EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_TELEPORT, new Object[]{player, packet}));
+    }
+
+    public static void queueServerVehicleMove(ServerPlayerEntity player, VehicleMoveS2CPacket packet) {
+        EVENT_QUEUE.offer(new QueuedEvent(EventType.SERVER_VEHICLE_MOVE, new Object[]{player, packet}));
     }
 
     public static void initialize(MinecraftServer minecraftServer) {
@@ -137,6 +143,13 @@ public class PandaACThread extends Thread {
                 player = (ServerPlayerEntity) vehicleMoveData[0];
                 if (!player.isDisconnected()) {
                     VehicleMovementManager.read(player, (VehicleMoveC2SPacket) vehicleMoveData[1], (long) vehicleMoveData[2]);
+                }
+                break;
+            case SERVER_VEHICLE_MOVE:
+                Object[] serverVehicleMoveData = (Object[]) event.data;
+                player = (ServerPlayerEntity) serverVehicleMoveData[0];
+                if (!player.isDisconnected()) {
+                    VehicleMovementManager.setData(player, (VehicleMoveS2CPacket) serverVehicleMoveData[1]);
                 }
                 break;
             case TICK:

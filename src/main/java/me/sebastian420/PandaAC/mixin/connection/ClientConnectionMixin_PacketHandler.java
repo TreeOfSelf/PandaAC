@@ -12,6 +12,7 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -58,6 +59,10 @@ public class ClientConnectionMixin_PacketHandler {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
             PandaACThread.queuePlayerTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
             //MovementManager.receiveTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
+        } else if (packet instanceof VehicleMoveS2CPacket) {
+            ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
+            PandaACThread.queueServerVehicleMove(serverPlayerEntity, (VehicleMoveS2CPacket) packet);
         }
+
     }
 }

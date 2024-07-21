@@ -1,8 +1,11 @@
 package me.sebastian420.PandaAC.manager.object;
 
+import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Arrays;
@@ -143,5 +146,19 @@ public class VehicleMovementData {
         return (Arrays.stream(yawPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
     }
 
+    public void consumePacket(VehicleMoveS2CPacket packet) {
+        PandaLogger.getLogger().info("GOT PACKET");
+
+        currentX = packet.getX();
+        currentY = packet.getY();
+        currentZ = packet.getZ();
+
+        setYawPotential(Math.abs(currentYaw - packet.getYaw()));
+
+        currentYaw = packet.getYaw();
+
+        moveCurrentToLast(System.currentTimeMillis());
+
+    }
 }
 

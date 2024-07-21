@@ -11,6 +11,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -31,12 +32,9 @@ public class VehicleMovementManager {
     public static void read(ServerPlayerEntity player, VehicleMoveC2SPacket packet, long time) {
 
         Entity vehicle = player.getVehicle();
-
+        if (vehicle == null) return;
 
         VehicleMovementData vehicleData = getPlayer(player);
-
-
-        if (vehicle == null) return;
 
         EntityType<?> type = vehicle.getType();
 
@@ -78,5 +76,13 @@ public class VehicleMovementManager {
         vehicleData.setYawPotential(yawPotential);
         vehicleData.setNew(packet, vehicle.getUuid());
         //FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
+    }
+
+    public static void setData(ServerPlayerEntity player, VehicleMoveS2CPacket packet) {
+        Entity vehicle = player.getVehicle();
+        if (vehicle == null) return;
+
+        VehicleMovementData vehicleData = getPlayer(player);
+        vehicleData.consumePacket(packet);
     }
 }
