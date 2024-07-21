@@ -34,6 +34,7 @@ public class VehicleMovementData {
 
     private boolean changed;
     private boolean possibleTimer;
+    private boolean hover;
 
     private int packetCount = 0;
 
@@ -125,6 +126,9 @@ public class VehicleMovementData {
 
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
     public void setCarriedPotential(double carriedPotential) {this.carriedPotential = carriedPotential;}
+
+    public void setHover(boolean hover){this.hover = hover;}
+    public boolean getHover(){return hover;}
 
     public void setSpeedPotential(double speed) {
         speedPotential[speedPotentialPointer] = speed;

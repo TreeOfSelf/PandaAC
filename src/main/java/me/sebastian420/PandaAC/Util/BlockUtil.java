@@ -108,6 +108,29 @@ public class BlockUtil {
         return blockCollisions || entityCollisions;
     }
 
+    public static boolean checkGroundVehicleThicc(Entity vehicle) {
+        Entity bottomEntity = vehicle.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = vehicle;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(0.25, 0.25, 0.25);
+
+        Iterable<VoxelShape> collidingBlocks = vehicle.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        boolean blockCollisions = collidingBlocks.iterator().hasNext();
+
+        Entity finalBottomEntity = bottomEntity;
+        List<Entity> collidingEntities = vehicle.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
+            if (finalBottomEntity.equals(foundEntity)) {
+                return false;
+            }
+            return !(finalBottomEntity).hasPassenger(foundEntity);
+        });
+        boolean entityCollisions = collidingEntities.iterator().hasNext();
+
+        return blockCollisions || entityCollisions;
+    }
+
+
     public static boolean checkOtherEntityVehicle(Entity vehicle, double y) {
         Entity bottomEntity = vehicle.getRootVehicle();
         if (bottomEntity == null) {
