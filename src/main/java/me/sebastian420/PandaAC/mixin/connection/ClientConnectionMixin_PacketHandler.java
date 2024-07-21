@@ -56,8 +56,8 @@ public class ClientConnectionMixin_PacketHandler {
     public void send(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
         if (packet instanceof PlayerPositionLookS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-            //PandaACThread.queuePlayerTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
-            MovementManager.receiveTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
+            PandaACThread.queuePlayerTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
+            //MovementManager.receiveTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
         }
     }
 }
