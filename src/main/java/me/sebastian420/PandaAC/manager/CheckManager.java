@@ -79,7 +79,7 @@ public class CheckManager {
                     }
 
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (VerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                    if (VerticalSpeedCheckUp.check(serverPlayerEntity, playerData, time)) {
                         PandaLogger.getLogger().warn("Flagged Vertical Speed Check");
                         playerData.moveCurrentToLast(time);
                         break;
