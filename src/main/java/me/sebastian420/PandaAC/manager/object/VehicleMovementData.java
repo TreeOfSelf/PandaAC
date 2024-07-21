@@ -3,6 +3,7 @@ package me.sebastian420.PandaAC.manager.object;
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.util.PandaLogger;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
@@ -19,6 +20,10 @@ public class VehicleMovementData {
     private double lastZ;
     private double lastYaw;
 
+    private double lastAttachedX;
+    private double lastAttachedY;
+    private double lastAttachedZ;
+
     private double currentX;
     private double currentY;
     private double currentZ;
@@ -26,6 +31,9 @@ public class VehicleMovementData {
 
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
+
+    public double[] verticalSpeedPotential = new double[100];
+    int verticalSpeedPotentialPointer = 0;
 
     public double[] yawPotential = new double[100];
     int yawPotentialPointer = 0;
@@ -120,6 +128,10 @@ public class VehicleMovementData {
     public double getLastZ(){return lastZ;}
     public double getLastYaw(){return lastYaw;}
 
+    public double getLastAttachedX(){return lastAttachedX;}
+    public double getLastAttachedY(){return lastAttachedY;}
+    public double getLastAttachedZ(){return lastAttachedZ;}
+
     public double getCarriedPotential(){return carriedPotential;}
 
     public int getPacketCount(){return packetCount;}
@@ -140,6 +152,16 @@ public class VehicleMovementData {
         return (Arrays.stream(speedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
     }
 
+    public void setVerticalSpeedPotential(double speed) {
+        verticalSpeedPotential[verticalSpeedPotentialPointer] = speed;
+        verticalSpeedPotentialPointer++;
+        if (verticalSpeedPotentialPointer > verticalSpeedPotential.length-1) verticalSpeedPotentialPointer = 0;
+    }
+
+    public double getVerticalSpeedPotential(double timeModifier){
+        return (Arrays.stream(verticalSpeedPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
+    }
+
     public void setYawPotential(double yaw) {
         yawPotential[yawPotentialPointer] = yaw;
         yawPotentialPointer++;
@@ -148,6 +170,13 @@ public class VehicleMovementData {
 
     public double getYawPotential(double timeModifier){
         return (Arrays.stream(yawPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
+    }
+
+    public void setLastAttached(double x, double y, double z) {
+        lastAttachedX = x;
+        lastAttachedY = y;
+        lastAttachedZ = z;
+        hover = false;
     }
 
     public void consumePacket(VehicleMoveS2CPacket packet) {
@@ -164,5 +193,7 @@ public class VehicleMovementData {
         moveCurrentToLast(System.currentTimeMillis());
 
     }
+
+
 }
 

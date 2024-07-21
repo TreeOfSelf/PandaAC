@@ -39,15 +39,19 @@ public class VehicleMovementManager {
         EntityType<?> type = vehicle.getType();
 
         double speedPotential = 0;
+        double verticalSpeedPotential = 0;
         double yawPotential = 0;
+
+        boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
+
+        if (blockUnder) {
+            vehicleData.setLastAttached((int) packet.getX(), (int) packet.getY(), (int) packet.getZ());
+        }
 
         if (type == EntityType.BOAT) {
 
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
             BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY() - 1, (int) packet.getZ());
-
-            //This function needs to be updated to find the MOST fast block underneath and return that
-            boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
 
             if (blockUnder || blockStateUnder != Blocks.AIR.getDefaultState()) {
                 if (blockStateUnder.getFluidState().isIn(FluidTags.WATER)) {
@@ -73,9 +77,9 @@ public class VehicleMovementManager {
         }
 
         vehicleData.setSpeedPotential(speedPotential);
+        vehicleData.setVerticalSpeedPotential(verticalSpeedPotential);
         vehicleData.setYawPotential(yawPotential);
         vehicleData.setNew(packet, vehicle.getUuid());
-        //FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
     }
 
     public static void setData(ServerPlayerEntity player, VehicleMoveS2CPacket packet) {
