@@ -25,30 +25,7 @@ public class FluidVerticalSpeedCheck {
                     playerData.getY());
 
             double speedMps = (distance * 1000.0) / timeDifMs;
-
-
             double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d);
-
-
-            /*
-             double speedPotential;
-
-            //moving down
-            if (playerData.getY() < playerData.getLastY()) {
-                if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
-                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_DOWN;
-                } else {
-                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_DOWN;
-                }
-            //moving up
-            } else {
-                if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
-                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP;
-                } else {
-                    speedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP;
-                }
-            }*/
-
 
             if (speedMps > speedPotential) {
                 PandaLogger.getLogger().warn("Swim Vertical Speed {} Potential {}", speedMps, speedPotential);
