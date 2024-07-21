@@ -26,13 +26,10 @@ public class VehicleHorizontalSpeedCheck {
 
             double speedPotential = vehicleData.getSpeedPotential((double) timeDifMs / 1000d);
             double totalPotential = speedPotential + vehicleData.getCarriedPotential();
-            PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, vehicleData.getPacketCount());
 
 
             if (speedMps > totalPotential || vehicleData.getPossibleTimer()) {
-
-//                PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, vehicleData.getPacketCount());
-
+                PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, vehicleData.getPacketCount());
                 CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                 vehicleData.setCarriedPotential(0);
                 flagged = true;
