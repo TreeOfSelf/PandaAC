@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.check.player.liquid;
+package me.sebastian420.PandaAC.check.player.fluid;
 
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
@@ -6,7 +6,7 @@ import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class LiquidHorizontalSpeedCheck {
+public class FluidHorizontalSpeedCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData, long time) {
         //If the player has since had a movement packet
         boolean flagged = false;

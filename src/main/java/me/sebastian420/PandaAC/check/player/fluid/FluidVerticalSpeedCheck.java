@@ -1,17 +1,15 @@
-package me.sebastian420.PandaAC.check.player.liquid;
+package me.sebastian420.PandaAC.check.player.fluid;
 
 import me.sebastian420.PandaAC.PandaACThread;
-import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-public class LiquidVerticalSpeedCheck {
+public class FluidVerticalSpeedCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData, long time) {
         //If the player has since had a movement packet
         boolean flagged = false;

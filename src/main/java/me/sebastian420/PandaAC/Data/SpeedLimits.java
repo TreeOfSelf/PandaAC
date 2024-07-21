@@ -24,9 +24,6 @@ public class SpeedLimits {
     public static final double SWIM_SPEED_HORIZONTAL_WATER = 6;
     public static final double SWIM_SPEED_HORIZONTAL_LAVA = 3;
 
-    //This has to be quite high for when you slam into liquid from high up
-    //Better to use potential that gained from velocity while in air
-    //Or even simpler, only check water vertical speed after you have been in it for x amount of time
     public static final double SWIM_SPEED_VERTICAL_WATER_UP = 16;
     public static final double SWIM_SPEED_VERTICAL_LAVA_UP= 8;
 

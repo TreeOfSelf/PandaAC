@@ -38,7 +38,7 @@ public class PlayerMovementData {
     private long firstPacketTime;
     private long lastPacketTime;
 
-    private long lastWaterTime;
+    private long lastFluidTime;
 
     private long lastCheck;
     private long airTimeStartTime;
@@ -106,7 +106,7 @@ public class PlayerMovementData {
     public long getFirstPacketTime(){return firstPacketTime;}
 
 
-    public long getLastWaterTime() {return lastWaterTime;}
+    public long getLastFluidTime() {return lastFluidTime;}
 
     public BlockState getLastAttachedState(){return lastAttachedState;}
     public double getLastAttachedVelocity(){return lastAttachedVelocity;}
@@ -194,14 +194,14 @@ public class PlayerMovementData {
     }
 
 
-    public void setLastAttachedLiquid(double x, double y, double z, long time) {
+    public void setLastAttachedFluid(double x, double y, double z, long time) {
         lastAttachedX = x;
         lastAttachedY = y;
         lastAttachedZ = z;
         lastAttachedState = Blocks.AIR.getDefaultState();
         lastAttachedVelocity = 0;
         airTimeStartTime = time;
-        lastWaterTime = time;
+        lastFluidTime = time;
         hover = false;
     }
 

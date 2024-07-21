@@ -39,7 +39,7 @@ public class MovementManager {
 
             double speedPotential;
 
-            boolean inLiquid = false;
+            boolean inFluid = false;
             boolean nearClimable = PacketUtil.checkClimbable(fasterWorld, packetView);
             boolean onGround = BlockUtil.checkGround(player, packetView.getY());
 
@@ -50,16 +50,15 @@ public class MovementManager {
                 verticalSpeedPotential = SpeedLimits.UP_SPEED + Math.abs(player.getVelocity().getY()) * 20;
             }
 
-            BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
-            BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld()).getBlockState(lastBlockPos);
+            BlockState lastBlockState = BlockUtil.checkFluid(player, player.getY());
 
             if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
-                inLiquid = true;
+                inFluid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
             } else if (lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
-                inLiquid = true;
+                inFluid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
             } else if (!player.isSneaking() && !player.isCrawling()) {
                 BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld,(int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
@@ -101,9 +100,9 @@ public class MovementManager {
                 }
             }
 
-            if (!inLiquid) {
+            if (!inFluid) {
                 if (player.getVelocity().getY() > 0 || Math.abs(player.getVelocity().getY()) < 0.1) {
-                    if (!inLiquid) {
+                    if (!inFluid) {
                         if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
                             verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
                         }
@@ -125,11 +124,11 @@ public class MovementManager {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
-                    packetView.getY() > playerData.getLastY() && !inLiquid && time - playerData.getLastWaterTime() > 500) {
+                    packetView.getY() > playerData.getLastY() && !inFluid && time - playerData.getLastFluidTime() > 500) {
                 CheckManager.rollBack(player ,playerData);
                 return;
-            } else if (inLiquid) {
-                playerData.setLastAttachedLiquid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
+            } else if (inFluid) {
+                playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
             }
 
             playerData.setSpeedPotential(speedPotential);

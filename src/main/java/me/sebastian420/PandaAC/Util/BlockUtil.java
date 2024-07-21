@@ -5,6 +5,7 @@ import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import net.minecraft.SaveVersion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
@@ -13,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.World;
 
 import java.util.List;
 
@@ -135,6 +137,24 @@ public class BlockUtil {
         }
 
         return true;
+    }
+
+    public static BlockState checkFluid(ServerPlayerEntity player, double y) {
+        Entity bottomEntity = player.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = player;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, y - player.getY() - 0.25005D, 0);
+
+        // Get the world from the player
+        World world = player.getWorld();
+
+        // Check for fluid blocks within the bounding box
+        return BlockPos.stream(bBox)
+                .map(world::getBlockState)
+                .filter(blockState -> blockState.getFluidState().isStill() || blockState.getBlock() instanceof FluidBlock)
+                .findFirst()
+                .orElse(Blocks.AIR.getDefaultState());
     }
 
     public static boolean checkGroundThicc(ServerPlayerEntity player){

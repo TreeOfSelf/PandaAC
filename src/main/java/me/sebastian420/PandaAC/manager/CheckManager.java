@@ -2,8 +2,8 @@ package me.sebastian420.PandaAC.manager;
 
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.check.player.*;
-import me.sebastian420.PandaAC.check.player.liquid.LiquidHorizontalSpeedCheck;
-import me.sebastian420.PandaAC.check.player.liquid.LiquidVerticalSpeedCheck;
+import me.sebastian420.PandaAC.check.player.fluid.FluidHorizontalSpeedCheck;
+import me.sebastian420.PandaAC.check.player.fluid.FluidVerticalSpeedCheck;
 import me.sebastian420.PandaAC.check.vehicle.VehicleHorizontalSpeedCheck;
 import me.sebastian420.PandaAC.check.vehicle.VehicleYawCheck;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
@@ -37,19 +37,19 @@ public class CheckManager {
                         (int) Math.floor(playerData.getLastZ()));
 
                 BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
-                //Liquid checks
+                //Fluid checks
                 if (lastBlockState.getFluidState().isIn(FluidTags.WATER) ||
                         lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
 
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (LiquidHorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                    if (FluidHorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
                         PandaLogger.getLogger().warn("Flagged Horizontal Water Speed");
                         playerData.moveCurrentToLast(time);
                         break;
                     }
 
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (LiquidVerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                    if (FluidVerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
                         PandaLogger.getLogger().warn("Flagged Vertical Water Speed");
                         playerData.moveCurrentToLast(time);
                         break;
