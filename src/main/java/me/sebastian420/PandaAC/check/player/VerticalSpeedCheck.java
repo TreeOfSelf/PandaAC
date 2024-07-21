@@ -21,9 +21,8 @@ public class VerticalSpeedCheck {
 
             double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d);
 
-            PandaLogger.getLogger().warn("Speed {} Potential {}", speedMps, speedPotential);
-
             if (speedMps > speedPotential) {
+                PandaLogger.getLogger().warn("Speed {} Potential {}", speedMps, speedPotential);
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }

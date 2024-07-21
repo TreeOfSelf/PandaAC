@@ -5,6 +5,7 @@ import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Arrays;
 
@@ -158,6 +159,7 @@ public class PlayerMovementData {
         airTimeStartTime = time;
         Arrays.fill(speedPotential, 0);
         Arrays.fill(verticalSpeedPotential, 0);
+        this.player.setVelocity(new Vec3d(0,0,0));
     }
 
     public void setSpeedPotential(double speed) {

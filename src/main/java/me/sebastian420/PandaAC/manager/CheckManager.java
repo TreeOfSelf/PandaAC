@@ -122,10 +122,11 @@ public class CheckManager {
 
     public static void rollBack(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData){
         long time = System.currentTimeMillis();
-        Vec3d velocity = serverPlayerEntity.getVelocity();
+        //We should do something like this where your velocity is counted til you hit the ground
+        //Vec3d velocity = serverPlayerEntity.getVelocity();
         serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
         playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), time);
-        serverPlayerEntity.setVelocity(velocity);
+        //serverPlayerEntity.setVelocity(velocity);
     }
 
     public static void rollBackVehicle(ServerPlayerEntity serverPlayerEntity, VehicleMovementData vehicleData) {

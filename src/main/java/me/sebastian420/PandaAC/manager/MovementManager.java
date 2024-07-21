@@ -38,9 +38,17 @@ public class MovementManager {
         if (packetView.isChangePosition()) {
 
             double speedPotential;
-            double verticalSpeedPotential = SpeedLimits.UP_SPEED;
 
             boolean inLiquid = false;
+            boolean nearClimable = PacketUtil.checkClimbable(fasterWorld, packetView);
+            boolean onGround = BlockUtil.checkGround(player, packetView.getY());
+
+            double verticalSpeedPotential;
+            if (nearClimable && !onGround) {
+                verticalSpeedPotential = SpeedLimits.UP_SPEED_CLIMB + Math.abs(player.getVelocity().getY()) * 20;
+            } else {
+                verticalSpeedPotential = SpeedLimits.UP_SPEED + Math.abs(player.getVelocity().getY()) * 20;
+            }
 
             BlockPos lastBlockPos = new BlockPos((int) Math.floor(playerData.getX()), (int) Math.floor(playerData.getY()), (int) Math.floor(playerData.getZ()));
             BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld()).getBlockState(lastBlockPos);
@@ -93,10 +101,10 @@ public class MovementManager {
                 if (player.getVelocity().getY() > 0 || Math.abs(player.getVelocity().getY()) < 0.1) {
                     if (!inLiquid) {
                         if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
-                            verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS;
+                            verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
                         }
                     } else {
-                        verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP;
+                        verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
                     }
                 } else {
                     verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20;
@@ -105,7 +113,7 @@ public class MovementManager {
 
 
 
-            if( BlockUtil.checkGround(player, packetView.getY()) || PacketUtil.checkClimbable(fasterWorld, packetView)) {
+            if( onGround || nearClimable) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
