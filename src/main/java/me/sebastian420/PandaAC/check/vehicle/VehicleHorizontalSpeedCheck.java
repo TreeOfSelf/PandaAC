@@ -24,9 +24,18 @@ public class VehicleHorizontalSpeedCheck {
                 vehicleData.setPossibleTimer(false);
             }
 
-            double speedPotential = vehicleData.getSpeedPotential((double) timeDifMs / 1000d);
-            double totalPotential = speedPotential + vehicleData.getCarriedPotential();
+            double storedSpeed = vehicleData.getStoredSpeed();
 
+            double speedPotential = vehicleData.getSpeedPotential((double) timeDifMs / 1000d);
+            double totalPotential = speedPotential + vehicleData.getCarriedPotential() + storedSpeed;
+
+            double newStoredSpeed = storedSpeed - speedMps;
+
+            if (newStoredSpeed > 0) {
+                vehicleData.setStoredSpeed(newStoredSpeed);
+            } else {
+                vehicleData.setStoredSpeed(0);
+            }
 
             if (speedMps > totalPotential || vehicleData.getPossibleTimer()) {
                 PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, vehicleData.getPacketCount());

@@ -5,7 +5,7 @@ import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
-import me.sebastian420.PandaAC.util.PandaLogger;
+import me.sebastian420.PandaAC.util.MathUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -51,8 +51,12 @@ public class VehicleMovementManager {
 
         if (type == EntityType.BOAT) {
 
+            boolean previousOnIce = vehicleData.getOnIce();
+
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
             BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY() - 1, (int) packet.getZ());
+
+            vehicleData.setOnIce(false);
 
             if (onGround || blockStateUnder != Blocks.AIR.getDefaultState()) {
                 if (blockStateUnder.getFluidState().isIn(FluidTags.WATER)) {
@@ -63,18 +67,28 @@ public class VehicleMovementManager {
 
                     if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
                         speedPotential = SpeedLimits.BOAT_BLUE_ICE;
+                        vehicleData.setOnIce(true);
                     } else {
                         speedPotential = SpeedLimits.BOAT_ICE;
+                        vehicleData.setOnIce(true);
                     }
                 } else {
                     speedPotential = SpeedLimits.BOAT_LAND;
                     yawPotential = SpeedLimits.BOAT_YAW_LAND;
                 }
-
             } else {
                 speedPotential = SpeedLimits.BOAT_AIR;
                 yawPotential = SpeedLimits.BOAT_YAW_LAND;
             }
+
+            if (!vehicleData.getOnIce() && previousOnIce) {
+                vehicleData.setStoredSpeed(MathUtil.getDistance(vehicleData.getX(), vehicleData.getZ(), packet.getX(), packet.getZ()) * 125);
+            } else {
+                if ((onGround || blockStateUnder != Blocks.AIR.getDefaultState()) && vehicleData.getStoredSpeed() > 0) {
+                    vehicleData.setStoredSpeed(vehicleData.getStoredSpeed() * 0.9);
+                }
+            }
+
         }
 
         if (!onGround  && currentFluidState == Blocks.AIR.getDefaultState()) {

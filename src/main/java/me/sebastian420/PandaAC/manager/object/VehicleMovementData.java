@@ -29,6 +29,8 @@ public class VehicleMovementData {
     private double currentZ;
     private double currentYaw;
 
+    private double storedSpeed;
+
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
 
@@ -43,6 +45,7 @@ public class VehicleMovementData {
     private boolean changed;
     private boolean possibleTimer;
     private boolean hover;
+    private boolean onIce;
 
     private int packetCount = 0;
 
@@ -88,6 +91,7 @@ public class VehicleMovementData {
             lastY = currentY;
             lastZ = currentZ;
             lastYaw = currentYaw;
+            storedSpeed = 0;
         }
 
 
@@ -115,11 +119,14 @@ public class VehicleMovementData {
         lastZ = z;
         airTimeStartTime = time;
         Arrays.fill(verticalSpeedPotential, 0);
+        storedSpeed = 0;
     }
 
 
     public boolean getChanged() {return changed;}
     public boolean getPossibleTimer() {return possibleTimer;}
+    public boolean getOnIce() {return onIce;}
+    public void setOnIce(boolean onIce) {this.onIce = onIce;}
 
     public long getLastCheck() {return lastCheck;}
 
@@ -131,6 +138,8 @@ public class VehicleMovementData {
     public double getLastY(){return lastY;}
     public double getLastZ(){return lastZ;}
     public double getLastYaw(){return lastYaw;}
+    public double getStoredSpeed() {return storedSpeed;}
+    public void setStoredSpeed(double speed) {storedSpeed = speed;}
 
     public double getLastAttachedX(){return lastAttachedX;}
     public double getLastAttachedY(){return lastAttachedY;}
