@@ -3,6 +3,7 @@ package me.sebastian420.PandaAC.check.vehicle;
 import me.sebastian420.PandaAC.data.JumpHeights;
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,11 +17,12 @@ public class VehicleJumpHeightCheck {
             if (vehicle == null) return false;
             EntityType<?> type = vehicle.getType();
 
-            double checkHeight = 0;
+            double checkHeight = 1;
 
 
             if (vehicleData.getY() - vehicleData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
                     vehicleData.getY() > vehicleData.getLastY()) {
+                PandaLogger.getLogger().info("Height dif {} Checkheight {}", vehicleData.getY() - vehicleData.getLastAttachedY(), checkHeight);
                 CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                 flagged = true;
             }
