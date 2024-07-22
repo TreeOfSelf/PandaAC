@@ -113,6 +113,7 @@ public class VehicleMovementData {
         lastX = x;
         lastY = y;
         lastZ = z;
+        airTimeStartTime = time;
     }
 
 
