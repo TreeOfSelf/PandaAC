@@ -7,8 +7,6 @@ public class SpeedLimits {
 
     /* Dont allow player to get BACK into vehicle after being booted til they hit the ground */
 
-    /*Boat glitching when on top*/
-
     public static final double FUDGE = 1.0;
     public static final double CRAWLING = 1.0;
     public static final double SNEAKING = 1.6;
