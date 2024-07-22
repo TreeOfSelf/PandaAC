@@ -5,6 +5,7 @@ import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -41,10 +42,6 @@ public class VehicleMovementManager {
         double verticalSpeedPotential = 0;
         double yawPotential = 0;
 
-        if (vehicle.getVelocity().getY() < 0) {
-            verticalSpeedPotential = Math.abs(vehicle.getVelocity().getY());
-        }
-
         boolean onGround = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
         BlockState currentFluidState = BlockUtil.checkFluidVehicle(vehicle, packet.getY());
 
@@ -80,8 +77,17 @@ public class VehicleMovementManager {
             }
         }
 
-        if (!onGround  && currentFluidState == Blocks.AIR.getDefaultState() && packet.getY() > vehicleData.getLastY()) {
-            CheckManager.rollBackVehicle(player, vehicleData);
+        if (!onGround  && currentFluidState == Blocks.AIR.getDefaultState()) {
+
+            if (packet.getY() > vehicleData.getLastY()) {
+                CheckManager.rollBackVehicle(player, vehicleData);
+
+            //Falling
+            } else if (packet.getY() < vehicleData.getLastY()) {
+                if (type == EntityType.BOAT) {
+                    verticalSpeedPotential += Math.abs(vehicle.getMovement().getY());
+                }
+            }
         }
 
         vehicleData.setSpeedPotential(speedPotential);

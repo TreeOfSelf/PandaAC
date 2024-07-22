@@ -114,6 +114,7 @@ public class VehicleMovementData {
         lastY = y;
         lastZ = z;
         airTimeStartTime = time;
+        Arrays.fill(verticalSpeedPotential, 0);
     }
 
 
@@ -184,6 +185,7 @@ public class VehicleMovementData {
         lastAttachedZ = z;
         hover = false;
         airTimeStartTime = time;
+        Arrays.fill(verticalSpeedPotential, 0);
     }
 
     public void consumePacket(VehicleMoveS2CPacket packet) {
