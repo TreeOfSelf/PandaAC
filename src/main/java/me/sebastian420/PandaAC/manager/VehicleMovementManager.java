@@ -85,7 +85,7 @@ public class VehicleMovementManager {
                 vehicleData.setStoredSpeed(MathUtil.getDistance(vehicleData.getX(), vehicleData.getZ(), packet.getX(), packet.getZ()) * 125);
             } else {
                 if ((onGround || blockStateUnder != Blocks.AIR.getDefaultState()) && vehicleData.getStoredSpeed() > 0) {
-                    vehicleData.setStoredSpeed(vehicleData.getStoredSpeed() * 0.9);
+                    vehicleData.setStoredSpeed(vehicleData.getStoredSpeed() * 0.75);
                 }
             }
 
