@@ -129,7 +129,7 @@ public class CheckManager {
                     vehicleData.moveCurrentToLast(time);
                     break;
                 }
-                
+
 
                 vehicleData.moveCurrentToLast(time);
                 running = false;

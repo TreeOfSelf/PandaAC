@@ -50,13 +50,13 @@ public class MovementManager {
                 verticalSpeedPotential = SpeedLimits.UP_SPEED + Math.abs(player.getVelocity().getY()) * 20;
             }
 
-            BlockState lastBlockState = BlockUtil.checkFluid(player, player.getY());
+            BlockState currentFluidState = BlockUtil.checkFluid(player, player.getY());
 
-            if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
+            if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
                 inFluid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
-            } else if (lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
+            } else if (currentFluidState.getFluidState().isIn(FluidTags.LAVA)) {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
                 inFluid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
@@ -107,7 +107,7 @@ public class MovementManager {
                             verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
                         }
                     } else {
-                        if (lastBlockState.getFluidState().isIn(FluidTags.WATER)) {
+                        if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
                             verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
                         } else {
                             verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP + Math.abs(player.getVelocity().getY()) * 20;

@@ -108,6 +108,26 @@ public class BlockUtil {
         return blockCollisions || entityCollisions;
     }
 
+
+    public static BlockState checkFluidVehicle(Entity vehicle, double y) {
+        Entity bottomEntity = vehicle.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = vehicle;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, y - vehicle.getY() - 0.25005D, 0);
+
+        // Get the world from the player
+        World world = vehicle.getWorld();
+
+        // Check for fluid blocks within the bounding box
+        return BlockPos.stream(bBox)
+                .map(world::getBlockState)
+                .filter(blockState -> blockState.getFluidState().isStill() || blockState.getBlock() instanceof FluidBlock)
+                .findFirst()
+                .orElse(Blocks.AIR.getDefaultState());
+    }
+
+
     public static boolean checkGroundVehicleThicc(Entity vehicle) {
         Entity bottomEntity = vehicle.getRootVehicle();
         if (bottomEntity == null) {
@@ -199,6 +219,7 @@ public class BlockUtil {
                 .findFirst()
                 .orElse(Blocks.AIR.getDefaultState());
     }
+
 
     public static boolean checkGroundThicc(ServerPlayerEntity player){
 

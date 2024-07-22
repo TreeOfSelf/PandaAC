@@ -5,7 +5,6 @@ import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
-import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -43,8 +42,9 @@ public class VehicleMovementManager {
         double yawPotential = 0;
 
         boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
+        BlockState currentFluidState = BlockUtil.checkFluidVehicle(vehicle, packet.getY());
 
-        if (blockUnder) {
+        if (blockUnder || currentFluidState != Blocks.AIR.getDefaultState()) {
             vehicleData.setLastAttached((int) packet.getX(), (int) packet.getY(), (int) packet.getZ());
         }
 
