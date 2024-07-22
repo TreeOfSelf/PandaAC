@@ -125,6 +125,7 @@ public class MovementManager {
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
                     packetView.getY() > playerData.getLastY() && !inFluid && time - playerData.getLastFluidTime() > 500) {
+                //Check to make sure you arent touching entities
                 CheckManager.rollBack(player ,playerData);
                 return;
             } else if (inFluid) {

@@ -3,7 +3,11 @@ package me.sebastian420.PandaAC.data;
 public class SpeedLimits {
 
     /* Boat going off ice still has a ton of momentum and false flags*/
+    // Store the speed when you get off ice you are going and have that be speed until you hit the ground?
+
     /* Dont allow player to get BACK into vehicle after being booted til they hit the ground */
+
+    /*Boat glitching when on top*/
 
     public static final double FUDGE = 1.0;
     public static final double CRAWLING = 1.0;

@@ -22,9 +22,10 @@ import java.util.List;
 public class CheckManager {
 
     public static void run(ServerPlayerEntity serverPlayerEntity, long time) {
+        if (serverPlayerEntity.isCreative()) return;
+
 
         boolean running = true;
-
         while (running) {
 
             //Not in vehicle checks
