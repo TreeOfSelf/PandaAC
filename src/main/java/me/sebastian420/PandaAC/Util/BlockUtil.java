@@ -250,6 +250,23 @@ public class BlockUtil {
         return true;
     }
 
+    public static boolean checkBlocksNearby(ServerPlayerEntity player, double y){
+
+        Entity bottomEntity = player.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = player;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(2, 2 ,2);
+
+        Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        boolean blockCollisions = collidingBlocks.iterator().hasNext();
+
+       if (blockCollisions || checkFluid(player, y)!=Blocks.AIR.getDefaultState()) return true;
+
+        return true;
+    }
+
+
     public static boolean checkVicinityStairs(FasterWorld world, int x, int y, int z){
 
         for(int xx = -1; xx <= 1; xx ++) {

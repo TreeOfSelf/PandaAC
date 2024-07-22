@@ -71,7 +71,7 @@ public class PlayerMovementData {
         lastAttachedState = Blocks.AIR.getDefaultState();
 
         airTimeStartTime = 0;
-        lastSolidTouch =0;
+        lastSolidTouch = 0;
         carriedPotential = 0;
 
         changed = true;

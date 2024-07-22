@@ -31,9 +31,6 @@ public class MovementManager {
     }
 
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long time) {
-
-        if (player.isCreative()) return;
-
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
         PlayerMovementData playerData = getPlayer(player);
         FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
@@ -128,8 +125,7 @@ public class MovementManager {
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
                     packetView.getY() > playerData.getLastY() && !inFluid && time - playerData.getLastFluidTime() > 500) {
-                //Check to make sure you arent touching entities
-                CheckManager.rollBack(player ,playerData);
+                if (!player.isCreative()) CheckManager.rollBack(player ,playerData);
                 return;
             } else if (inFluid) {
                 playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
