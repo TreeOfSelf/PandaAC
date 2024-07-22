@@ -261,9 +261,7 @@ public class BlockUtil {
         Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
-       if (blockCollisions || checkFluid(player, y)!=Blocks.AIR.getDefaultState()) return true;
-
-        return true;
+        return blockCollisions || checkFluid(player, y) != Blocks.AIR.getDefaultState();
     }
 
 
