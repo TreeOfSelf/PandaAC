@@ -205,11 +205,5 @@ public class PlayerMovementData {
         hover = false;
     }
 
-    public void setAirTimeStartTime(long time) {
-        airTimeStartTime = time;
-        lastSolidTouch = time;
-    }
-
-
 
 }

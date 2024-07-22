@@ -41,11 +41,15 @@ public class VehicleMovementManager {
         double verticalSpeedPotential = 0;
         double yawPotential = 0;
 
-        boolean blockUnder = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
+        if (vehicle.getVelocity().getY() < 0) {
+            verticalSpeedPotential = Math.abs(vehicle.getVelocity().getY());
+        }
+
+        boolean onGround = BlockUtil.checkGroundVehicle(vehicle, packet.getY());
         BlockState currentFluidState = BlockUtil.checkFluidVehicle(vehicle, packet.getY());
 
-        if (blockUnder || currentFluidState != Blocks.AIR.getDefaultState()) {
-            vehicleData.setLastAttached((int) packet.getX(), (int) packet.getY(), (int) packet.getZ());
+        if (onGround || currentFluidState != Blocks.AIR.getDefaultState()) {
+            vehicleData.setLastAttached((int) packet.getX(), (int) packet.getY(), (int) packet.getZ(), time);
         }
 
         if (type == EntityType.BOAT) {
@@ -53,7 +57,7 @@ public class VehicleMovementManager {
             FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
             BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY() - 1, (int) packet.getZ());
 
-            if (blockUnder || blockStateUnder != Blocks.AIR.getDefaultState()) {
+            if (onGround || blockStateUnder != Blocks.AIR.getDefaultState()) {
                 if (blockStateUnder.getFluidState().isIn(FluidTags.WATER)) {
                     speedPotential = SpeedLimits.BOAT_WATER;
                     yawPotential = SpeedLimits.BOAT_YAW_WATER;
@@ -74,6 +78,10 @@ public class VehicleMovementManager {
                 speedPotential = SpeedLimits.BOAT_AIR;
                 yawPotential = SpeedLimits.BOAT_YAW_LAND;
             }
+        }
+
+        if (!onGround  && currentFluidState == Blocks.AIR.getDefaultState() && packet.getY() > vehicleData.getLastY()) {
+            CheckManager.rollBackVehicle(player, vehicleData);
         }
 
         vehicleData.setSpeedPotential(speedPotential);

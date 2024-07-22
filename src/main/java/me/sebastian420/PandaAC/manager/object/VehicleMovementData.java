@@ -47,6 +47,8 @@ public class VehicleMovementData {
     private int packetCount = 0;
 
     private long lastCheck;
+    private long airTimeStartTime;
+
 
     private UUID vehicleUUID;
 
@@ -132,6 +134,9 @@ public class VehicleMovementData {
     public double getLastAttachedY(){return lastAttachedY;}
     public double getLastAttachedZ(){return lastAttachedZ;}
 
+    public long getAirTimeStartTime(){return airTimeStartTime;}
+
+
     public double getCarriedPotential(){return carriedPotential;}
 
     public int getPacketCount(){return packetCount;}
@@ -172,15 +177,15 @@ public class VehicleMovementData {
         return (Arrays.stream(yawPotential).sum() * (timeModifier) * SpeedLimits.FUDGE);
     }
 
-    public void setLastAttached(double x, double y, double z) {
+    public void setLastAttached(double x, double y, double z, long time) {
         lastAttachedX = x;
         lastAttachedY = y;
         lastAttachedZ = z;
         hover = false;
+        airTimeStartTime = time;
     }
 
     public void consumePacket(VehicleMoveS2CPacket packet) {
-        PandaLogger.getLogger().info("GOT PACKET");
 
         currentX = packet.getX();
         currentY = packet.getY();
