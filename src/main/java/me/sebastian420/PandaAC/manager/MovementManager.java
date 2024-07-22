@@ -31,6 +31,9 @@ public class MovementManager {
     }
 
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long time) {
+
+        if (player.isCreative()) return;
+
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
         PlayerMovementData playerData = getPlayer(player);
         FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());

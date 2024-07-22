@@ -12,10 +12,10 @@ import net.minecraft.util.hit.EntityHitResult;
 
 public class UseEntity {
     public static void register(){
-        UseEntityCallback.EVENT.register(this::onUseEntity);
+        UseEntityCallback.EVENT.register(UseEntity::onUseEntity);
     }
 
-    private ActionResult onUseEntity(PlayerEntity player, net.minecraft.world.World world, Hand hand, Entity entity, EntityHitResult hitResult) {
+    private static ActionResult onUseEntity(PlayerEntity player, net.minecraft.world.World world, Hand hand, Entity entity, EntityHitResult hitResult) {
         if (entity.hasVehicle()) {
             PlayerMovementData playerData = MovementManager.getPlayer((ServerPlayerEntity) player);
             if (System.currentTimeMillis() - playerData.getLastSolidTouch() > 2500) {
