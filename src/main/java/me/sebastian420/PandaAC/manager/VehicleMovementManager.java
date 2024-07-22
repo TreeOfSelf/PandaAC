@@ -6,6 +6,7 @@ import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.MathUtil;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -82,7 +83,9 @@ public class VehicleMovementManager {
             }
 
             if (!vehicleData.getOnIce() && previousOnIce) {
-                vehicleData.setStoredSpeed(MathUtil.getDistance(vehicleData.getX(), vehicleData.getZ(), packet.getX(), packet.getZ()) * 125);
+                double calculatedStoredSpeed = MathUtil.getDistance(vehicleData.getX(), vehicleData.getZ(), packet.getX(), packet.getZ()) * 125;
+                if (calculatedStoredSpeed > 400) calculatedStoredSpeed = 400;
+                vehicleData.setStoredSpeed(calculatedStoredSpeed);
             } else {
                 if ((onGround || blockStateUnder != Blocks.AIR.getDefaultState()) && vehicleData.getStoredSpeed() > 0) {
                     vehicleData.setStoredSpeed(vehicleData.getStoredSpeed() * 0.75);

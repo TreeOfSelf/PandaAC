@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.data;
 
 public class SpeedLimits {
+
     public static final double FUDGE = 1.0;
     public static final double CRAWLING = 1.0;
     public static final double SNEAKING = 1.6;
