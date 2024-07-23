@@ -141,6 +141,10 @@ public class MovementManager {
                 playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
             }
 
+
+            //Add velocity for knockback
+            speedPotential += Math.abs(player.getVelocity().getX()) + Math.abs(player.getVelocity().getZ()) * 60;
+
             playerData.setSpeedPotential(speedPotential);
             playerData.setVerticalSpeedPotential(verticalSpeedPotential);
             playerData.setNew(packetView, time);
