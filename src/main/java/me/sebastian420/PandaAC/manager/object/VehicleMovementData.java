@@ -157,6 +157,8 @@ public class VehicleMovementData {
 
     public void setHover(boolean hover){this.hover = hover;}
     public boolean getHover(){return hover;}
+    
+    public void setUUID(UUID uuid){this.vehicleUUID = uuid;}
 
     public void setSpeedPotential(double speed) {
         speedPotential[speedPotentialPointer] = speed;

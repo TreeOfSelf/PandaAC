@@ -4,6 +4,7 @@ import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
+import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PacketUtil;
@@ -11,6 +12,7 @@ import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
@@ -33,6 +35,14 @@ public class MovementManager {
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long time) {
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
         PlayerMovementData playerData = getPlayer(player);
+
+        //Clear vehicle UUID if not in vehicle
+        Entity vehicle = player.getVehicle();
+        if (vehicle == null) {
+            VehicleMovementData vehicleData = VehicleMovementManager.getPlayer(player);
+            vehicleData.setUUID(null);
+        }
+
         FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
 
         if (packetView.isChangePosition()) {
