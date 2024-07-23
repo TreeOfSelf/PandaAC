@@ -12,10 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.passive.AbstractHorseEntity;
-import net.minecraft.entity.passive.DonkeyEntity;
-import net.minecraft.entity.passive.HorseEntity;
-import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.passive.*;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
@@ -112,6 +109,15 @@ public class VehicleMovementManager {
             if (pigEntity.isSaddled()) {
                 speedPotential = SpeedLimits.PIG_SPEED;
                 yawPotential = SpeedLimits.PIG_YAW;
+            } else {
+                List<Entity> passengers = vehicle.getPassengerList();
+                passengers.iterator().forEachRemaining(Entity::dismountVehicle);
+            }
+        } else if (type == EntityType.STRIDER) {
+            StriderEntity striderEntity = (StriderEntity) vehicle;
+            if (striderEntity.isSaddled()) {
+                speedPotential = SpeedLimits.STRIDER_SPEED;
+                yawPotential = SpeedLimits.STRIDER_YAW;
             } else {
                 List<Entity> passengers = vehicle.getPassengerList();
                 passengers.iterator().forEachRemaining(Entity::dismountVehicle);
