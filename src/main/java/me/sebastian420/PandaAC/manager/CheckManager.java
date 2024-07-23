@@ -159,7 +159,6 @@ public class CheckManager {
 
         List<Entity> passengers = vehicle.getPassengerList();
         passengers.iterator().forEachRemaining(Entity::dismountVehicle);
-
         vehicle.teleport((ServerWorld) vehicle.getWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.VALUES, vehicle.getYaw(), vehicle.getPitch());
         vehicleData.teleport(vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), time);
 

@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
@@ -21,6 +22,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class VehicleMovementManager {
@@ -98,25 +100,24 @@ public class VehicleMovementManager {
             AbstractHorseEntity horseEntity = (AbstractHorseEntity) vehicle;
 
             if (horseEntity.isSaddled()) {
-                speedPotential = horseEntity.getMovementSpeed();
+                speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 40;
                 yawPotential = SpeedLimits.HORSE_YAW;
             } else {
-                speedPotential = horseEntity.getMovementSpeed() / 5;
-                yawPotential = SpeedLimits.HORSE_YAW_UNSADDLED;
+                //Dismount if trying to entity control
+                List<Entity> passengers = vehicle.getPassengerList();
+                passengers.iterator().forEachRemaining(Entity::dismountVehicle);
             }
         }
 
         if (!onGround  && currentFluidState == Blocks.AIR.getDefaultState()) {
-
-            if (packet.getY() > vehicleData.getLastY()) {
+            if (time - vehicleData.getLastSolidTouch() > 1000 && packet.getY() > vehicleData.getLastY()) {
                 CheckManager.rollBackVehicle(player, vehicleData);
-
             //Falling
             } else if (packet.getY() < vehicleData.getLastY()) {
-                if (type == EntityType.BOAT) {
-                    verticalSpeedPotential += Math.abs(vehicle.getMovement().getY());
-                }
+                verticalSpeedPotential += Math.abs(vehicle.getMovement().getY());
             }
+        } else {
+            vehicleData.setLastSolidTouch(time);
         }
 
         vehicleData.setSpeedPotential(speedPotential);

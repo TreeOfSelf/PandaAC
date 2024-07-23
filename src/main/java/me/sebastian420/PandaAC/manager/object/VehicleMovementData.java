@@ -51,6 +51,7 @@ public class VehicleMovementData {
 
     private long lastCheck;
     private long airTimeStartTime;
+    private long lastSolidTouch;
 
 
     private UUID vehicleUUID;
@@ -157,7 +158,10 @@ public class VehicleMovementData {
 
     public void setHover(boolean hover){this.hover = hover;}
     public boolean getHover(){return hover;}
-    
+
+    public void setLastSolidTouch(long time) {lastSolidTouch = time;}
+    public long getLastSolidTouch() {return lastSolidTouch;}
+
     public void setUUID(UUID uuid){this.vehicleUUID = uuid;}
 
     public void setSpeedPotential(double speed) {
@@ -212,6 +216,7 @@ public class VehicleMovementData {
         moveCurrentToLast(System.currentTimeMillis());
 
     }
+
 
 
 }

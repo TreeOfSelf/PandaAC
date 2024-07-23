@@ -7,6 +7,7 @@ import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,7 @@ public class VehicleJumpHeightCheck {
 
             if (type == EntityType.HORSE) {
                 AbstractHorseEntity horseEntity = (AbstractHorseEntity) vehicle;
-                if (horseEntity.isSaddled()) checkHeight = horseEntity.getJumpBoostVelocityModifier();
+                horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_JUMP_STRENGTH);
             }
 
             if (vehicleData.getY() - vehicleData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
