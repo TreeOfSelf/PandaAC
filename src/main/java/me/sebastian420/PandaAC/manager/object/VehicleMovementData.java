@@ -60,6 +60,9 @@ public class VehicleMovementData {
     public VehicleMovementData(ServerPlayerEntity player, Entity vehicle){
         this.player = player;
 
+        lastCheck = System.currentTimeMillis();
+        possibleTimer = false;
+
         if (vehicle != null) {
             lastX = vehicle.getX();
             lastY = vehicle.getY();
@@ -72,9 +75,6 @@ public class VehicleMovementData {
             currentYaw = vehicle.getYaw();
             lastYaw = vehicle.getYaw();
         }
-
-        lastCheck = System.currentTimeMillis();
-
     }
 
     public void setNew(VehicleMoveC2SPacket packet, UUID vehicleUUID) {
