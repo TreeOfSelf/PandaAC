@@ -12,6 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
@@ -95,11 +96,24 @@ public class VehicleMovementManager {
                 }
             }
 
-        } else if (type == EntityType.HORSE) {
-            AbstractHorseEntity horseEntity = (AbstractHorseEntity) vehicle;
+        } else if (vehicle instanceof AbstractHorseEntity horseEntity) {
             if (horseEntity.isSaddled()) {
-                speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 40;
-                yawPotential = SpeedLimits.HORSE_YAW;
+                if (vehicle instanceof HorseEntity) {
+                    speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 40;
+                    yawPotential = SpeedLimits.HORSE_YAW;
+                } else if (vehicle instanceof SkeletonHorseEntity) {
+                    speedPotential = 6;
+                    yawPotential = SpeedLimits.HORSE_YAW;
+                } else if (vehicle instanceof MuleEntity) {
+                    speedPotential = 4;
+                    yawPotential = SpeedLimits.HORSE_YAW;
+                } else if (vehicle instanceof DonkeyEntity){
+                    speedPotential = 4;
+                    yawPotential = SpeedLimits.HORSE_YAW;
+                }else if (vehicle instanceof CamelEntity) {
+                    speedPotential = 4;
+                    yawPotential = SpeedLimits.HORSE_YAW;
+                }
             } else {
                 List<Entity> passengers = vehicle.getPassengerList();
                 passengers.iterator().forEachRemaining(Entity::dismountVehicle);
