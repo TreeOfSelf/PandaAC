@@ -40,4 +40,7 @@ public class SpeedLimits {
 
     public static final double HORSE_YAW = 2000;
     public static final double HORSE_YAW_UNSADDLED = 200;
+
+    public static final double PIG_SPEED = 5;
+    public static final double PIG_YAW = 200;
 }

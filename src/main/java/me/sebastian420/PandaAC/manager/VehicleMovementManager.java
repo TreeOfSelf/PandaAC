@@ -13,7 +13,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.AbstractHorseEntity;
+import net.minecraft.entity.passive.DonkeyEntity;
 import net.minecraft.entity.passive.HorseEntity;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
@@ -98,12 +100,19 @@ public class VehicleMovementManager {
 
         } else if (type == EntityType.HORSE) {
             AbstractHorseEntity horseEntity = (AbstractHorseEntity) vehicle;
-
             if (horseEntity.isSaddled()) {
                 speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 40;
                 yawPotential = SpeedLimits.HORSE_YAW;
             } else {
-                //Dismount if trying to entity control
+                List<Entity> passengers = vehicle.getPassengerList();
+                passengers.iterator().forEachRemaining(Entity::dismountVehicle);
+            }
+        } else if (type == EntityType.PIG) {
+            PigEntity pigEntity = (PigEntity) vehicle;
+            if (pigEntity.isSaddled()) {
+                speedPotential = SpeedLimits.PIG_SPEED;
+                yawPotential = SpeedLimits.PIG_YAW;
+            } else {
                 List<Entity> passengers = vehicle.getPassengerList();
                 passengers.iterator().forEachRemaining(Entity::dismountVehicle);
             }

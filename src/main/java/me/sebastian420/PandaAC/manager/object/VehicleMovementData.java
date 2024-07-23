@@ -93,6 +93,7 @@ public class VehicleMovementData {
             lastZ = currentZ;
             lastYaw = currentYaw;
             storedSpeed = 0;
+            Arrays.fill(verticalSpeedPotential, 0);
         }
 
 

@@ -25,7 +25,7 @@ public class VehicleJumpHeightCheck {
 
             if (type == EntityType.HORSE) {
                 AbstractHorseEntity horseEntity = (AbstractHorseEntity) vehicle;
-                horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_JUMP_STRENGTH);
+                checkHeight = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_JUMP_STRENGTH) * 6;
             }
 
             if (vehicleData.getY() - vehicleData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
