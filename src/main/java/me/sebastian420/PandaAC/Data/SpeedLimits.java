@@ -38,5 +38,5 @@ public class SpeedLimits {
     public static final double BOAT_YAW_WATER = 200;
     public static final double BOAT_YAW_ICE = 9999999;
 
-
+    public static final double HORSE_YAW = 200;
 }
