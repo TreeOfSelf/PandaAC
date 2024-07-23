@@ -11,6 +11,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -62,6 +63,9 @@ public class ClientConnectionMixin_PacketHandler {
         } else if (packet instanceof VehicleMoveS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
             PandaACThread.queueServerVehicleMove(serverPlayerEntity, (VehicleMoveS2CPacket) packet);
+        } else if (packet instanceof EntityVelocityUpdateS2CPacket) {
+            ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
+            PandaACThread.queuePlayerVelocity(serverPlayerEntity, (EntityVelocityUpdateS2CPacket) packet);
         }
 
     }

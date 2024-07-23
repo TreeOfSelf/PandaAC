@@ -18,7 +18,17 @@ public class VerticalSpeedCheckUp {
                 double distance = MathUtil.getDistance(playerData.getLastY(), playerData.getY());
                 double speedMps = (distance * 1000.0) / timeDifMs;
 
-                double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d);
+                double storedSpeed = playerData.getStoredSpeedVertical();
+
+                double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d) + storedSpeed;
+
+                double newStoredSpeed = storedSpeed - speedMps;
+
+                if (newStoredSpeed > 0) {
+                    playerData.setStoredSpeedVertical(newStoredSpeed);
+                } else {
+                    playerData.setStoredSpeedVertical(0);
+                }
 
                 if (speedMps > speedPotential) {
                     PandaLogger.getLogger().warn("Speed {} Potential {}", speedMps, speedPotential);

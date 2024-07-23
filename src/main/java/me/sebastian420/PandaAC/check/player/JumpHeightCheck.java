@@ -20,6 +20,8 @@ public class JumpHeightCheck {
                 checkHeight = JumpHeights.NORMAL + JumpHeights.SLIME * playerData.getLastAttachedVelocity();
             }
 
+            checkHeight += playerData.getStoredSpeedVertical();
+
             if (playerData.getY() - playerData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
             playerData.getY() > playerData.getLastY()) {
                 CheckManager.rollBack(serverPlayerEntity, playerData);

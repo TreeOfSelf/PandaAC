@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
@@ -133,17 +134,17 @@ public class MovementManager {
             if( onGround || nearClimable) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
+                playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
+                playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
                     packetView.getY() > playerData.getLastY() && !inFluid && time - playerData.getLastFluidTime() > 500) {
                 if (!player.isCreative()) CheckManager.rollBack(player ,playerData);
                 return;
             } else if (inFluid) {
                 playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
+                playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
+                playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
             }
-
-
-            //Add velocity for knockback
-            speedPotential += Math.abs(player.getVelocity().getX()) + Math.abs(player.getVelocity().getZ()) * 60;
 
             playerData.setSpeedPotential(speedPotential);
             playerData.setVerticalSpeedPotential(verticalSpeedPotential);
@@ -155,5 +156,13 @@ public class MovementManager {
     public static void receiveTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket teleportData) {
         PlayerMovementData playerData = getPlayer(player);
         playerData.teleport(teleportData.getX(), teleportData.getY(), teleportData.getZ(), System.currentTimeMillis());
+    }
+
+    public static void receiveVelocity(ServerPlayerEntity player, EntityVelocityUpdateS2CPacket velocityData) {
+        PlayerMovementData playerData = getPlayer(player);
+        double prevVelocity = playerData.getStoredSpeed();
+        double prevVelocityVertical = playerData.getStoredSpeedVertical();
+        playerData.setStoredSpeed(prevVelocity + (Math.abs(velocityData.getVelocityX()) + Math.abs(velocityData.getVelocityY()) * 20));
+        playerData.setStoredSpeedVertical(prevVelocityVertical + Math.abs(velocityData.getVelocityY()) * 20);
     }
 }

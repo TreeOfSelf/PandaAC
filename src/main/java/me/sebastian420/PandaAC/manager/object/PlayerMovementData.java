@@ -25,6 +25,9 @@ public class PlayerMovementData {
     private BlockState lastAttachedState;
     private double lastAttachedVelocity;
 
+    private double storedSpeed;
+    private double storedSpeedVertical;
+
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
 
@@ -105,6 +108,10 @@ public class PlayerMovementData {
     public long getLastPacketTime(){return lastPacketTime;}
     public long getFirstPacketTime(){return firstPacketTime;}
 
+    public double getStoredSpeed() {return storedSpeed;}
+    public void setStoredSpeed(double speed) {storedSpeed = speed;}
+    public double getStoredSpeedVertical() {return storedSpeedVertical;}
+    public void setStoredSpeedVertical(double speed) {storedSpeedVertical = speed;}
 
     public long getLastFluidTime() {return lastFluidTime;}
 
@@ -163,6 +170,8 @@ public class PlayerMovementData {
         airTimeStartTime = time;
         Arrays.fill(speedPotential, 0);
         Arrays.fill(verticalSpeedPotential, 0);
+        storedSpeed = 0;
+        storedSpeedVertical = 0;
         this.player.setVelocity(new Vec3d(0,0,0));
     }
 

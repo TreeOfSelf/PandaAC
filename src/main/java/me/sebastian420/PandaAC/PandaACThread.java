@@ -4,6 +4,7 @@ import me.sebastian420.PandaAC.manager.*;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
+import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.server.MinecraftServer;
@@ -31,13 +32,13 @@ public class PandaACThread extends Thread {
     }
 
 
-
     private enum EventType {
         WORLD_LOAD,
         CHUNK_LOAD,
         CHUNK_UNLOAD,
         PLAYER_MOVE,
         PLAYER_TELEPORT,
+        PLAYER_VELOCITY,
         VEHICLE_MOVE,
         SERVER_VEHICLE_MOVE,
         TICK,
@@ -75,6 +76,11 @@ public class PandaACThread extends Thread {
 
     public static void queuePlayerTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket packet) {
         EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_TELEPORT, new Object[]{player, packet}));
+    }
+
+    public static void queuePlayerVelocity(ServerPlayerEntity player, EntityVelocityUpdateS2CPacket packet) {
+        EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_VELOCITY, new Object[]{player, packet}));
+
     }
 
     public static void queueServerVehicleMove(ServerPlayerEntity player, VehicleMoveS2CPacket packet) {
@@ -136,6 +142,13 @@ public class PandaACThread extends Thread {
                 player = (ServerPlayerEntity) teleportData[0];
                 if (!player.isDisconnected()) {
                     MovementManager.receiveTeleport(player, (PlayerPositionLookS2CPacket) teleportData[1]);
+                }
+                break;
+            case PLAYER_VELOCITY:
+                Object[] velocityData = (Object[]) event.data;
+                player = (ServerPlayerEntity) velocityData[0];
+                if (!player.isDisconnected()) {
+                    MovementManager.receiveVelocity(player, (EntityVelocityUpdateS2CPacket) velocityData[1]);
                 }
                 break;
             case VEHICLE_MOVE:
