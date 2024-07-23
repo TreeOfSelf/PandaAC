@@ -98,9 +98,11 @@ public class VehicleMovementManager {
 
         } else if (vehicle instanceof AbstractHorseEntity horseEntity) {
             if (horseEntity.isSaddled()) {
+
                 double speedMult = 1;
                 if (horseEntity.isSprinting()) speedMult = 2;
-                speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_EFFICIENCY) * speedMult;
+
+                speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_EFFICIENCY) * 40 * speedMult;
                 yawPotential = SpeedLimits.HORSE_YAW;
             } else {
                 List<Entity> passengers = vehicle.getPassengerList();
