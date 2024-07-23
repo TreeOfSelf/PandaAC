@@ -99,7 +99,14 @@ public class VehicleMovementManager {
         } else if (vehicle instanceof AbstractHorseEntity horseEntity) {
             if (horseEntity.isSaddled()) {
                 double speedMult = 1;
-                if (horseEntity.isSprinting()) speedMult = 2;
+                if (horseEntity.getControllingPassenger() != null) {
+                    if (horseEntity.getControllingPassenger().isSprinting()) speedMult = 3;
+                }
+
+                if (vehicle instanceof CamelEntity camelEntity) {
+                    if (camelEntity.isDashing()) speedMult = 8;
+                }
+
                 speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 40 * speedMult;
                 yawPotential = SpeedLimits.HORSE_YAW;
             } else {
