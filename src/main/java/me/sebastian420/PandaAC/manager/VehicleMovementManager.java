@@ -11,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
@@ -94,9 +95,15 @@ public class VehicleMovementManager {
             }
 
         } else if (type == EntityType.HORSE) {
-            HorseEntity horseEntity = (HorseEntity) vehicle;
-            speedPotential = horseEntity.getMovementSpeed();
-            yawPotential = SpeedLimits.HORSE_YAW;
+            AbstractHorseEntity horseEntity = (AbstractHorseEntity) vehicle;
+
+            if (horseEntity.isSaddled()) {
+                speedPotential = horseEntity.getMovementSpeed();
+                yawPotential = SpeedLimits.HORSE_YAW;
+            } else {
+                speedPotential = horseEntity.getMovementSpeed() / 5;
+                yawPotential = SpeedLimits.HORSE_YAW_UNSADDLED;
+            }
         }
 
         if (!onGround  && currentFluidState == Blocks.AIR.getDefaultState()) {
