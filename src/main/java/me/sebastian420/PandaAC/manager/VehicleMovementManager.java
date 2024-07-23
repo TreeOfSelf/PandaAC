@@ -98,22 +98,10 @@ public class VehicleMovementManager {
 
         } else if (vehicle instanceof AbstractHorseEntity horseEntity) {
             if (horseEntity.isSaddled()) {
-                if (vehicle instanceof HorseEntity) {
-                    speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 40;
-                    yawPotential = SpeedLimits.HORSE_YAW;
-                } else if (vehicle instanceof SkeletonHorseEntity) {
-                    speedPotential = 6;
-                    yawPotential = SpeedLimits.HORSE_YAW;
-                } else if (vehicle instanceof MuleEntity) {
-                    speedPotential = 4;
-                    yawPotential = SpeedLimits.HORSE_YAW;
-                } else if (vehicle instanceof DonkeyEntity){
-                    speedPotential = 4;
-                    yawPotential = SpeedLimits.HORSE_YAW;
-                }else if (vehicle instanceof CamelEntity) {
-                    speedPotential = 4;
-                    yawPotential = SpeedLimits.HORSE_YAW;
-                }
+                double speedMult = 1;
+                if (horseEntity.isSprinting()) speedMult = 2;
+                speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_EFFICIENCY) * speedMult;
+                yawPotential = SpeedLimits.HORSE_YAW;
             } else {
                 List<Entity> passengers = vehicle.getPassengerList();
                 passengers.iterator().forEachRemaining(Entity::dismountVehicle);

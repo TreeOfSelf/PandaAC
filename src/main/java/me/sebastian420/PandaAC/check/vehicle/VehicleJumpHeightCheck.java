@@ -23,7 +23,7 @@ public class VehicleJumpHeightCheck {
             EntityType<?> type = vehicle.getType();
             double checkHeight = 1;
 
-            if (type == EntityType.HORSE) {
+            if (vehicle instanceof AbstractHorseEntity) {
                 AbstractHorseEntity horseEntity = (AbstractHorseEntity) vehicle;
                 checkHeight = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_JUMP_STRENGTH) * 6;
             }
