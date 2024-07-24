@@ -138,7 +138,7 @@ public class MovementManager {
                 playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
                     packetView.getY() > playerData.getLastY() && !inFluid && time - playerData.getLastFluidTime() > 500) {
-                if (!player.isCreative()) CheckManager.rollBack(player ,playerData);
+                if (!player.isCreative() && !player.isFallFlying()) CheckManager.rollBack(player ,playerData);
                 return;
             } else if (inFluid) {
                 playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);

@@ -37,61 +37,74 @@ public class CheckManager {
                         (int) Math.floor(playerData.getLastZ()));
 
                 BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
-                //Fluid checks
-                if (lastBlockState.getFluidState().isIn(FluidTags.WATER) ||
-                        lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
 
-                    if (serverPlayerEntity.isDisconnected()) break;
-                    if (FluidHorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
-                        PandaLogger.getLogger().warn("Flagged Horizontal Water Speed");
-                        playerData.moveCurrentToLast(time);
-                        break;
+                //Non-Elytra
+                PandaLogger.getLogger().info("FALL FLYING {}", serverPlayerEntity.isFallFlying());
+                if (!serverPlayerEntity.isFallFlying()) {
+                    //Fluid checks
+                    if (lastBlockState.getFluidState().isIn(FluidTags.WATER) ||
+                            lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
+
+                        if (serverPlayerEntity.isDisconnected()) break;
+                        if (FluidHorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                            PandaLogger.getLogger().warn("Flagged Horizontal Water Speed");
+                            playerData.moveCurrentToLast(time);
+                            break;
+                        }
+
+                        if (serverPlayerEntity.isDisconnected()) break;
+                        if (FluidVerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                            PandaLogger.getLogger().warn("Flagged Vertical Water Speed");
+                            playerData.moveCurrentToLast(time);
+                            break;
+                        }
+
+                        // Out of water checks
+                    } else {
+                        if (serverPlayerEntity.isDisconnected()) break;
+                        if (HoverCheck.check(serverPlayerEntity, playerData)) {
+                            PandaLogger.getLogger().warn("Flagged Hover");
+                            playerData.moveCurrentToLast(time);
+                            break;
+                        }
+
+                        if (serverPlayerEntity.isDisconnected()) break;
+                        if (HorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                            PandaLogger.getLogger().warn("Flagged Horizontal Speed");
+                            playerData.moveCurrentToLast(time);
+                            break;
+                        }
+
+                        if (serverPlayerEntity.isDisconnected()) break;
+                        if (JumpHeightCheck.check(serverPlayerEntity, playerData)) {
+                            PandaLogger.getLogger().warn("Flagged Jump Height");
+                            playerData.moveCurrentToLast(time);
+                            break;
+                        }
+
+                        if (serverPlayerEntity.isDisconnected()) break;
+                        if (VerticalSpeedCheckUp.check(serverPlayerEntity, playerData, time)) {
+                            PandaLogger.getLogger().warn("Flagged Vertical Speed Check");
+                            playerData.moveCurrentToLast(time);
+                            break;
+                        }
+
+                        if (serverPlayerEntity.isDisconnected()) break;
+                        if (VerticalSpeedCheckDown.check(serverPlayerEntity, playerData, time)) {
+                            PandaLogger.getLogger().warn("Flagged Speed Check Down");
+                            playerData.moveCurrentToLast(time);
+                            break;
+                        }
+
                     }
-
-                    if (serverPlayerEntity.isDisconnected()) break;
-                    if (FluidVerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
-                        PandaLogger.getLogger().warn("Flagged Vertical Water Speed");
-                        playerData.moveCurrentToLast(time);
-                        break;
-                    }
-
-                    // Out of water checks
                 } else {
+                    //Elytra
                     if (serverPlayerEntity.isDisconnected()) break;
                     if (HoverCheck.check(serverPlayerEntity, playerData)) {
-                        PandaLogger.getLogger().warn("Flagged Hover");
+                        PandaLogger.getLogger().warn("Flagged Elytra Hover");
                         playerData.moveCurrentToLast(time);
                         break;
                     }
-
-                    if (serverPlayerEntity.isDisconnected()) break;
-                    if (HorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
-                        PandaLogger.getLogger().warn("Flagged Horizontal Speed");
-                        playerData.moveCurrentToLast(time);
-                        break;
-                    }
-
-                    if (serverPlayerEntity.isDisconnected()) break;
-                    if (JumpHeightCheck.check(serverPlayerEntity, playerData)) {
-                        PandaLogger.getLogger().warn("Flagged Jump Height");
-                        playerData.moveCurrentToLast(time);
-                        break;
-                    }
-
-                    if (serverPlayerEntity.isDisconnected()) break;
-                    if (VerticalSpeedCheckUp.check(serverPlayerEntity, playerData, time)) {
-                        PandaLogger.getLogger().warn("Flagged Vertical Speed Check");
-                        playerData.moveCurrentToLast(time);
-                        break;
-                    }
-
-                    if (serverPlayerEntity.isDisconnected()) break;
-                    if (VerticalSpeedCheckDown.check(serverPlayerEntity, playerData, time)) {
-                        PandaLogger.getLogger().warn("Flagged Speed Check Down");
-                        playerData.moveCurrentToLast(time);
-                        break;
-                    }
-
                 }
                 playerData.moveCurrentToLast(time);
                 running = false;
