@@ -17,17 +17,15 @@ public class HorizontalSpeedCheck {
             double distance = MathUtil.getDistance(playerData.getLastX(), playerData.getLastZ(), playerData.getX(), playerData.getZ());
             double speedMps = (distance * 1000.0) / timeDifMs;
 
-            //We should do a better timer check
+            //We should do a better timer check it is tricky though. Like the player sends 7 packets when standing on a boat for some reason
             if (playerData.getPacketCount() <= 7) {
                 playerData.setPossibleTimer(false);
             }
 
             double storedSpeed = playerData.getStoredSpeed();
 
-
             double speedPotential = playerData.getSpeedPotential((double) timeDifMs / 1000d);
-            double totalPotential = speedPotential + playerData.getCarriedPotential() + storedSpeed;
-
+            double totalPotential = speedPotential + storedSpeed;
 
             double newStoredSpeed = storedSpeed - speedMps;
 
@@ -38,14 +36,14 @@ public class HorizontalSpeedCheck {
             }
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
-
-                PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, playerData.getPacketCount());
-
-                CheckManager.rollBack(serverPlayerEntity, playerData);
-                playerData.setCarriedPotential(0);
-                flagged = true;
+                playerData.incrementSpeedFlagCount();
+                if (playerData.getSpeedFlagCount() > 1) {
+                    PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, speedPotential, playerData.getPacketCount());
+                    CheckManager.rollBack(serverPlayerEntity, playerData);
+                    flagged = true;
+                }
             } else {
-                playerData.setCarriedPotential(speedPotential - speedMps);
+                playerData.decrementSpeedFlagCount();
             }
 
             if (playerData.getPacketCount() > 7) {

@@ -56,13 +56,13 @@ public class ClientConnectionMixin_PacketHandler {
         if (packet instanceof PlayerPositionLookS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
             PandaACThread.queuePlayerTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
-            //MovementManager.receiveTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
         } else if (packet instanceof VehicleMoveS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
             PandaACThread.queueServerVehicleMove(serverPlayerEntity, (VehicleMoveS2CPacket) packet);
-        } else if (packet instanceof EntityVelocityUpdateS2CPacket) {
+        } else if (packet instanceof EntityVelocityUpdateS2CPacket entityVelocityPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-            PandaACThread.queuePlayerVelocity(serverPlayerEntity, (EntityVelocityUpdateS2CPacket) packet);
+            if (serverPlayerEntity.getId() == entityVelocityPacket.getId())
+                PandaACThread.queuePlayerVelocity(serverPlayerEntity, entityVelocityPacket);
         }
 
     }

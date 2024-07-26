@@ -11,8 +11,9 @@ public class SpeedLimits {
     public static final double CRAWLING = 1.0;
     public static final double SNEAKING = 1.6;
     public static final double WALKING = 4.317;
+    public static final double WALKING_AND_JUMPING = 5;
     public static final double SPRINT = 5.612;
-    public static final double SPRINT_AND_JUMP = 7.127;
+    public static final double SPRINT_AND_JUMP = 5.7;
     public static final double SPRINT_AND_JUMP_PASSAGE = 9.346;
     public static final double SPRINT_ON_ICE = 10;
     public static final double SPRINT_ON_BLUE_ICE = 13;

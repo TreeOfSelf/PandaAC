@@ -31,11 +31,15 @@ public class VerticalSpeedCheckUp {
                 }
 
                 if (speedMps > speedPotential) {
-                    PandaLogger.getLogger().warn("Speed {} Potential {}", speedMps, speedPotential);
-                    CheckManager.rollBack(serverPlayerEntity, playerData);
-                    flagged = true;
+                    playerData.incrementUpSpeedFlagCount();
+                    if (playerData.getUpSpeedFlagCount() > 1) {
+                        PandaLogger.getLogger().warn("Speed {} Potential {}", speedMps, speedPotential);
+                        CheckManager.rollBack(serverPlayerEntity, playerData);
+                        flagged = true;
+                    }
+                } else {
+                 playerData.decrementUpSpeedFlagCount();
                 }
-
             }
         }
         return flagged;

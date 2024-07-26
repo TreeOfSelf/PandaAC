@@ -71,48 +71,52 @@ public class MovementManager {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
                 inFluid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
-            } else if (!player.isSneaking() && !player.isCrawling()) {
-                BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld,(int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
-                //If they have enough hunger assume they are sprinting
-                if (player.getHungerManager().getFoodLevel() > 6) {
-                    //If they are in a 2 block tall passage assume they are jumping
-                    if (PacketUtil.checkPassage(fasterWorld, packetView)) {
+            } else if (onGround) {
+                if (!player.isSneaking() && !player.isCrawling()) {
+                    BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
+                    //If they have enough hunger assume they are sprinting
+                    if (player.getHungerManager().getFoodLevel() > 6) {
+                        //If they are in a 2 block tall passage assume they are jumping
+                        if (PacketUtil.checkPassage(fasterWorld, packetView)) {
 
-                        if (blockStateUnder.isIn(BlockTags.ICE)) {
-                            if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
-                                speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_BLUE_ICE;
+                            if (blockStateUnder.isIn(BlockTags.ICE)) {
+                                if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
+                                    speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_BLUE_ICE;
+                                } else {
+                                    speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_ICE;
+                                }
                             } else {
-                                speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_ICE;
+                                speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
                             }
                         } else {
-                            speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
+                            //Assume sprint and jumping
+                            if (blockStateUnder.isIn(BlockTags.ICE)) {
+                                if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
+                                    speedPotential = SpeedLimits.SPRINT_ON_BLUE_ICE;
+                                } else {
+                                    speedPotential = SpeedLimits.SPRINT_ON_ICE;
+                                }
+                            } else {
+                                speedPotential = SpeedLimits.SPRINT_AND_JUMP;
+                            }
                         }
+                        //Walking
                     } else {
-                        //Assume sprint and jumping
-                        if (blockStateUnder.isIn(BlockTags.ICE)) {
-                            if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
-                                speedPotential = SpeedLimits.SPRINT_ON_BLUE_ICE;
-                            } else {
-                                speedPotential = SpeedLimits.SPRINT_ON_ICE;
-                            }
-                        } else {
-                            speedPotential = SpeedLimits.SPRINT_AND_JUMP;
-                        }
+                        speedPotential = SpeedLimits.WALKING;
                     }
-                    //Walking
                 } else {
-                    speedPotential = SpeedLimits.WALKING;
-                }
-            } else {
-                if (onGround) {
                     if (player.isSneaking()) {
                         speedPotential = SpeedLimits.SNEAKING;
                     } else {
                         speedPotential = SpeedLimits.CRAWLING;
                     }
-                } else {
-                    speedPotential = SpeedLimits.WALKING;
                 }
+                playerData.setLastSpeed(speedPotential);
+            //If you are in air, use last speed potential from when you were on the ground
+            } else {
+                speedPotential = playerData.getLastSpeed();
+                //Quick fix for jump + sneak
+                if (speedPotential <= SpeedLimits.SNEAKING) speedPotential = SpeedLimits.WALKING_AND_JUMPING;
             }
 
             if (!inFluid) {
@@ -132,7 +136,6 @@ public class MovementManager {
                     verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20;
                 }
             }
-
 
 
             if( onGround || nearClimable) {
@@ -166,7 +169,7 @@ public class MovementManager {
         PlayerMovementData playerData = getPlayer(player);
         double prevVelocity = playerData.getStoredSpeed();
         double prevVelocityVertical = playerData.getStoredSpeedVertical();
-        playerData.setStoredSpeed(prevVelocity + (Math.abs(velocityData.getVelocityX()) + Math.abs(velocityData.getVelocityZ())) * 40);
+        playerData.setStoredSpeed(prevVelocity + (Math.abs(velocityData.getVelocityX()) + Math.abs(velocityData.getVelocityZ())) * 20);
         playerData.setStoredSpeedVertical(prevVelocityVertical + Math.abs(velocityData.getVelocityY()) * 20);
     }
 }

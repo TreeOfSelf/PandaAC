@@ -27,6 +27,7 @@ public class PlayerMovementData {
 
     private double storedSpeed;
     private double storedSpeedVertical;
+    private double lastSpeed;
 
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
@@ -37,6 +38,8 @@ public class PlayerMovementData {
     private double carriedPotential = 0;
 
     private int packetCount;
+    private int speedFlagCount;
+    private int upSpeedFlagCount;
 
     private long firstPacketTime;
     private long lastPacketTime;
@@ -49,6 +52,7 @@ public class PlayerMovementData {
 
     private boolean changed;
     private boolean hover;
+    private boolean onGround;
 
     private boolean possibleTimer;
 
@@ -108,6 +112,9 @@ public class PlayerMovementData {
     public long getLastPacketTime(){return lastPacketTime;}
     public long getFirstPacketTime(){return firstPacketTime;}
 
+    public double getLastSpeed() {return lastSpeed;}
+    public void setLastSpeed(double speed) {lastSpeed = speed;}
+
     public double getStoredSpeed() {return storedSpeed;}
     public void setStoredSpeed(double speed) {storedSpeed = speed;}
     public double getStoredSpeedVertical() {return storedSpeedVertical;}
@@ -118,11 +125,20 @@ public class PlayerMovementData {
     public BlockState getLastAttachedState(){return lastAttachedState;}
     public double getLastAttachedVelocity(){return lastAttachedVelocity;}
 
+    public void incrementSpeedFlagCount() {speedFlagCount++;}
+    public void decrementSpeedFlagCount() {speedFlagCount--; if(speedFlagCount<0) speedFlagCount = 0;}
+    public int getSpeedFlagCount() {return speedFlagCount;}
+
+    public void incrementUpSpeedFlagCount() {upSpeedFlagCount++;}
+    public void decrementUpSpeedFlagCount() {upSpeedFlagCount--; if(upSpeedFlagCount<0) upSpeedFlagCount = 0;}
+    public int getUpSpeedFlagCount() {return upSpeedFlagCount;}
 
     public int getPacketCount(){return packetCount;}
     public boolean getPossibleTimer(){return possibleTimer;}
     public double getCarriedPotential(){return carriedPotential;}
 
+    public boolean getOnGround(){return onGround;}
+    public void setOnGround(boolean onGround){this.onGround = onGround;}
 
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
 
