@@ -51,92 +51,99 @@ public class MovementManager {
         if (packetView.isChangePosition()) {
 
             double speedPotential;
+            double verticalSpeedPotential;
 
             boolean inFluid = false;
             boolean nearClimbable = PacketUtil.checkClimbable(fasterWorld, packetView);
             boolean onGround = BlockUtil.checkGround(player, packetView.getY());
 
-            double verticalSpeedPotential;
-            if (nearClimbable && !onGround) {
-                verticalSpeedPotential = SpeedLimits.UP_SPEED_CLIMB + Math.abs(player.getVelocity().getY()) * 20;
-            } else {
-                verticalSpeedPotential = SpeedLimits.UP_SPEED + Math.abs(player.getVelocity().getY()) * 20;
-            }
 
-            BlockState currentFluidState = BlockUtil.checkFluid(player, player.getY());
+            if (!player.isFallFlying()) {
 
-            if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
-                speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
-                inFluid = true;
-                speedPotential += Math.abs(player.getVelocity().getY());
-            } else if (currentFluidState.getFluidState().isIn(FluidTags.LAVA)) {
-                speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
-                inFluid = true;
-                speedPotential += Math.abs(player.getVelocity().getY());
-            } else if (onGround) {
-                if (!player.isSneaking() && !player.isCrawling()) {
-                    BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
-                    //If they have enough hunger assume they are sprinting
-                    if (player.getHungerManager().getFoodLevel() > 6) {
-                        //If they are in a 2 block tall passage assume they are jumping
-                        if (PacketUtil.checkPassage(fasterWorld, packetView)) {
+                if (nearClimbable && !onGround) {
+                    verticalSpeedPotential = SpeedLimits.UP_SPEED_CLIMB + Math.abs(player.getVelocity().getY()) * 20;
+                } else {
+                    verticalSpeedPotential = SpeedLimits.UP_SPEED + Math.abs(player.getVelocity().getY()) * 20;
+                }
 
-                            if (blockStateUnder.isIn(BlockTags.ICE)) {
-                                if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
-                                    speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_BLUE_ICE;
+                BlockState currentFluidState = BlockUtil.checkFluid(player, player.getY());
+
+                if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
+                    speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
+                    inFluid = true;
+                    speedPotential += Math.abs(player.getVelocity().getY());
+                } else if (currentFluidState.getFluidState().isIn(FluidTags.LAVA)) {
+                    speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
+                    inFluid = true;
+                    speedPotential += Math.abs(player.getVelocity().getY());
+                } else if (onGround) {
+                    if (!player.isSneaking() && !player.isCrawling()) {
+                        BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
+                        //If they have enough hunger assume they are sprinting
+                        if (player.getHungerManager().getFoodLevel() > 6) {
+                            //If they are in a 2 block tall passage assume they are jumping
+                            if (PacketUtil.checkPassage(fasterWorld, packetView)) {
+
+                                if (blockStateUnder.isIn(BlockTags.ICE)) {
+                                    if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
+                                        speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_BLUE_ICE;
+                                    } else {
+                                        speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_ICE;
+                                    }
                                 } else {
-                                    speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE_ICE;
+                                    speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
                                 }
                             } else {
-                                speedPotential = SpeedLimits.SPRINT_AND_JUMP_PASSAGE;
-                            }
-                        } else {
-                            //Assume sprint and jumping
-                            if (blockStateUnder.isIn(BlockTags.ICE)) {
-                                if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
-                                    speedPotential = SpeedLimits.SPRINT_ON_BLUE_ICE;
+                                //Assume sprint and jumping
+                                if (blockStateUnder.isIn(BlockTags.ICE)) {
+                                    if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
+                                        speedPotential = SpeedLimits.SPRINT_ON_BLUE_ICE;
+                                    } else {
+                                        speedPotential = SpeedLimits.SPRINT_ON_ICE;
+                                    }
                                 } else {
-                                    speedPotential = SpeedLimits.SPRINT_ON_ICE;
+                                    speedPotential = SpeedLimits.SPRINT_AND_JUMP;
                                 }
+                            }
+                            //Walking
+                        } else {
+                            speedPotential = SpeedLimits.WALKING;
+                        }
+                    } else {
+                        if (player.isSneaking()) {
+                            speedPotential = SpeedLimits.SNEAKING;
+                        } else {
+                            speedPotential = SpeedLimits.CRAWLING;
+                        }
+                    }
+                    playerData.setLastSpeed(speedPotential);
+                    //If you are in air, use last speed potential from when you were on the ground
+                } else {
+                    speedPotential = playerData.getLastSpeed();
+                    //Quick fix for jump + sneak
+                    if (speedPotential <= SpeedLimits.SNEAKING) speedPotential = SpeedLimits.WALKING_AND_JUMPING;
+                }
+
+                if (!inFluid) {
+                    if (player.getVelocity().getY() > 0 || Math.abs(player.getVelocity().getY()) < 0.1) {
+                        if (!inFluid) {
+                            if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
+                                verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
+                            }
+                        } else {
+                            if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
+                                verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
                             } else {
-                                speedPotential = SpeedLimits.SPRINT_AND_JUMP;
+                                verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP + Math.abs(player.getVelocity().getY()) * 20;
                             }
                         }
-                        //Walking
                     } else {
-                        speedPotential = SpeedLimits.WALKING;
-                    }
-                } else {
-                    if (player.isSneaking()) {
-                        speedPotential = SpeedLimits.SNEAKING;
-                    } else {
-                        speedPotential = SpeedLimits.CRAWLING;
+                        verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20;
                     }
                 }
-                playerData.setLastSpeed(speedPotential);
-            //If you are in air, use last speed potential from when you were on the ground
             } else {
-                speedPotential = playerData.getLastSpeed();
-                //Quick fix for jump + sneak
-                if (speedPotential <= SpeedLimits.SNEAKING) speedPotential = SpeedLimits.WALKING_AND_JUMPING;
-            }
-
-            if (!inFluid) {
-                if (player.getVelocity().getY() > 0 || Math.abs(player.getVelocity().getY()) < 0.1) {
-                    if (!inFluid) {
-                        if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
-                            verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
-                        }
-                    } else {
-                        if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
-                            verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
-                        } else {
-                            verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP + Math.abs(player.getVelocity().getY()) * 20;
-                        }
-                    }
-                } else {
-                    verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20;
-                }
+                speedPotential = SpeedLimits.ELYTRA;
+                verticalSpeedPotential = SpeedLimits.ELYTRA_VERTICAL;
             }
 
 

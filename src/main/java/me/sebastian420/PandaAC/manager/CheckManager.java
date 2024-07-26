@@ -2,6 +2,9 @@ package me.sebastian420.PandaAC.manager;
 
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.check.player.*;
+import me.sebastian420.PandaAC.check.player.elytra.ElytraElevationLevelCheck;
+import me.sebastian420.PandaAC.check.player.elytra.ElytraHoverCheck;
+import me.sebastian420.PandaAC.check.player.elytra.ElytraVerticalSpeedCheck;
 import me.sebastian420.PandaAC.check.player.fluid.FluidHorizontalSpeedCheck;
 import me.sebastian420.PandaAC.check.player.fluid.FluidVerticalSpeedCheck;
 import me.sebastian420.PandaAC.check.vehicle.*;
@@ -98,9 +101,31 @@ public class CheckManager {
                     }
                 } else {
                     //Elytra
+
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (HoverCheck.check(serverPlayerEntity, playerData)) {
+                    if (HorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                        PandaLogger.getLogger().warn("Flagged Elytra Horizontal Speed");
+                        playerData.moveCurrentToLast(time);
+                        break;
+                    }
+
+                    if (serverPlayerEntity.isDisconnected()) break;
+                    if (ElytraHoverCheck.check(serverPlayerEntity, playerData)) {
                         PandaLogger.getLogger().warn("Flagged Elytra Hover");
+                        playerData.moveCurrentToLast(time);
+                        break;
+                    }
+
+                    if (serverPlayerEntity.isDisconnected()) break;
+                    if (ElytraVerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                        PandaLogger.getLogger().warn("Flagged Elytra Vertical Speed");
+                        playerData.moveCurrentToLast(time);
+                        break;
+                    }
+
+                    if (serverPlayerEntity.isDisconnected()) break;
+                    if (ElytraElevationLevelCheck.check(serverPlayerEntity, playerData, time)) {
+                        PandaLogger.getLogger().warn("Flagged Elytra Elevation Level");
                         playerData.moveCurrentToLast(time);
                         break;
                     }
