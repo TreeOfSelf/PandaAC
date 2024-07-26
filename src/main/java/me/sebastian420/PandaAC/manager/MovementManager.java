@@ -37,6 +37,7 @@ public class MovementManager {
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
         PlayerMovementData playerData = getPlayer(player);
 
+
         //Clear vehicle UUID if not in vehicle
         Entity vehicle = player.getVehicle();
         if (vehicle == null) {

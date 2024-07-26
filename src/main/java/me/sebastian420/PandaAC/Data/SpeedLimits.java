@@ -3,8 +3,6 @@ package me.sebastian420.PandaAC.data;
 public class SpeedLimits {
 
     /* trident rip tide
-    make speed check only rollback if your average speed is over treshhold
-    jumping then sneaking while in air causes rollback (I think honestly, flag system. thats prob de way)
      */
 
     public static final double FUDGE = 1.0;
