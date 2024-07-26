@@ -104,10 +104,14 @@ public class MovementManager {
                     speedPotential = SpeedLimits.WALKING;
                 }
             } else {
-                if (player.isSneaking()) {
-                    speedPotential = SpeedLimits.SNEAKING;
+                if (onGround) {
+                    if (player.isSneaking()) {
+                        speedPotential = SpeedLimits.SNEAKING;
+                    } else {
+                        speedPotential = SpeedLimits.CRAWLING;
+                    }
                 } else {
-                    speedPotential = SpeedLimits.CRAWLING;
+                    speedPotential = SpeedLimits.WALKING;
                 }
             }
 
