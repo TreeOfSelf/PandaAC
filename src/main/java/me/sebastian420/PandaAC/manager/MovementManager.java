@@ -34,6 +34,7 @@ public class MovementManager {
     }
 
     public static void read(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long time) {
+
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
         PlayerMovementData playerData = getPlayer(player);
 

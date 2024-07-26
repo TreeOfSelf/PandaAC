@@ -55,36 +55,36 @@ public class PandaACThread extends Thread {
     }
 
     public static void queueWorldLoad(ServerWorld world) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.WORLD_LOAD, world));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.WORLD_LOAD, world));
     }
 
     public static void queueChunkLoad(ServerWorld world, Chunk chunk) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.CHUNK_LOAD, new Object[]{world, chunk}));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.CHUNK_LOAD, new Object[]{world, chunk}));
     }
 
     public static void queueChunkUnload(ServerWorld world, Chunk chunk) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.CHUNK_UNLOAD, new Object[]{world, chunk}));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.CHUNK_UNLOAD, new Object[]{world, chunk}));
     }
 
     public static void queuePlayerMove(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long packetTime) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet, packetTime}));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet, packetTime}));
     }
 
     public static void queueVehicleMove(ServerPlayerEntity player, VehicleMoveC2SPacket packet, long packetTime) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.VEHICLE_MOVE, new Object[]{player, packet, packetTime}));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.VEHICLE_MOVE, new Object[]{player, packet, packetTime}));
     }
 
     public static void queuePlayerTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket packet) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_TELEPORT, new Object[]{player, packet}));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.PLAYER_TELEPORT, new Object[]{player, packet}));
     }
 
     public static void queuePlayerVelocity(ServerPlayerEntity player, EntityVelocityUpdateS2CPacket packet) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.PLAYER_VELOCITY, new Object[]{player, packet}));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.PLAYER_VELOCITY, new Object[]{player, packet}));
 
     }
 
     public static void queueServerVehicleMove(ServerPlayerEntity player, VehicleMoveS2CPacket packet) {
-        EVENT_QUEUE.offer(new QueuedEvent(EventType.SERVER_VEHICLE_MOVE, new Object[]{player, packet}));
+        EVENT_QUEUE.add(new QueuedEvent(EventType.SERVER_VEHICLE_MOVE, new Object[]{player, packet}));
     }
 
     public static void initialize(MinecraftServer minecraftServer) {
@@ -95,7 +95,7 @@ public class PandaACThread extends Thread {
         INSTANCE.start();
 
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            EVENT_QUEUE.offer(new QueuedEvent(EventType.TICK, null));
+            EVENT_QUEUE.add(new QueuedEvent(EventType.TICK, null));
         });
     }
 

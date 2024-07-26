@@ -39,8 +39,8 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             )
     )
     private void checkOnGround(PlayerMoveC2SPacket packet, CallbackInfo ci) {
-        //Lets just always do this check
-        if (PandaAC.pandaConfig.movement.patchNoFall /* && packet.isOnGround()*/) {
+        //Always do check unless flying
+        if (PandaAC.pandaConfig.movement.patchNoFall && !player.isFallFlying()) {
 
 
             Entity bottomEntity = player.getRootVehicle();
