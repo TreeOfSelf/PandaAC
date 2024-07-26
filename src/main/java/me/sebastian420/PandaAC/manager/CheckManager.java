@@ -39,7 +39,6 @@ public class CheckManager {
                 BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
 
                 //Non-Elytra
-                PandaLogger.getLogger().info("FALL FLYING {}", serverPlayerEntity.isFallFlying());
                 if (!serverPlayerEntity.isFallFlying()) {
                     //Fluid checks
                     if (lastBlockState.getFluidState().isIn(FluidTags.WATER) ||

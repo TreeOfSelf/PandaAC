@@ -33,10 +33,7 @@ public class ClientConnectionMixin_PacketHandler {
             if (packet instanceof PlayerMoveC2SPacket) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
                 PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet, System.currentTimeMillis());
-            } else if (packet instanceof ClientCommandC2SPacket ) {
-                ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-                if (((ClientCommandC2SPacket ) packet).getMode() == ClientCommandC2SPacket.Mode.START_FALL_FLYING) PandaLogger.getLogger().info("PLAYER STARTED TO FLYY");
-            } else if (packet instanceof VehicleMoveC2SPacket) {
+            }  else if (packet instanceof VehicleMoveC2SPacket) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
                 PandaACThread.queueVehicleMove(serverPlayerEntity, (VehicleMoveC2SPacket) packet, System.currentTimeMillis());
             }
