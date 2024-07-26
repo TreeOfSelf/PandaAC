@@ -52,11 +52,11 @@ public class MovementManager {
             double speedPotential;
 
             boolean inFluid = false;
-            boolean nearClimable = PacketUtil.checkClimbable(fasterWorld, packetView);
+            boolean nearClimbable = PacketUtil.checkClimbable(fasterWorld, packetView);
             boolean onGround = BlockUtil.checkGround(player, packetView.getY());
 
             double verticalSpeedPotential;
-            if (nearClimable && !onGround) {
+            if (nearClimbable && !onGround) {
                 verticalSpeedPotential = SpeedLimits.UP_SPEED_CLIMB + Math.abs(player.getVelocity().getY()) * 20;
             } else {
                 verticalSpeedPotential = SpeedLimits.UP_SPEED + Math.abs(player.getVelocity().getY()) * 20;
@@ -139,7 +139,7 @@ public class MovementManager {
             }
 
 
-            if( onGround || nearClimable) {
+            if( onGround || nearClimbable) {
                 BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
                 playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
