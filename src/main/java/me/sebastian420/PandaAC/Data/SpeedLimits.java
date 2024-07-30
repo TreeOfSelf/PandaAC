@@ -48,7 +48,7 @@ public class SpeedLimits {
     public static final double STRIDER_SPEED = 5;
     public static final double STRIDER_YAW = 2000;
 
-    public static final double ELYTRA = 30;
-    public static final double ELYTRA_VERTICAL = 30;
+    public static final double ELYTRA = 5;
+    public static final double ELYTRA_VERTICAL = 5;
 
 }

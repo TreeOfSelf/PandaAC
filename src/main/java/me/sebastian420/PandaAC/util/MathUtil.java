@@ -7,6 +7,10 @@ public class MathUtil {
         return Math.round((deltaX * deltaX) + (deltaZ * deltaZ));
     }
 
+    public static double vectorLength(double x, double y) {
+        return Math.sqrt(x * x + y * y);
+    }
+
     public static double getDistanceSquared(double x1, double y1, double z1, double x2, double y2, double z2) {
         double deltaX = x2 - x1;
         double deltaY = y2 - y1;

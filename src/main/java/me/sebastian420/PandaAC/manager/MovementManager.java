@@ -142,8 +142,8 @@ public class MovementManager {
                     }
                 }
             } else {
-                speedPotential = SpeedLimits.ELYTRA;
-                verticalSpeedPotential = SpeedLimits.ELYTRA_VERTICAL;
+                speedPotential = MathUtil.vectorLength(player.getVelocity().getX(),player.getVelocity().getZ()) * 20 + SpeedLimits.ELYTRA;
+                verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20 + SpeedLimits.ELYTRA_VERTICAL;
             }
 
 

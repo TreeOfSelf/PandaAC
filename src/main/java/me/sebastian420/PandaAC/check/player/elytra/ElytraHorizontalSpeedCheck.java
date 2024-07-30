@@ -1,4 +1,4 @@
-package me.sebastian420.PandaAC.check.player;
+package me.sebastian420.PandaAC.check.player.elytra;
 
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
@@ -6,7 +6,7 @@ import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class HorizontalSpeedCheck {
+public class ElytraHorizontalSpeedCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData, long time) {
         //If the player has since had a movement packet
         boolean flagged = false;
@@ -34,11 +34,11 @@ public class HorizontalSpeedCheck {
             } else {
                 playerData.setStoredSpeed(0);
             }
+            PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, playerData.getPacketCount());
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
                 playerData.incrementSpeedFlagCount();
                 if (playerData.getSpeedFlagCount() > 2) {
-                    PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, speedPotential, playerData.getPacketCount());
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
                 }

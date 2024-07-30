@@ -24,7 +24,7 @@ public class UseItem {
             if (stack.getItem() == Items.FIREWORK_ROCKET) {
                 PlayerMovementData playerData = MovementManager.getPlayer((ServerPlayerEntity) player);
                 int duration = stack.getComponents().get(DataComponentTypes.FIREWORKS).flightDuration();
-                playerData.setStoredSpeed(500 * duration);
+                playerData.setStoredSpeed(100 * duration);
             }
         }
 

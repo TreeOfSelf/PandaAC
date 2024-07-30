@@ -3,6 +3,7 @@ package me.sebastian420.PandaAC.manager;
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.check.player.*;
 import me.sebastian420.PandaAC.check.player.elytra.ElytraElevationLevelCheck;
+import me.sebastian420.PandaAC.check.player.elytra.ElytraHorizontalSpeedCheck;
 import me.sebastian420.PandaAC.check.player.elytra.ElytraHoverCheck;
 import me.sebastian420.PandaAC.check.player.elytra.ElytraVerticalSpeedCheck;
 import me.sebastian420.PandaAC.check.player.fluid.FluidHorizontalSpeedCheck;
@@ -103,7 +104,7 @@ public class CheckManager {
                     //Elytra
 
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (HorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
+                    if (ElytraHorizontalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
                         PandaLogger.getLogger().warn("Flagged Elytra Horizontal Speed");
                         playerData.moveCurrentToLast(time);
                         break;
