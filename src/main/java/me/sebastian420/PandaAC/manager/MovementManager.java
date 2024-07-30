@@ -65,8 +65,8 @@ public class MovementManager {
 
                 //Save momentum
                 if (playerData.getFlying()) {
-                    playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 20);
-                    playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 20);
+                    playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 50);
+                    playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 50);
                 }
                 playerData.setFlying(true);
 
@@ -154,7 +154,7 @@ public class MovementManager {
             } else {
                 speedPotential = MathUtil.vectorLength(player.getVelocity().getX(),player.getVelocity().getZ()) * 20 + SpeedLimits.ELYTRA;
                 verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20 + SpeedLimits.ELYTRA_VERTICAL;
-
+                playerData.setLastSolidTouch(time);
                 playerData.setFlying(true);
             }
 

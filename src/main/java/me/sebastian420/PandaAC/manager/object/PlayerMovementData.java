@@ -110,6 +110,7 @@ public class PlayerMovementData {
 
     public long getAirTimeStartTime(){return airTimeStartTime;}
     public long getLastSolidTouch() {return lastSolidTouch;}
+    public void setLastSolidTouch(long time) {lastSolidTouch = time;}
 
     public boolean getChanged(){return changed;}
     public long getLastCheck(){return lastCheck;}
