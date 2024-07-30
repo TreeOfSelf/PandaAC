@@ -65,8 +65,8 @@ public class MovementManager {
 
                 //Save momentum
                 if (playerData.getFlying()) {
-                    playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 100);
-                    playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 100);
+                    playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 500);
+                    playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 500);
                 }
                 playerData.setFlying(false);
 
