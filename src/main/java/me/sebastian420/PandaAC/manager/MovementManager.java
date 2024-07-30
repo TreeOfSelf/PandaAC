@@ -65,8 +65,14 @@ public class MovementManager {
 
                 //Save momentum
                 if (playerData.getFlying()) {
-                    playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 500);
-                    playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 500);
+                    PandaLogger.getLogger().info(time - playerData.getLastElytraStoreTime());
+                    if (time - playerData.getLastElytraStoreTime() < 1000) {
+                        CheckManager.rollBack(player, playerData);
+                    } else {
+                        playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 500);
+                        playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 500);
+                        playerData.setLastElytraStoreTime(time);
+                    }
                 }
                 playerData.setFlying(false);
 

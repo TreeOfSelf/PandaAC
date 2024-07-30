@@ -39,7 +39,7 @@ public class ElytraHorizontalSpeedCheck {
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
                 playerData.incrementSpeedFlagCount();
-                if (playerData.getSpeedFlagCount() > 2) {
+                if (playerData.getSpeedFlagCount() > 0) {
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
                 }

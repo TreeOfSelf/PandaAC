@@ -47,8 +47,8 @@ public class PlayerMovementData {
 
     private long firstPacketTime;
     private long lastPacketTime;
-
     private long lastFluidTime;
+    private long lastElytraStoreTime;
 
     private long lastCheck;
     private long airTimeStartTime;
@@ -117,6 +117,9 @@ public class PlayerMovementData {
 
     public long getLastPacketTime(){return lastPacketTime;}
     public long getFirstPacketTime(){return firstPacketTime;}
+
+    public long getLastElytraStoreTime() {return lastElytraStoreTime;}
+    public void setLastElytraStoreTime(long time) {lastElytraStoreTime = time;}
 
     public double getLastSpeed() {return lastSpeed;}
     public void setLastSpeed(double speed) {lastSpeed = speed;}
