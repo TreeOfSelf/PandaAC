@@ -3,7 +3,8 @@ package me.sebastian420.PandaAC.data;
 public class SpeedLimits {
 
     /* trident rip tide
-    prob will need to keep speed when switching off elytra  jump height / speed down / vertical speed/ speed check all matter for this
+    Elytra hover
+    Elytra elevation
     status effects
      */
 
