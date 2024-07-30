@@ -40,6 +40,7 @@ public class PlayerMovementData {
 
     private int packetCount;
     private int speedFlagCount;
+    private int shortSpeedFlagCount;
     private int upSpeedFlagCount;
 
     private long firstPacketTime;
@@ -54,6 +55,7 @@ public class PlayerMovementData {
     private boolean changed;
     private boolean hover;
     private boolean onGround;
+    private boolean flying;
 
     private boolean possibleTimer;
 
@@ -121,6 +123,9 @@ public class PlayerMovementData {
     public double getStoredSpeedVertical() {return storedSpeedVertical;}
     public void setStoredSpeedVertical(double speed) {storedSpeedVertical = speed;}
 
+    public boolean getFlying(){return flying;}
+    public void setFlying(boolean flying){this.flying = flying;}
+
     public long getLastFluidTime() {return lastFluidTime;}
 
     public BlockState getLastAttachedState(){return lastAttachedState;}
@@ -129,6 +134,10 @@ public class PlayerMovementData {
     public void incrementSpeedFlagCount() {speedFlagCount++;}
     public void decrementSpeedFlagCount() {speedFlagCount--; if(speedFlagCount<0) speedFlagCount = 0;}
     public int getSpeedFlagCount() {return speedFlagCount;}
+
+    public void incrementShortSpeedFlagCount() {speedFlagCount++;}
+    public void decrementShortSpeedFlagCount() {speedFlagCount--; if(speedFlagCount<0) speedFlagCount = 0;}
+    public int getShortSpeedFlagCount() {return speedFlagCount;}
 
     public void incrementUpSpeedFlagCount() {upSpeedFlagCount++;}
     public void decrementUpSpeedFlagCount() {upSpeedFlagCount--; if(upSpeedFlagCount<0) upSpeedFlagCount = 0;}

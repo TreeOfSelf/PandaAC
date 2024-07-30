@@ -1,7 +1,6 @@
 package me.sebastian420.PandaAC;
 
 import me.sebastian420.PandaAC.event.player.UseEntity;
-import me.sebastian420.PandaAC.event.player.UseItem;
 import me.sebastian420.PandaAC.event.server.ServerStartedEvent;
 import me.sebastian420.PandaAC.event.server.ServerStopEvent;
 import me.sebastian420.PandaAC.event.world.ChunkLoadEvent;
@@ -39,7 +38,6 @@ public class PandaAC implements ModInitializer {
 		ChunkLoadEvent.register();
 		ChunkUnloadEvent.register();
 		UseEntity.register();
-		UseItem.register();
 		CombatModule.registerEvents();
 		S2CPacketModule.registerEvents();
 	}

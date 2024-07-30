@@ -34,6 +34,7 @@ public class ElytraHorizontalSpeedCheck {
             } else {
                 playerData.setStoredSpeed(0);
             }
+
             PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, playerData.getPacketCount());
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {

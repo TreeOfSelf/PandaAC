@@ -20,6 +20,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.List;
 
@@ -186,6 +187,7 @@ public class CheckManager {
         long time = System.currentTimeMillis();
         //We should do something like this where your velocity is counted til you hit the ground
         //Vec3d velocity = serverPlayerEntity.getVelocity();
+        serverPlayerEntity.setOnGround(Vec3d.of(Vec3i.ZERO));
         serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
         playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), time);
         //serverPlayerEntity.setVelocity(velocity);

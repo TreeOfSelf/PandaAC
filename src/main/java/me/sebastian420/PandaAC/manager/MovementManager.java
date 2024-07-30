@@ -21,6 +21,8 @@ import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3i;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -59,6 +61,13 @@ public class MovementManager {
 
 
             if (!player.isFallFlying()) {
+
+
+                //Save momentum
+                if (playerData.getFlying()) {
+
+                }
+                playerData.setFlying(true);
 
                 if (nearClimbable && !onGround) {
                     verticalSpeedPotential = SpeedLimits.UP_SPEED_CLIMB + Math.abs(player.getVelocity().getY()) * 20;
@@ -144,6 +153,7 @@ public class MovementManager {
             } else {
                 speedPotential = MathUtil.vectorLength(player.getVelocity().getX(),player.getVelocity().getZ()) * 20 + SpeedLimits.ELYTRA;
                 verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20 + SpeedLimits.ELYTRA_VERTICAL;
+                playerData.setFlying(true);
             }
 
 
@@ -160,6 +170,24 @@ public class MovementManager {
                 playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
                 playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
             }
+
+            double speedMult = 1;
+            if (!onGround) speedMult = 1.15;
+
+            double playerMoveLength = MathUtil.vectorLength(player.getMovement().getX(),player.getMovement().getZ());
+
+            if (playerMoveLength > ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult) {
+                if (!player.isCreative() && !player.isFallFlying()) {
+                    playerData.incrementShortSpeedFlagCount();
+                    if (playerData.getShortSpeedFlagCount() > 6) {
+                        PandaLogger.getLogger().info("Flagged Short term speed Speed {} Pot {}",playerMoveLength, ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult);
+                        CheckManager.rollBack(player, playerData);
+                    }
+                }
+            } else {
+                playerData.decrementShortSpeedFlagCount();
+            }
+
 
             playerData.setSpeedPotential(speedPotential);
             playerData.setVerticalSpeedPotential(verticalSpeedPotential);
