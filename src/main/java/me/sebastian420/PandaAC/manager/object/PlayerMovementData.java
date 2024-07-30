@@ -12,6 +12,8 @@ import java.util.Arrays;
 
 public class PlayerMovementData {
 
+    private Vec3d lastVelocity;
+
     private double lastX;
     private double lastY;
     private double lastZ;
@@ -146,6 +148,13 @@ public class PlayerMovementData {
     public int getPacketCount(){return packetCount;}
     public boolean getPossibleTimer(){return possibleTimer;}
     public double getCarriedPotential(){return carriedPotential;}
+
+    public Vec3d getLastVelocity() {
+        return lastVelocity;
+    }
+    public void setLastVelocity(Vec3d velocity) {
+        this.lastVelocity = velocity;
+    }
 
     public boolean getOnGround(){return onGround;}
     public void setOnGround(boolean onGround){this.onGround = onGround;}
