@@ -39,7 +39,7 @@ public class HorizontalSpeedCheck {
                 playerData.incrementSpeedFlagCount();
 
                 if (playerData.getSpeedFlagCount() > 3) {
-                    PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, speedPotential, playerData.getPacketCount());
+                    PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {}", speedMps, speedPotential, storedSpeed, playerData.getPacketCount());
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
                 }

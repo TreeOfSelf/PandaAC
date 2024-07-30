@@ -65,10 +65,10 @@ public class MovementManager {
 
                 //Save momentum
                 if (playerData.getFlying()) {
-                    playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 50);
-                    playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 50);
+                    playerData.setStoredSpeed(MathUtil.vectorLength(playerData.getLastVelocity().getX(), playerData.getLastVelocity().getZ()) * 100);
+                    playerData.setStoredSpeedVertical(Math.abs(playerData.getLastVelocity().getY()) * 100);
                 }
-                playerData.setFlying(true);
+                playerData.setFlying(false);
 
                 if (nearClimbable && !onGround) {
                     verticalSpeedPotential = SpeedLimits.UP_SPEED_CLIMB + Math.abs(player.getVelocity().getY()) * 20;
