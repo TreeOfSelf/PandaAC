@@ -166,10 +166,7 @@ public class PlayerMovementData {
     public double getCarriedPotential(){return carriedPotential;}
 
     public double getElytraElevation() {return elytraElevation;}
-    public void setElytraElevation(double elevation) {
-        elytraElevation = elevation;
-        elytraMaxElevation = elevation;
-    }
+    public void setElytraElevation(double elevation) {elytraElevation = elevation;}
     public double getElytraMaxElevation() {return elytraMaxElevation;}
     public void setElytraMaxElevation(double elevation) {elytraMaxElevation = elevation;}
 

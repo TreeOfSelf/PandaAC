@@ -163,6 +163,7 @@ public class MovementManager {
 
                 if (!playerData.getFlying()) {
                     playerData.setElytraElevation(packetView.getY());
+                    playerData.setElytraMaxElevation(packetView.getY());
                 }
 
                 if (playerData.getElytraLastRocketTime() - time > 0) {
