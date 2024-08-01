@@ -3,8 +3,7 @@ package me.sebastian420.PandaAC.data;
 public class SpeedLimits {
 
     /*
-    Rip tide -> elytra broken
-    Jesus working?
+    reach
     status effects
      */
 
