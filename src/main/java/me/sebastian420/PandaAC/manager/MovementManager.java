@@ -160,8 +160,8 @@ public class MovementManager {
                 playerData.setLastSolidTouch(time);
 
                 if (!playerData.getFlying()) {
-                    playerData.setElytraElevation(packetView.getY());
-                    playerData.setElytraMaxElevation(packetView.getY());
+                    playerData.setElytraElevation(packetView.getY() + playerData.getStoredSpeedVertical());
+                    playerData.setElytraMaxElevation(packetView.getY() + playerData.getStoredSpeedVertical());
                 }
 
                 if (playerData.getElytraLastRocketTime() - time > 0) {
@@ -170,13 +170,12 @@ public class MovementManager {
                     }
                 }
 
+
                 playerData.setFlying(true);
             }
 
             if (player.isUsingRiptide()) {
-                //speedPotential = SpeedLimits.RIPTIDE;
-                //verticalSpeedPotential = SpeedLimits.RIPTIDE;
-                playerData.setStoredSpeedVertical(30);
+                playerData.setStoredSpeedVertical(60);
                 playerData.setStoredSpeed(60);
                 playerData.setAirTimeStartTime(time);
             }

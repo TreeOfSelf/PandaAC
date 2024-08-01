@@ -11,7 +11,6 @@ public class ElytraElevationLevelCheck {
         boolean flagged = false;
 
         if (playerData.getChanged()) {
-
             //If we are rocketing
             if (time - playerData.getElytraLastRocketTime() < 0) {
                 if (playerData.getY() > playerData.getElytraMaxElevation() + 1) {

@@ -263,13 +263,13 @@ public class PlayerMovementData {
 
     public void setLastAttachedFluid(double x, double y, double z, long time) {
         lastAttachedX = x;
-        lastAttachedY = y;
+        lastAttachedY = y-1;
         lastAttachedZ = z;
         lastAttachedState = Blocks.AIR.getDefaultState();
         lastAttachedVelocity = 0;
         airTimeStartTime = time;
         lastFluidTime = time;
-        hover = false;
+        //hover = false;
     }
 
 
