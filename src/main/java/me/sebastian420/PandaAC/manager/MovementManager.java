@@ -233,7 +233,7 @@ public class MovementManager {
         PlayerMovementData playerData = getPlayer(player);
         double prevVelocity = playerData.getStoredSpeed();
         double prevVelocityVertical = playerData.getStoredSpeedVertical();
-        playerData.setStoredSpeed(prevVelocity + (Math.abs(velocityData.getVelocityX()) + Math.abs(velocityData.getVelocityZ())) * 20);
-        playerData.setStoredSpeedVertical(prevVelocityVertical + Math.abs(velocityData.getVelocityY()) * 20);
+        playerData.setStoredSpeed(prevVelocity + (Math.abs(velocityData.getVelocityX()) + Math.abs(velocityData.getVelocityZ())) * 40);
+        playerData.setStoredSpeedVertical(prevVelocityVertical + Math.abs(velocityData.getVelocityY()) * 40);
     }
 }
