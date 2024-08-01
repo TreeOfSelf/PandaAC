@@ -184,7 +184,7 @@ public class MovementManager {
                 playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
                     packetView.getY() > playerData.getLastY() && !inFluid && time - playerData.getLastFluidTime() > 500) {
-                if (!player.isCreative() && !player.isFallFlying()) CheckManager.rollBack(player ,playerData);
+                if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying()) CheckManager.rollBack(player ,playerData);
             } else if (inFluid) {
                 playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
                 playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
@@ -197,7 +197,7 @@ public class MovementManager {
             double playerMoveLength = MathUtil.vectorLength(player.getMovement().getX(),player.getMovement().getZ());
 
             if (playerMoveLength > ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult) {
-                if (!player.isCreative() && !player.isFallFlying()) {
+                if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying()) {
                     playerData.incrementShortSpeedFlagCount();
                     if (playerData.getShortSpeedFlagCount() > 6) {
                         PandaLogger.getLogger().info("Flagged Short term speed Speed {} Pot {}",playerMoveLength, ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult);

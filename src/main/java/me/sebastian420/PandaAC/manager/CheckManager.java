@@ -27,7 +27,7 @@ import java.util.List;
 public class CheckManager {
 
     public static void run(ServerPlayerEntity serverPlayerEntity, long time) {
-        if (serverPlayerEntity.isCreative()) return;
+        if (serverPlayerEntity.isCreative() || serverPlayerEntity.isSpectator()) return;
 
 
         boolean running = true;

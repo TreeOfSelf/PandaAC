@@ -30,7 +30,7 @@ public class ReachCheck implements UseEntityCallback, AttackEntityCallback {
             EntityHitResult entityHit = new EntityHitResult(victim);
             double victimDistanceSquared = entityHit.squaredDistanceTo(player);
 
-            if (pandaConfig.combat.checkHitDistance && !player.isCreative() && victimDistanceSquared > 22) {
+            if (pandaConfig.combat.checkHitDistance && !player.isSpectator() && !player.isCreative() && victimDistanceSquared > 22) {
                 return ActionResult.FAIL;
             }
         }
