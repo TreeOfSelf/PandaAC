@@ -16,7 +16,6 @@
     "connection.ClientConnectionMixin_PacketHandler",
     "connection.PlayerMoveC2SPacketMixin_GetData",
     "connection.ServerCommonNetworkHandlerMixin_EntityDataPatch",
-    "connection.ServerPlayerEntityMixin_CreativeInventoryPatch",
     "connection.ServerPlayNetworkHandlerMixin_PacketEvents",
     "duplication.FallingBlockEntityMixin_GravityBlockDupe",
     "duplication.ServerPlayerEntityMixin_NoConnectionDeath",

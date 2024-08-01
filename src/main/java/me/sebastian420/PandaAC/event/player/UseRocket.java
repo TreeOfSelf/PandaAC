@@ -42,6 +42,8 @@ public class UseRocket {
             }
         }
 
-        return new TypedActionResult<>(ActionResult.PASS, player.getStackInHand(hand));
+
+        return TypedActionResult.pass(stack);
+
     }
 }
