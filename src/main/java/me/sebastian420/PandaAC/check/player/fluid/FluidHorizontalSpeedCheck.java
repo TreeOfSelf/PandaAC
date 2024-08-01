@@ -24,8 +24,19 @@ public class FluidHorizontalSpeedCheck {
                 playerData.setPossibleTimer(false);
             }
 
+            double storedSpeed = playerData.getStoredSpeed();
+
             double speedPotential = playerData.getSpeedPotential((double) timeDifMs / 1000d);
-            double totalPotential = speedPotential + playerData.getCarriedPotential();
+            double totalPotential = speedPotential + storedSpeed;
+
+            double newStoredSpeed = storedSpeed - speedMps;
+
+            if (newStoredSpeed > 0) {
+                playerData.setStoredSpeed(newStoredSpeed);
+            } else {
+                playerData.setStoredSpeed(0);
+            }
+
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
 

@@ -174,9 +174,10 @@ public class MovementManager {
             }
 
             if (player.isUsingRiptide()) {
-                speedPotential = SpeedLimits.RIPTIDE;
-                verticalSpeedPotential = SpeedLimits.RIPTIDE;
+                //speedPotential = SpeedLimits.RIPTIDE;
+                //verticalSpeedPotential = SpeedLimits.RIPTIDE;
                 playerData.setStoredSpeedVertical(30);
+                playerData.setStoredSpeed(60);
                 playerData.setAirTimeStartTime(time);
             }
 

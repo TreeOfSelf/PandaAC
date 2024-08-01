@@ -21,8 +21,20 @@ public class FluidVerticalSpeedCheck {
                     playerData.getLastY(),
                     playerData.getY());
 
+            double storedSpeed = playerData.getStoredSpeedVertical();
+
+
             double speedMps = (distance * 1000.0) / timeDifMs;
-            double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d);
+            double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d) + storedSpeed;
+
+
+            double newStoredSpeed = storedSpeed - speedMps;
+
+            if (newStoredSpeed > 0) {
+                playerData.setStoredSpeedVertical(newStoredSpeed);
+            } else {
+                playerData.setStoredSpeedVertical(0);
+            }
 
             if (speedMps > speedPotential) {
                 PandaLogger.getLogger().warn("Swim Vertical Speed {} Potential {}", speedMps, speedPotential);
