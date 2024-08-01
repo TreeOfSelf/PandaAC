@@ -26,16 +26,16 @@ public class UseRocket {
                 int duration = stack.getComponents().get(DataComponentTypes.FIREWORKS).flightDuration();
                 switch (duration) {
                     case 1:
-                        playerData.setElytraLastRocketTime(System.currentTimeMillis() + 1270);
-                        playerData.setElytraMaxElevation(playerData.getY() + 21);
+                        playerData.setElytraLastRocketTime(System.currentTimeMillis() + 2500);
+                        playerData.setElytraMaxElevation(playerData.getY() + 50);
                         break;
                     case 2:
-                        playerData.setElytraLastRocketTime(System.currentTimeMillis() + 1580);
-                        playerData.setElytraMaxElevation(playerData.getY() + 34);
+                        playerData.setElytraLastRocketTime(System.currentTimeMillis() + 4000);
+                        playerData.setElytraMaxElevation(playerData.getY() + 70);
                         break;
                     case 3:
-                        playerData.setElytraLastRocketTime(System.currentTimeMillis() + 2320);
-                        playerData.setElytraMaxElevation(playerData.getY() + 52);
+                        playerData.setElytraLastRocketTime(System.currentTimeMillis() + 5000);
+                        playerData.setElytraMaxElevation(playerData.getY() + 100);
                         break;
                 }
             }
