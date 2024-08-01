@@ -14,14 +14,14 @@ public class ElytraElevationLevelCheck {
 
             //If we are rocketing
             if (time - playerData.getElytraLastRocketTime() < 0) {
-                if (playerData.getY() > playerData.getElytraMaxElevation()) {
+                if (playerData.getY() > playerData.getElytraMaxElevation() - 1) {
                     PandaLogger.getLogger().warn("playerY {} elytraMaxElvevation {}", playerData.getY(), playerData.getElytraMaxElevation());
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
                 }
             //If we are not rocketing
             } else {
-                if (playerData.getY() > playerData.getElytraElevation()) {
+                if (playerData.getY() > playerData.getElytraElevation() - 1) {
                     PandaLogger.getLogger().warn("playerY {} elytraElvevation {}", playerData.getY(), playerData.getElytraElevation());
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
