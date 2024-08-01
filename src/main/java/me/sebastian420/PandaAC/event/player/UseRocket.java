@@ -27,15 +27,15 @@ public class UseRocket {
                 switch (duration) {
                     case 1:
                         playerData.setElytraLastRocketTime(System.currentTimeMillis() + 2500);
-                        playerData.setElytraMaxElevation(playerData.getY() + 50);
+                        playerData.setElytraMaxElevation(playerData.getY() + 65);
                         break;
                     case 2:
                         playerData.setElytraLastRocketTime(System.currentTimeMillis() + 4000);
-                        playerData.setElytraMaxElevation(playerData.getY() + 70);
+                        playerData.setElytraMaxElevation(playerData.getY() + 90);
                         break;
                     case 3:
                         playerData.setElytraLastRocketTime(System.currentTimeMillis() + 5000);
-                        playerData.setElytraMaxElevation(playerData.getY() + 100);
+                        playerData.setElytraMaxElevation(playerData.getY() + 130);
                         break;
                 }
             }
