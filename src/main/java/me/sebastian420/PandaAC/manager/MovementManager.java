@@ -65,7 +65,6 @@ public class MovementManager {
 
                 //Save momentum
                 if (playerData.getFlying()) {
-                    PandaLogger.getLogger().info(time - playerData.getLastElytraStoreTime());
                     if (time - playerData.getLastElytraStoreTime() < 1000) {
                         CheckManager.rollBack(player, playerData);
                     } else {

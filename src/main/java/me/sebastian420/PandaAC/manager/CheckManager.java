@@ -112,7 +112,7 @@ public class CheckManager {
                     }
 
                     if (serverPlayerEntity.isDisconnected()) break;
-                    if (ElytraHoverCheck.check(serverPlayerEntity, playerData)) {
+                    if (ElytraHoverCheck.check(serverPlayerEntity, playerData, time)) {
                         PandaLogger.getLogger().warn("Flagged Elytra Hover");
                         playerData.moveCurrentToLast(time);
                         break;

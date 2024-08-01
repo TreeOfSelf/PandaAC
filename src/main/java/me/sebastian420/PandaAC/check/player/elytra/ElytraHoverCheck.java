@@ -1,15 +1,25 @@
 package me.sebastian420.PandaAC.check.player.elytra;
 
+import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
+import me.sebastian420.PandaAC.util.MathUtil;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class ElytraHoverCheck {
-    public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData) {
+    public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData, long time) {
         boolean flagged = false;
 
         if (playerData.getChanged()) {
-
-
+            double yDistance = Math.abs(playerData.getLastY() - playerData.getY());
+            if (yDistance < 0.1) {
+                double horizontalDistance = MathUtil.getDistance(playerData.getLastX(), playerData.getLastZ(), playerData.getX(), playerData.getZ());
+                if (horizontalDistance < 0.8) {
+                    PandaLogger.getLogger().warn("yDistance {} horizontalDistance {}", yDistance, horizontalDistance);
+                    CheckManager.rollBack(serverPlayerEntity, playerData);
+                    flagged = true;
+                }
+            }
         }
         return flagged;
     }
