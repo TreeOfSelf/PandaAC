@@ -160,6 +160,17 @@ public class MovementManager {
                 speedPotential = MathUtil.vectorLength(player.getVelocity().getX(),player.getVelocity().getZ()) * 20 + SpeedLimits.ELYTRA;
                 verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20 + SpeedLimits.ELYTRA_VERTICAL;
                 playerData.setLastSolidTouch(time);
+
+                if (!playerData.getFlying()) {
+                    playerData.setElytraElevation(packetView.getY());
+                }
+
+                if (playerData.getElytraLastRocketTime() - time > 0) {
+                    if (packetView.getY() < playerData.getElytraMaxElevation()) {
+                        playerData.setElytraMaxElevation(packetView.getY());
+                    }
+                }
+
                 playerData.setFlying(true);
             }
 

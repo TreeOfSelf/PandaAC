@@ -32,6 +32,10 @@ public class PlayerMovementData {
     private double storedSpeedVertical;
     private double lastSpeed;
 
+    private double elytraElevation;
+    private double elytraMaxElevation;
+    private long elytraLastRocketTime;
+
     public double[] speedPotential = new double[100];
     int speedPotentialPointer = 0;
 
@@ -44,6 +48,7 @@ public class PlayerMovementData {
     private int speedFlagCount;
     private int shortSpeedFlagCount;
     private int upSpeedFlagCount;
+    private int elytraHoverCount = 0;
 
     private long firstPacketTime;
     private long lastPacketTime;
@@ -141,6 +146,13 @@ public class PlayerMovementData {
     public void decrementSpeedFlagCount() {speedFlagCount--; if(speedFlagCount<0) speedFlagCount = 0;}
     public int getSpeedFlagCount() {return speedFlagCount;}
 
+    public void incrementElytraHoverCount() {elytraHoverCount++;}
+    public void decrementElytraHoverCount() {elytraHoverCount--; if(elytraHoverCount<0) elytraHoverCount = 0;}
+    public int getElytraHoverCount() {return elytraHoverCount;}
+
+    public long getElytraLastRocketTime() {return elytraLastRocketTime;}
+    public void setElytraLastRocketTime(long time) {elytraLastRocketTime = time;}
+
     public void incrementShortSpeedFlagCount() {speedFlagCount++;}
     public void decrementShortSpeedFlagCount() {speedFlagCount--; if(speedFlagCount<0) speedFlagCount = 0;}
     public int getShortSpeedFlagCount() {return speedFlagCount;}
@@ -152,6 +164,14 @@ public class PlayerMovementData {
     public int getPacketCount(){return packetCount;}
     public boolean getPossibleTimer(){return possibleTimer;}
     public double getCarriedPotential(){return carriedPotential;}
+
+    public double getElytraElevation() {return elytraElevation;}
+    public void setElytraElevation(double elevation) {
+        elytraElevation = elevation;
+        elytraMaxElevation = elevation;
+    }
+    public double getElytraMaxElevation() {return elytraMaxElevation;}
+    public void setElytraMaxElevation(double elevation) {elytraMaxElevation = elevation;}
 
     public Vec3d getLastVelocity() {
         return lastVelocity;

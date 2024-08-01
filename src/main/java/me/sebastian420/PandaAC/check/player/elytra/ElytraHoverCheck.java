@@ -12,13 +12,18 @@ public class ElytraHoverCheck {
 
         if (playerData.getChanged()) {
             double yDistance = Math.abs(playerData.getLastY() - playerData.getY());
-            if (yDistance < 0.1) {
-                double horizontalDistance = MathUtil.getDistance(playerData.getLastX(), playerData.getLastZ(), playerData.getX(), playerData.getZ());
-                if (horizontalDistance < 0.8) {
+            double horizontalDistance = MathUtil.getDistance(playerData.getLastX(), playerData.getLastZ(), playerData.getX(), playerData.getZ());
+
+
+            if (yDistance < 0.2 && horizontalDistance < 3) {
+                playerData.incrementElytraHoverCount();
+                if (playerData.getElytraHoverCount() > 3) {
                     PandaLogger.getLogger().warn("yDistance {} horizontalDistance {}", yDistance, horizontalDistance);
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
                 }
+            } else {
+                playerData.decrementElytraHoverCount();
             }
         }
         return flagged;

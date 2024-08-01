@@ -20,7 +20,6 @@ public class ElytraVerticalSpeedCheck {
 
             double speedMps = (distance * 1000.0) / timeDifMs;
             double speedPotential = playerData.getVerticalSpeedPotential((double) timeDifMs / 1000d);
-
             if (speedMps > speedPotential) {
                 playerData.incrementUpSpeedFlagCount();
                 if (playerData.getUpSpeedFlagCount() > 1) {
