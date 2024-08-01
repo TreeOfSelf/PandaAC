@@ -52,4 +52,6 @@ public class SpeedLimits {
     public static final double ELYTRA = 10;
     public static final double ELYTRA_VERTICAL = 10;
 
+    public static final double RIPTIDE = 45;
+
 }

@@ -61,8 +61,6 @@ public class MovementManager {
 
 
             if (!player.isFallFlying()) {
-
-
                 //Save momentum
                 if (playerData.getFlying()) {
                     if (time - playerData.getLastElytraStoreTime() < 1000) {
@@ -157,7 +155,7 @@ public class MovementManager {
                     }
                 }
             } else {
-                speedPotential = MathUtil.vectorLength(player.getVelocity().getX(),player.getVelocity().getZ()) * 20 + SpeedLimits.ELYTRA;
+                speedPotential = MathUtil.vectorLength(player.getVelocity().getX(), player.getVelocity().getZ()) * 20 + SpeedLimits.ELYTRA;
                 verticalSpeedPotential = Math.abs(player.getVelocity().getY()) * 20 + SpeedLimits.ELYTRA_VERTICAL;
                 playerData.setLastSolidTouch(time);
 
@@ -175,6 +173,14 @@ public class MovementManager {
                 playerData.setFlying(true);
             }
 
+            if (player.isUsingRiptide()) {
+                speedPotential = SpeedLimits.RIPTIDE;
+                verticalSpeedPotential = SpeedLimits.RIPTIDE;
+                playerData.setStoredSpeedVertical(30);
+                playerData.setAirTimeStartTime(time);
+            }
+
+
             playerData.setLastVelocity(player.getVelocity());
 
             if( onGround || nearClimbable) {
@@ -183,7 +189,9 @@ public class MovementManager {
                 playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
                 playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
             }else if (time - playerData.getLastSolidTouch() > 1000 &&
-                    packetView.getY() > playerData.getLastY() && !inFluid && time - playerData.getLastFluidTime() > 500) {
+                    packetView.getY() > playerData.getLastY() &&
+                    !inFluid && time - playerData.getLastFluidTime() > 500 &&
+                    playerData.getStoredSpeedVertical()<=0) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying()) CheckManager.rollBack(player ,playerData);
             } else if (inFluid) {
                 playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
@@ -197,7 +205,7 @@ public class MovementManager {
             double playerMoveLength = MathUtil.vectorLength(player.getMovement().getX(),player.getMovement().getZ());
 
             if (playerMoveLength > ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult) {
-                if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying()) {
+                if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
                     playerData.incrementShortSpeedFlagCount();
                     if (playerData.getShortSpeedFlagCount() > 6) {
                         PandaLogger.getLogger().info("Flagged Short term speed Speed {} Pot {}",playerMoveLength, ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult);
@@ -207,7 +215,6 @@ public class MovementManager {
             } else {
                 playerData.decrementShortSpeedFlagCount();
             }
-
 
             playerData.setSpeedPotential(speedPotential);
             playerData.setVerticalSpeedPotential(verticalSpeedPotential);

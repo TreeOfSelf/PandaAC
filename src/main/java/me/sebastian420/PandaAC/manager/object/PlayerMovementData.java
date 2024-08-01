@@ -114,6 +114,8 @@ public class PlayerMovementData {
     public double getLastAttachedZ(){return lastAttachedZ;}
 
     public long getAirTimeStartTime(){return airTimeStartTime;}
+    public void setAirTimeStartTime(long time){ airTimeStartTime = time;}
+
     public long getLastSolidTouch() {return lastSolidTouch;}
     public void setLastSolidTouch(long time) {lastSolidTouch = time;}
 
