@@ -175,8 +175,8 @@ public class MovementManager {
             }
 
             if (player.isUsingRiptide()) {
-                playerData.setStoredSpeedVertical(60);
-                playerData.setStoredSpeed(60);
+                playerData.setStoredSpeedVertical(75);
+                playerData.setStoredSpeed(75);
                 playerData.setAirTimeStartTime(time);
             }
 
