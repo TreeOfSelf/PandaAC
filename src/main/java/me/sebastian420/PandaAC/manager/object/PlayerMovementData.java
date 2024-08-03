@@ -32,6 +32,8 @@ public class PlayerMovementData {
     private double storedSpeedVertical;
     private double lastSpeed;
 
+    private double lastSpeedPotential;
+
     private double elytraElevation;
     private double elytraMaxElevation;
     private long elytraLastRocketTime;
@@ -195,6 +197,9 @@ public class PlayerMovementData {
     public boolean getHover() {return hover;}
     public void setHover(boolean hover){this.hover = hover;}
 
+
+    public void setLastSpeedPotential(double speedPotential) {lastSpeedPotential = speedPotential;}
+    public double getLastSpeedPotential() {return lastSpeedPotential;}
 
     public void moveCurrentToLast(long time){
         lastX = currentX;

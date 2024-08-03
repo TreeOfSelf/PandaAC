@@ -27,8 +27,7 @@ public class HorizontalSpeedCheck {
 
             double speedPotential = playerData.getSpeedPotential((double) timeDifMs / 1000d);
             double totalPotential = speedPotential + storedSpeed;
-
-            //playerData.setLastSpeedPotential(speedPotential);
+            double lastPotential = playerData.getLastSpeedPotential() + storedSpeed;
 
             double newStoredSpeed = storedSpeed - speedMps;
 
@@ -38,7 +37,7 @@ public class HorizontalSpeedCheck {
                 playerData.setStoredSpeed(0);
             }
 
-            if (speedMps > totalPotential || playerData.getPossibleTimer()) {
+            if ( (speedMps > totalPotential && speedMps > lastPotential) || playerData.getPossibleTimer()) {
                 playerData.incrementSpeedFlagCount();
                 if (playerData.getSpeedFlagCount() > 3) {
                     PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {}", speedMps, speedPotential, storedSpeed, playerData.getPacketCount());
@@ -47,11 +46,15 @@ public class HorizontalSpeedCheck {
                 }
             } else {
                 playerData.decrementSpeedFlagCount();
+
             }
 
             if (playerData.getPacketCount() > 7) {
                 playerData.setPossibleTimer(true);
             }
+
+            playerData.setLastSpeedPotential(speedPotential);
+
 
         }
         return flagged;
