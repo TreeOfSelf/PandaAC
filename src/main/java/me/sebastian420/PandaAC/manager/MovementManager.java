@@ -142,6 +142,7 @@ public class MovementManager {
                         if (!inFluid) {
                             if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
                                 verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
+                                speedPotential *= 1.25;
                             }
                         } else {
                             if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {

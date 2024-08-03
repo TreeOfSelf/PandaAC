@@ -46,7 +46,6 @@ public class HorizontalSpeedCheck {
                 }
             } else {
                 playerData.decrementSpeedFlagCount();
-
             }
 
             if (playerData.getPacketCount() > 7) {
