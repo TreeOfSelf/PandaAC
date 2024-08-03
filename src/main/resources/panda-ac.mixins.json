@@ -20,7 +20,7 @@
     "duplication.FallingBlockEntityMixin_GravityBlockDupe",
     "duplication.ServerPlayerEntityMixin_NoConnectionDeath",
     "duplication.StringTagMixin_StringWriteLimit",
-    "entity.ItemPlacementContextMixin_AirPlace",
+    "entity.ItemPlacementContextMixin_BlockPlaceChecks",
     "entity.ServerPlayerEntityMixin_Disconnect",
     "entity.ServerPlayerEntityMixinCast_Player",
     "illegal_action.PistonMixin_PreventDestruction",
