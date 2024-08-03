@@ -66,7 +66,7 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
 
         double angle = Math.acos(lookVec.dotProduct(placeVec));
 
-        double maxAllowedAngle = Math.PI / 4;
+        double maxAllowedAngle = 48;
 
         if (angle > maxAllowedAngle) {
             canPlace = false;

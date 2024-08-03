@@ -1,20 +1,10 @@
 package me.sebastian420.PandaAC.event.player;
 
-import me.sebastian420.PandaAC.manager.MovementManager;
-import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
-import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.VehicleEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
