@@ -10,7 +10,7 @@ public class CombatModule {
         var wallHitCheck = new WallHitCheck();
         var invHitCheck = new InventoryHitCheck();
 
-        UseEntityCallback.EVENT.register(angleCheck);
+        /*UseEntityCallback.EVENT.register(angleCheck);
         AttackEntityCallback.EVENT.register(angleCheck);
 
         UseEntityCallback.EVENT.register(reachCheck);
@@ -20,6 +20,6 @@ public class CombatModule {
         AttackEntityCallback.EVENT.register(wallHitCheck);
 
         UseEntityCallback.EVENT.register(invHitCheck);
-        AttackEntityCallback.EVENT.register(invHitCheck);
+        AttackEntityCallback.EVENT.register(invHitCheck);*/
     }
 }

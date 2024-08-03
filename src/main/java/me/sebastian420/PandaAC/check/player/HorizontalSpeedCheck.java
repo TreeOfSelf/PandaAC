@@ -1,5 +1,6 @@
 package me.sebastian420.PandaAC.check.player;
 
+import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
@@ -27,6 +28,8 @@ public class HorizontalSpeedCheck {
             double speedPotential = playerData.getSpeedPotential((double) timeDifMs / 1000d);
             double totalPotential = speedPotential + storedSpeed;
 
+            //playerData.setLastSpeedPotential(speedPotential);
+
             double newStoredSpeed = storedSpeed - speedMps;
 
             if (newStoredSpeed > 0) {
@@ -37,7 +40,6 @@ public class HorizontalSpeedCheck {
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
                 playerData.incrementSpeedFlagCount();
-
                 if (playerData.getSpeedFlagCount() > 3) {
                     PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {}", speedMps, speedPotential, storedSpeed, playerData.getPacketCount());
                     CheckManager.rollBack(serverPlayerEntity, playerData);

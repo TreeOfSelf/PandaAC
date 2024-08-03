@@ -37,7 +37,7 @@ public class ElytraHorizontalSpeedCheck {
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
                 playerData.incrementSpeedFlagCount();
-                if (playerData.getSpeedFlagCount() > 0) {
+                if (playerData.getSpeedFlagCount() > 1) {
                     PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, playerData.getPacketCount());
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;

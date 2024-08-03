@@ -8,8 +8,8 @@ public class SpeedLimits {
      */
 
     public static final double FUDGE = 1.0;
-    public static final double CRAWLING = 1.0;
-    public static final double SNEAKING = 1.6;
+    public static final double CRAWLING = 1.6;
+    public static final double SNEAKING = 2.0;
     public static final double WALKING = 4.317;
     public static final double WALKING_AND_JUMPING = 5;
     public static final double SPRINT = 5.612;
@@ -48,7 +48,7 @@ public class SpeedLimits {
     public static final double STRIDER_SPEED = 5;
     public static final double STRIDER_YAW = 2000;
 
-    public static final double ELYTRA = 15;
+    public static final double ELYTRA = 20;
     public static final double ELYTRA_VERTICAL = 15;
 
     public static final double RIPTIDE = 45;
