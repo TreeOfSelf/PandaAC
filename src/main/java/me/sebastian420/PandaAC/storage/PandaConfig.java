@@ -77,21 +77,6 @@ public class PandaConfig {
          */
         public boolean removeHealthTags = true;
 
-
-        /**
-         * Entities that must have health sent to render correctly.
-         * <p>
-         * K -> Entities to allow health of.
-         * V -> Increments by percentage of health to allow.
-         * <p>
-         * Implied by default is 1F, or alive and dead.
-         */
-        @JsonAdapter(UnnecessaryEntityTypeMapAdapter.class)
-        public Object2FloatOpenHashMap<EntityType<?>> allowedHealthTags = new Object2FloatOpenHashMap<>(
-                new EntityType<?>[]{EntityType.WOLF, EntityType.WITHER, EntityType.IRON_GOLEM},
-                new float[]{0F, 0.5F, 0.25F}
-        );
-
         /**
          * Removes entity equipment tags from
          * packets. Players will still see if item is enchanted,
