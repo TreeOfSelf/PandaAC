@@ -4,6 +4,7 @@ import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.world.ServerWorld;
@@ -34,7 +35,8 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
         for (Direction direction : Direction.values()) {
             BlockPos checkPos = itemPlacementContext.getBlockPos().offset(direction, 1);
             BlockState blockState = world.getBlockState(checkPos);
-            if (!blockState.getCollisionShape(world.realWorld, checkPos).isEmpty()) {
+
+            if (!blockState.isAir() && blockState.getBlock() != Blocks.WATER && blockState.getBlock() != Blocks.LAVA) {
                 canPlace = true;
                 break;
             }
