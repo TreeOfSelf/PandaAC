@@ -13,11 +13,11 @@ public class CombatModule {
         UseEntityCallback.EVENT.register(angleCheck);
         AttackEntityCallback.EVENT.register(angleCheck);
 
-        /*UseEntityCallback.EVENT.register(reachCheck);
+        UseEntityCallback.EVENT.register(reachCheck);
         AttackEntityCallback.EVENT.register(reachCheck);
 
         UseEntityCallback.EVENT.register(wallHitCheck);
-        AttackEntityCallback.EVENT.register(wallHitCheck);*/
+        AttackEntityCallback.EVENT.register(wallHitCheck);
 
     }
 }
