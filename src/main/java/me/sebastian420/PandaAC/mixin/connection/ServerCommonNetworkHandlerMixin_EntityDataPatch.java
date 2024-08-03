@@ -1,13 +1,11 @@
 package me.sebastian420.PandaAC.mixin.connection;
 
 import com.mojang.authlib.GameProfile;
-import me.sebastian420.PandaAC.mixin.accessor.ItemEntityAccessor;
 import me.sebastian420.PandaAC.mixin.accessor.LivingEntityAccessor;
 import me.sebastian420.PandaAC.mixin.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.packet.Packet;
@@ -39,7 +37,6 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
     @Shadow @Final protected MinecraftServer server;
     private static final TrackedData<Float> LIVING_ENTITY_HEALTH = LivingEntityAccessor.getHealth();
     private static final TrackedData<Float> PLAYER_ENTITY_ABSORPTION = PlayerEntityAccessor.getAbsorption();
-    private static final TrackedData<ItemStack> ITEM_ENTITY_STACK = ItemEntityAccessor.getSTACK();
 
 
     @Inject(method = "send", at = @At("HEAD"))
@@ -59,18 +56,7 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
 
                 if (entity.getType() != EntityType.WITHER && entity.getType() != EntityType.WOLF && entity.getType() != EntityType.IRON_GOLEM)
                     trackedValues.removeIf(trackedValue -> trackedValue.id() == LIVING_ENTITY_HEALTH.id());
-
-
                 trackedValues.removeIf(trackedValue -> trackedValue.id() == PLAYER_ENTITY_ABSORPTION.id());
-
-
-            }  else if (pandaConfig.packet.removeDroppedItemInfo && entity instanceof ItemEntity itemEntity) {
-                boolean removed = trackedValues.removeIf(entry -> entry.id() == ITEM_ENTITY_STACK.id()); // Original item
-                if (removed) {
-                    ItemStack original = itemEntity.getStack();
-                    DataTracker.SerializedEntry<ItemStack> fakeEntry = DataTracker.SerializedEntry.of(ITEM_ENTITY_STACK,  new ItemStack(original.getItem()));
-                    trackedValues.add(fakeEntry);
-                }
             }
         }
     }

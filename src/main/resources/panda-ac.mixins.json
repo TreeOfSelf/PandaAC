@@ -7,7 +7,6 @@
     "accessor.EntityEquipmentUpdateS2CPacketAccessor",
     "accessor.EntityPositionS2CPacketAccessor",
     "accessor.InventoryS2CPacketAccessor",
-    "accessor.ItemEntityAccessor",
     "accessor.LivingEntityAccessor",
     "accessor.PlayerEntityAccessor",
     "accessor.PlayerMoveC2SPacketAccessor",
@@ -17,15 +16,11 @@
     "connection.PlayerMoveC2SPacketMixin_GetData",
     "connection.ServerCommonNetworkHandlerMixin_EntityDataPatch",
     "connection.ServerPlayNetworkHandlerMixin_PacketEvents",
-    "duplication.FallingBlockEntityMixin_GravityBlockDupe",
     "duplication.ServerPlayerEntityMixin_NoConnectionDeath",
     "duplication.StringTagMixin_StringWriteLimit",
     "entity.ItemPlacementContextMixin_BlockPlaceChecks",
     "entity.ServerPlayerEntityMixin_Disconnect",
     "entity.ServerPlayerEntityMixinCast_Player",
-    "illegal_action.PistonMixin_PreventDestruction",
-    "illegal_action.ServerPlayerEntityMixin_InventoryClose",
-    "movement.EntityMixin_NetherRoofDamage",
     "movement.ServerPlayNetworkHandler_OnGroundCheck"
   ],
   "injectors": {
