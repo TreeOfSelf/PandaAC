@@ -10,12 +10,12 @@ public class ElytraHoverCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData, long time) {
         boolean flagged = false;
 
-        if (playerData.getChanged()) {
+        if (playerData.getChanged() && !serverPlayerEntity.isInFluid()) {
             double yDistance = Math.abs(playerData.getLastY() - playerData.getY());
             double horizontalDistance = MathUtil.getDistance(playerData.getLastX(), playerData.getLastZ(), playerData.getX(), playerData.getZ());
 
 
-            if (yDistance < 0.2 && horizontalDistance < 3) {
+            if (yDistance < 0.17 && horizontalDistance < 3) {
                 playerData.incrementElytraHoverCount();
                 if (playerData.getElytraHoverCount() > 3) {
                     PandaLogger.getLogger().warn("yDistance {} horizontalDistance {}", yDistance, horizontalDistance);
