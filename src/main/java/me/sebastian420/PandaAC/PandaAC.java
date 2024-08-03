@@ -1,5 +1,6 @@
 package me.sebastian420.PandaAC;
 
+import me.sebastian420.PandaAC.event.player.BreakBlock;
 import me.sebastian420.PandaAC.event.player.UseEntity;
 import me.sebastian420.PandaAC.event.player.UseRocket;
 import me.sebastian420.PandaAC.event.server.ServerStartedEvent;
@@ -40,6 +41,7 @@ public class PandaAC implements ModInitializer {
 		ChunkUnloadEvent.register();
 		UseEntity.register();
 		UseRocket.register();
+		BreakBlock.register();
 		CombatModule.registerEvents();
 		S2CPacketModule.registerEvents();
 	}
