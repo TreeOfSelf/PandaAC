@@ -2,25 +2,9 @@ package me.sebastian420.PandaAC.storage;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import it.unimi.dsi.fastutil.objects.Object2FloatMaps;
-import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import me.sebastian420.PandaAC.util.PandaLogger;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 public class PandaConfig {
     private static final Gson GSON = new GsonBuilder()
@@ -28,33 +12,6 @@ public class PandaConfig {
             .disableHtmlEscaping()
             .create();
 
-    /**
-     * Main part of the config.
-     */
-    public static class Main {
-
-        /**
-         * Checks whether is doing actions
-         * that cannot be done while having the GUI open.
-         * (e. g. hitting, typing, etc.)
-         */
-        public boolean checkInventoryActions = true;
-
-
-        public boolean preventDestructionByHeadlessPistons = true;
-
-        /**
-         * Allows headless pistons to destroy certain blocks when {@link #preventDestructionByHeadlessPistons} is enabled.
-         * <p>
-         * Useful to allow only breaking of bedrock but denying destruction of barriers, chests and other blocks.
-         */
-        @JsonAdapter(BlockSetAdapter.class)
-        public Set<Block> allowedDestructibleByHeadlessPistons = Collections.singleton(Blocks.PISTON_HEAD);
-
-        @SerializedName("// What altitude in the nether should start inflicting void damage (e.g. 128). -1 disables it.")
-        public final String _comment_inflictNetherRoofDamage = "";
-        public int inflictNetherRoofDamage = -1;
-    }
 
     /**
      * Outgoing packet settings.
@@ -128,7 +85,6 @@ public class PandaConfig {
         public boolean checkHitAngle = true;
     }
 
-    public final PandaConfig.Main main = new Main();
     public final PandaConfig.Combat combat = new Combat();
 
     public static class Duplication {
@@ -183,68 +139,5 @@ public class PandaConfig {
         }
     }
 
-    /**
-     * Adapts {@link Block} between it and the identifier.
-     *
-     * @author Ampflower
-     */
-    private static final class BlockSetAdapter extends TypeAdapter<Set<Block>> {
 
-        @Override
-        public void write(JsonWriter out, Set<Block> value) throws IOException {
-            out.beginArray();
-            var reg = Registries.BLOCK;
-            for (var block : value) {
-                out.value(reg.getId(block).toString());
-            }
-            out.endArray();
-        }
-
-        @Override
-        public Set<Block> read(JsonReader in) throws IOException {
-            in.beginArray();
-            var reg = Registries.BLOCK;
-            var set = new HashSet<Block>();
-            while (in.hasNext()) {
-                set.add(reg.get(Identifier.tryParse(in.nextString())));
-            }
-            in.endArray();
-            return set;
-        }
-    }
-
-    /**
-     * Adapts {@link EntityType} between it and the identifier.
-     * <p>
-     * Unnecessary, as map-level shouldn't be needed to begin with,
-     * yet arbitrary unforeseen restrictions require this anyways.
-     *
-     * @author Ampflower
-     */
-    private static final class UnnecessaryEntityTypeMapAdapter extends TypeAdapter<Object2FloatOpenHashMap<EntityType<?>>> {
-
-        @Override
-        public void write(JsonWriter out, Object2FloatOpenHashMap<EntityType<?>> value) throws IOException {
-            out.beginObject();
-            var itr = Object2FloatMaps.fastIterator(value);
-            while (itr.hasNext()) {
-                var entry = itr.next();
-                out.name(EntityType.getId(entry.getKey()).toString());
-                out.value(entry.getFloatValue());
-            }
-            out.endObject();
-        }
-
-        @Override
-        public Object2FloatOpenHashMap<EntityType<?>> read(JsonReader in) throws IOException {
-            in.beginObject();
-            var map = new Object2FloatOpenHashMap<EntityType<?>>();
-            while (in.hasNext()) {
-                map.put(EntityType.get(in.nextName()).orElseThrow(() -> new IOException("Invalid entity type.")),
-                        (float) in.nextDouble());
-            }
-            in.endObject();
-            return map;
-        }
-    }
 }
