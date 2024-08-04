@@ -4,6 +4,9 @@ public class SpeedLimits {
 
     /*
     timer still an issue
+    lightning coordinate tracking
+    teleport coords
+    after death doing stuff
     status effects
      */
 
