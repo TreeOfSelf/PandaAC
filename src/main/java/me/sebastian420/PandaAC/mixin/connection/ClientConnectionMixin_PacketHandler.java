@@ -1,5 +1,6 @@
 package me.sebastian420.PandaAC.mixin.connection;
 
+import com.google.gson.internal.reflect.ReflectionHelper;
 import io.netty.channel.ChannelHandlerContext;
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.MovementManager;
@@ -14,6 +15,7 @@ import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,25 +24,33 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin_PacketHandler {
     @Shadow
     private PacketListener packetListener;
 
+
+
     @Inject(method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V", at = @At("HEAD"))
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet packet, CallbackInfo cb) {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo cb) {
         if (packetListener instanceof ServerPlayNetworkHandler) {
             if (packet instanceof PlayerMoveC2SPacket) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
                 PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet, System.currentTimeMillis());
-            }  else if (packet instanceof VehicleMoveC2SPacket) {
+            } else if (packet instanceof VehicleMoveC2SPacket) {
                 ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
                 PandaACThread.queueVehicleMove(serverPlayerEntity, (VehicleMoveC2SPacket) packet, System.currentTimeMillis());
+            } else if (packet instanceof UpdateSignC2SPacket signPacket) {
+                String[] text = signPacket.getText();
+                for (int x = 0; x < text.length; x++) {
+                    text[x] = text[x].replaceAll("§", "");
+                }
             }
-
         }
     }
-
     @Inject(method = "sendImmediately", at = @At("HEAD"))
     private void sendImmediately(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
         if (packetListener instanceof ServerPlayNetworkHandler) {

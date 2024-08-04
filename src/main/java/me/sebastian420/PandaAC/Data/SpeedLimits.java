@@ -3,7 +3,7 @@ package me.sebastian420.PandaAC.data;
 public class SpeedLimits {
 
     /*
-    reach
+    timer still an issue
     status effects
      */
 
