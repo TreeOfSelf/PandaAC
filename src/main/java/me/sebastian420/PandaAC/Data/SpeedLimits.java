@@ -8,6 +8,7 @@ public class SpeedLimits {
     teleport coords
     after death doing stuff
     status effects
+    creative ignore break/place
      */
 
     public static final double FUDGE = 1.0;
