@@ -12,7 +12,11 @@ import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
@@ -83,6 +87,10 @@ public class MovementManager {
 
                 if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
                     speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
+
+                    StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
+                    if (dolphinsGrace != null) speedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 5);
+
                     inFluid = true;
                     speedPotential += Math.abs(player.getVelocity().getY());
                 } else if (currentFluidState.getFluidState().isIn(FluidTags.LAVA)) {
@@ -147,6 +155,8 @@ public class MovementManager {
                         } else {
                             if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
                                 verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
+                                StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
+                                if (dolphinsGrace != null) verticalSpeedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 5);
                             } else {
                                 verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP + Math.abs(player.getVelocity().getY()) * 20;
                             }
