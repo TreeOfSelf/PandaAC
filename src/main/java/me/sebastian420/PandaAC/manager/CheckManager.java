@@ -80,7 +80,7 @@ public class CheckManager {
                         }
 
                         if (serverPlayerEntity.isDisconnected()) break;
-                        if (JumpHeightCheck.check(serverPlayerEntity, playerData)) {
+                        if (JumpHeightCheck.check(serverPlayerEntity, playerData, time)) {
                             PandaLogger.getLogger().warn("Flagged Jump Height");
                             playerData.moveCurrentToLast(time);
                             break;

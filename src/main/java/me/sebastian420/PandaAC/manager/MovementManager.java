@@ -195,11 +195,15 @@ public class MovementManager {
             playerData.setLastVelocity(player.getVelocity());
 
             StatusEffectInstance jumpBoost = player.getStatusEffect(StatusEffects.JUMP_BOOST);
+            StatusEffectInstance levitation = player.getStatusEffect(StatusEffects.LEVITATION);
+
             int jumpBoostLevel = 1;
+            if (jumpBoost != null) jumpBoostLevel = jumpBoost.getAmplifier();
 
-            if (jumpBoost != null) {
-                jumpBoostLevel = jumpBoost.getAmplifier();
-
+            if (levitation != null) {
+                speedPotential = SpeedLimits.LEVITATION_HORIZONTAL;
+                verticalSpeedPotential = SpeedLimits.LEVITATION_VERTICAL;
+                playerData.setLastLevitation(time);
             }
 
             if( onGround || nearClimbable) {
@@ -210,7 +214,8 @@ public class MovementManager {
             }else if (time - playerData.getLastSolidTouch() > 1000L * jumpBoostLevel &&
                     packetView.getY() > playerData.getLastY() &&
                     !inFluid && time - playerData.getLastFluidTime() > 500L * jumpBoostLevel &&
-                    playerData.getStoredSpeedVertical()<=0) {
+                    playerData.getStoredSpeedVertical()<=0 &&
+                    time - playerData.getLastLevitation() > 500L) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying()) CheckManager.rollBack(player ,playerData);
             } else if (inFluid) {
                 playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);

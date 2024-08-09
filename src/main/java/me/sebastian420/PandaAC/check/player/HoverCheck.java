@@ -4,12 +4,16 @@ import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class HoverCheck {
     public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData) {
         boolean flagged = false;
-        if (playerData.getChanged()) {
+        StatusEffectInstance levitation = serverPlayerEntity.getStatusEffect(StatusEffects.LEVITATION);
+
+        if (playerData.getChanged() && levitation == null) {
             if (!BlockUtil.checkGroundThicc(serverPlayerEntity)) {
                 if (playerData.getLastY() == playerData.getY()) {
                     if (playerData.getHover()) {

@@ -10,9 +10,10 @@ import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class JumpHeightCheck {
-    public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData) {
+    public static boolean check(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData, long time) {
         boolean flagged = false;
-        if (playerData.getChanged()) {
+
+        if (playerData.getChanged() && time - playerData.getLastLevitation() > 500L) {
 
             double checkHeight = JumpHeights.NORMAL;
 

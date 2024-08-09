@@ -4,6 +4,8 @@ import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class VerticalSpeedCheckDown {
@@ -13,9 +15,19 @@ public class VerticalSpeedCheckDown {
         //Make this based on the last time they had an attachment
 
         //If we have moved down since last
-        if (playerData.getChanged() && playerData.getY() < playerData.getLastY()
+
+        if (playerData.getChanged() && playerData.getY() < playerData.getLastY() && time - playerData.getLastLevitation() > 500L
                 //If we are not currently attached (falling)
                 && playerData.getLastAttachedY() != playerData.getY()) {
+
+            StatusEffectInstance levitation = serverPlayerEntity.getStatusEffect(StatusEffects.LEVITATION);
+
+            if (levitation != null) {
+                PandaLogger.getLogger().info("SPEED DOWN INFO WENT DOWN WHILE LEVITATING");
+                CheckManager.rollBack(serverPlayerEntity, playerData);
+                flagged = true;
+                return (flagged);
+            }
 
             long airTimeDif = time - playerData.getAirTimeStartTime();
 

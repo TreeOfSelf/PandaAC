@@ -59,6 +59,7 @@ public class PlayerMovementData {
     private long lastPacketTime;
     private long lastFluidTime;
     private long lastElytraStoreTime;
+    private long lastLevitation;
 
     private long lastCheck;
     private long airTimeStartTime;
@@ -295,4 +296,6 @@ public class PlayerMovementData {
     public void addPlayerMovePacket() {playerMovePackets ++;}
     public int getPlayerMovePackets() {return playerMovePackets;}
 
+    public void setLastLevitation(long time) {lastLevitation = time;}
+    public long getLastLevitation() {return lastLevitation;}
 }
