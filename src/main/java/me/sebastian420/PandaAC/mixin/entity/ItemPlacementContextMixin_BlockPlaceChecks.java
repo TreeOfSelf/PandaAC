@@ -27,6 +27,7 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
     {
 
         ItemPlacementContext itemPlacementContext = (ItemPlacementContext)(Object)this;
+       
         FasterWorld world = PandaACThread.fasterWorldManager.getWorld((ServerWorld) itemPlacementContext.getWorld());
         PlayerEntity player = itemPlacementContext.getPlayer();
         Vec3d hitPos = itemPlacementContext.getHitPos();
@@ -48,7 +49,7 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
                 }
             }
 
-            if (!canPlace) PandaLogger.getLogger().info("Air place check failed}");
+            if (!canPlace) PandaLogger.getLogger().info("Air place check failed");
 
 
             //Check reach
