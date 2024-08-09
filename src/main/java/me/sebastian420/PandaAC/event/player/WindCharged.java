@@ -4,7 +4,7 @@ import me.sebastian420.PandaAC.manager.MovementManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;

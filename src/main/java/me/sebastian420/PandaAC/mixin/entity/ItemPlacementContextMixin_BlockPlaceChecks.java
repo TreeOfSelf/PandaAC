@@ -48,6 +48,8 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
                 }
             }
 
+            if (!canPlace) PandaLogger.getLogger().info("Air place check failed}");
+
 
             //Check reach
             if (distance > 22) {
