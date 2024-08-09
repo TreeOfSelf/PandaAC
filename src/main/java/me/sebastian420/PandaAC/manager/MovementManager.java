@@ -229,9 +229,15 @@ public class MovementManager {
             double playerMoveLength = MathUtil.vectorLength(player.getMovement().getX(),player.getMovement().getZ());
 
             StatusEffectInstance speedEffect = player.getStatusEffect(StatusEffects.SPEED);
-            if (speedEffect != null) {
-                speedPotential *= 1 + (double) speedEffect.getAmplifier() / 2;
+            if (speedEffect != null) speedPotential *= 1 + (double) speedEffect.getAmplifier() / 2;
+
+            StatusEffectInstance slowEffect = player.getStatusEffect(StatusEffects.SLOWNESS);
+            if (onGround && slowEffect != null) {
+                double slowChange = 1 - slowEffect.getAmplifier() * 0.075;
+                if ( slowChange < 0) slowChange = 0;
+                speedPotential *= slowChange;
             }
+
 
             if (playerMoveLength > ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
