@@ -4,10 +4,7 @@ public class SpeedLimits {
 
     /*
     timer still an issue
-    lightning coordinate tracking
-    teleport coords
     status effects
-    creative ignore break/place
      */
 
     public static final double FUDGE = 1.0;

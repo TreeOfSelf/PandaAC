@@ -18,6 +18,8 @@ public class UseEntity {
     }
 
     private static ActionResult onUseEntity(PlayerEntity player, net.minecraft.world.World world, Hand hand, Entity entity, EntityHitResult hitResult) {
+        if (player.isCreative()) return ActionResult.PASS;
+
         if (entity instanceof VehicleEntity) {
             PlayerMovementData playerData = MovementManager.getPlayer((ServerPlayerEntity) player);
             if (!BlockUtil.checkBlocksNearby((ServerPlayerEntity) player, playerData.getY())) {

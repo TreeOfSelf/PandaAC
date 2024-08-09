@@ -41,7 +41,9 @@ public class ClientConnectionMixin_PacketHandler {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo ci) {
         if (packetListener instanceof ServerPlayNetworkHandler) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
+
             //System.out.println(packet.getClass().getSimpleName());
+
             if (!serverPlayerEntity.isAlive()) {
                 if (!(packet instanceof ClientStatusC2SPacket)
                 && !(packet instanceof CustomPayloadC2SPacket)

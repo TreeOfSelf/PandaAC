@@ -218,13 +218,23 @@ public class PlayerMovementData {
     }
 
     public void setNew(PlayerMoveC2SPacketView packetView, long time) {
+
+        boolean packetChanged = false;
+
+        if (currentX != packetView.getX() ||
+        currentY != packetView.getY() ||
+        currentZ != packetView.getZ()
+        ) {
+            packetChanged = true;
+        }
+
         currentX = packetView.getX();
         currentY = packetView.getY();
         currentZ = packetView.getZ();
         changed = true;
         if (firstPacketTime == 0) firstPacketTime = time;
         lastPacketTime = time;
-        packetCount ++;
+        if (packetChanged) packetCount ++;
     }
 
     public void teleport(double x, double y, double z, long time) {

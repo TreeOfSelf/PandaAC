@@ -29,6 +29,8 @@ public class UseBlock {
 
     private static ActionResult onUseBlock(PlayerEntity player, World world, Hand hand, BlockHitResult blockHitResult) {
 
+        if (player.isCreative()) return ActionResult.PASS;
+
         Vec3d hitPos = blockHitResult.getPos();
         double distance = player.getCameraPosVec(1.0f).squaredDistanceTo(hitPos);
 
