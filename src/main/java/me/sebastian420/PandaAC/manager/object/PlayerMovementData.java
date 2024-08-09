@@ -52,6 +52,9 @@ public class PlayerMovementData {
     private int upSpeedFlagCount;
     private int elytraHoverCount = 0;
 
+    private int playerMovePackets = 0;
+
+
     private long firstPacketTime;
     private long lastPacketTime;
     private long lastFluidTime;
@@ -103,6 +106,7 @@ public class PlayerMovementData {
         possibleTimer = false;
 
     }
+
 
     public double getX(){return currentX;}
     public double getY(){return currentY;}
@@ -277,5 +281,8 @@ public class PlayerMovementData {
         //hover = false;
     }
 
+//
+    public void addPlayerMovePacket() {playerMovePackets ++;}
+    public int getPlayerMovePackets() {return playerMovePackets;}
 
 }

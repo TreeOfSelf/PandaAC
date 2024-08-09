@@ -4,11 +4,14 @@ import com.google.gson.internal.reflect.ReflectionHelper;
 import io.netty.channel.ChannelHandlerContext;
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.MovementManager;
+import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.c2s.common.ClientOptionsC2SPacket;
+import net.minecraft.network.packet.c2s.common.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.c2s.play.*;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
@@ -34,19 +37,31 @@ public class ClientConnectionMixin_PacketHandler {
 
 
 
-    @Inject(method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V", at = @At("HEAD"))
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo cb) {
+    @Inject(method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V", at = @At("HEAD"), cancellable = true)
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo ci) {
         if (packetListener instanceof ServerPlayNetworkHandler) {
-            if (packet instanceof PlayerMoveC2SPacket) {
-                ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-                PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet, System.currentTimeMillis());
-            } else if (packet instanceof VehicleMoveC2SPacket) {
-                ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-                PandaACThread.queueVehicleMove(serverPlayerEntity, (VehicleMoveC2SPacket) packet, System.currentTimeMillis());
-            } else if (packet instanceof UpdateSignC2SPacket signPacket) {
-                String[] text = signPacket.getText();
-                for (int x = 0; x < text.length; x++) {
-                    text[x] = text[x].replaceAll("§", "");
+            ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
+            //System.out.println(packet.getClass().getSimpleName());
+            if (!serverPlayerEntity.isAlive()) {
+                if (!(packet instanceof ClientStatusC2SPacket)
+                && !(packet instanceof CustomPayloadC2SPacket)
+                && !(packet instanceof TeleportConfirmC2SPacket)
+                && !(packet instanceof PlayerSessionC2SPacket)
+                && !(packet instanceof ClientOptionsC2SPacket)
+                && !(packet instanceof AcknowledgeChunksC2SPacket)
+                ) {
+                    ci.cancel();
+                }
+            } else {
+                if (packet instanceof PlayerMoveC2SPacket) {
+                    PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet, System.currentTimeMillis());
+                } else if (packet instanceof VehicleMoveC2SPacket) {
+                    PandaACThread.queueVehicleMove(serverPlayerEntity, (VehicleMoveC2SPacket) packet, System.currentTimeMillis());
+                } else if (packet instanceof UpdateSignC2SPacket signPacket) {
+                    String[] text = signPacket.getText();
+                    for (int x = 0; x < text.length; x++) {
+                        text[x] = text[x].replaceAll("§", "");
+                    }
                 }
             }
         }
