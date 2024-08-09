@@ -24,8 +24,8 @@ public class WindCharged {
             List<PlayerEntity> nearbyPlayers = serverWorld.getEntitiesByClass(PlayerEntity.class, boundingBox, (player) -> true);
             for (PlayerEntity player : nearbyPlayers) {
                 PlayerMovementData playerData = MovementManager.getPlayer((ServerPlayerEntity) player);
-                playerData.setStoredSpeed(playerData.getStoredSpeed() + 50.0);
-                playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() + 50.0);
+                playerData.setStoredSpeed(playerData.getStoredSpeed() + 30.0);
+                playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() + 75.0);
             }
         }
     }
