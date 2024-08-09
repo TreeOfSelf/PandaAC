@@ -4,6 +4,8 @@ import me.sebastian420.PandaAC.data.JumpHeights;
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -21,6 +23,11 @@ public class JumpHeightCheck {
             }
 
             checkHeight += playerData.getStoredSpeedVertical();
+
+            StatusEffectInstance jumpBoost = serverPlayerEntity.getStatusEffect(StatusEffects.JUMP_BOOST);
+            if (jumpBoost != null) {
+                checkHeight *= 1 + (double) jumpBoost.getAmplifier() * 1.5;
+            }
 
             if (playerData.getY() - playerData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
             playerData.getY() > playerData.getLastY()) {
