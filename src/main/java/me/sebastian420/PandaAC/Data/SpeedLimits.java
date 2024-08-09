@@ -3,7 +3,6 @@ package me.sebastian420.PandaAC.data;
 public class SpeedLimits {
 
     /*
-    status effects
      */
 
     public static final double FUDGE = 1.0;
