@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.util;
 
 import me.sebastian420.PandaAC.PandaACThread;
+import me.sebastian420.PandaAC.manager.FasterWorldManager;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
@@ -134,7 +135,7 @@ public class PacketUtil {
 
     public static boolean checkGround(ServerPlayerEntity serverPlayerEntity, PlayerMoveC2SPacketView packetView) {
 
-        FasterWorld world = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld());
+        FasterWorld world = FasterWorldManager.getWorld(serverPlayerEntity.getServerWorld());
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());

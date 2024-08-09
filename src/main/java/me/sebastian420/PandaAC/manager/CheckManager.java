@@ -41,7 +41,7 @@ public class CheckManager {
                         (int) Math.floor(playerData.getLastY()),
                         (int) Math.floor(playerData.getLastZ()));
 
-                BlockState lastBlockState = PandaACThread.fasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
+                BlockState lastBlockState = FasterWorldManager.getWorld(serverPlayerEntity.getServerWorld()).getBlockState(lastBlockPos);
 
                 //Non-Elytra
                 if (!serverPlayerEntity.isFallFlying()) {

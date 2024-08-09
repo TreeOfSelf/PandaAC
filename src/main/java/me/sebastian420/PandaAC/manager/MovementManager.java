@@ -53,7 +53,7 @@ public class MovementManager {
             vehicleData.setUUID(null);
         }
 
-        FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld(player.getServerWorld());
+        FasterWorld fasterWorld = FasterWorldManager.getWorld(player.getServerWorld());
 
         if (packetView.isChangePosition()) {
 

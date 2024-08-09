@@ -58,7 +58,7 @@ public class VehicleMovementManager {
 
             boolean previousOnIce = vehicleData.getOnIce();
 
-            FasterWorld fasterWorld = PandaACThread.fasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
+            FasterWorld fasterWorld = FasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
             BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY() - 1, (int) packet.getZ());
 
             vehicleData.setOnIce(false);

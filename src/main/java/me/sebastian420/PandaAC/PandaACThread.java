@@ -18,7 +18,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class PandaACThread extends Thread {
     public static PandaACThread INSTANCE;
     private static final BlockingQueue<QueuedEvent> EVENT_QUEUE = new LinkedBlockingQueue<>();
-    public static final FasterWorldManager fasterWorldManager = new FasterWorldManager();
 
     private final MinecraftServer minecraftServer;
 
@@ -120,15 +119,15 @@ public class PandaACThread extends Thread {
         switch (event.type) {
             case WORLD_LOAD:
                 ServerWorld world = (ServerWorld) event.data;
-                fasterWorldManager.createWorld(world);
+                FasterWorldManager.createWorld(world);
                 break;
             case CHUNK_LOAD:
                 Object[] chunkLoadData = (Object[]) event.data;
-                fasterWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData(((ServerWorld) chunkLoadData[0]).getServer(),(Chunk) chunkLoadData[1]);
+                FasterWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData(((ServerWorld) chunkLoadData[0]).getServer(),(Chunk) chunkLoadData[1]);
                 break;
             case CHUNK_UNLOAD:
                 Object[] chunkUnloadData = (Object[]) event.data;
-                fasterWorldManager.getWorld((ServerWorld) chunkUnloadData[0]).deleteChunkData((Chunk) chunkUnloadData[1]);
+                FasterWorldManager.getWorld((ServerWorld) chunkUnloadData[0]).deleteChunkData((Chunk) chunkUnloadData[1]);
                 break;
             case PLAYER_MOVE:
                 Object[] moveData = (Object[]) event.data;

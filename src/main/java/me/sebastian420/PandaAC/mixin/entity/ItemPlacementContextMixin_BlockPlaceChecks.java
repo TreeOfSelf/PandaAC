@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.mixin.entity;
 
 import me.sebastian420.PandaAC.PandaACThread;
+import me.sebastian420.PandaAC.manager.FasterWorldManager;
 import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
@@ -27,8 +28,8 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
     {
 
         ItemPlacementContext itemPlacementContext = (ItemPlacementContext)(Object)this;
-       
-        FasterWorld world = PandaACThread.fasterWorldManager.getWorld((ServerWorld) itemPlacementContext.getWorld());
+
+        FasterWorld world = FasterWorldManager.getWorld((ServerWorld) itemPlacementContext.getWorld());
         PlayerEntity player = itemPlacementContext.getPlayer();
         Vec3d hitPos = itemPlacementContext.getHitPos();
 
