@@ -12,8 +12,11 @@ import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -239,6 +242,8 @@ public class MovementManager {
                 speedPotential *= slowChange;
             }
 
+            ItemEnchantmentsComponent enchants = EnchantmentHelper.getEnchantments(player.getEquippedStack(EquipmentSlot.FEET));
+            enchants.getLevel(player.getWorld().getRegistryManager().get())
 
             if (playerMoveLength > ((speedPotential * SpeedLimits.FUDGE + playerData.getStoredSpeed()) / 18)*speedMult) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
