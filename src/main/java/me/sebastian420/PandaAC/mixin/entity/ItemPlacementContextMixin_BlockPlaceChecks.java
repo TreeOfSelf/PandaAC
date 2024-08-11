@@ -1,21 +1,17 @@
 package me.sebastian420.PandaAC.mixin.entity;
 
-import me.sebastian420.PandaAC.PandaACThread;
-import me.sebastian420.PandaAC.manager.FasterWorldManager;
-import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,7 +25,7 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
 
         ItemPlacementContext itemPlacementContext = (ItemPlacementContext)(Object)this;
 
-        FasterWorld world = FasterWorldManager.getWorld((ServerWorld) itemPlacementContext.getWorld());
+        World world = itemPlacementContext.getWorld();
         PlayerEntity player = itemPlacementContext.getPlayer();
         Vec3d hitPos = itemPlacementContext.getHitPos();
 
@@ -64,7 +60,7 @@ public class ItemPlacementContextMixin_BlockPlaceChecks {
             Vec3d start = player.getCameraPosVec(1.0F);
             Vec3d end = hitPos;
             RaycastContext context = new RaycastContext(start, end, RaycastContext.ShapeType.OUTLINE, RaycastContext.FluidHandling.NONE, player);
-            BlockHitResult result = world.realWorld.raycast(context);
+            BlockHitResult result = world.raycast(context);
 
             if (result.getType() == HitResult.Type.BLOCK && !result.getBlockPos().equals(itemPlacementContext.getBlockPos())) {
                 canPlace = false;

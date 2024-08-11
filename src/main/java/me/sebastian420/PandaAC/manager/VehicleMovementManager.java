@@ -1,25 +1,21 @@
 package me.sebastian420.PandaAC.manager;
 
-import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
-import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.MathUtil;
-import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.SkeletonHorseEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,8 +54,8 @@ public class VehicleMovementManager {
 
             boolean previousOnIce = vehicleData.getOnIce();
 
-            FasterWorld fasterWorld = FasterWorldManager.getWorld((ServerWorld) vehicle.getWorld());
-            BlockState blockStateUnder = BlockUtil.checkVicinityBoat(fasterWorld, (int) packet.getX(), (int) packet.getY() - 1, (int) packet.getZ());
+            World world = player.getWorld();
+            BlockState blockStateUnder = BlockUtil.checkVicinityBoat(world, (int) packet.getX(), (int) packet.getY() - 1, (int) packet.getZ());
 
             vehicleData.setOnIce(false);
 

@@ -117,18 +117,6 @@ public class PandaACThread extends Thread {
         ServerPlayerEntity player;
 
         switch (event.type) {
-            case WORLD_LOAD:
-                ServerWorld world = (ServerWorld) event.data;
-                FasterWorldManager.createWorld(world);
-                break;
-            case CHUNK_LOAD:
-                Object[] chunkLoadData = (Object[]) event.data;
-                FasterWorldManager.getWorld((ServerWorld) chunkLoadData[0]).updateChunkData(((ServerWorld) chunkLoadData[0]).getServer(),(Chunk) chunkLoadData[1]);
-                break;
-            case CHUNK_UNLOAD:
-                Object[] chunkUnloadData = (Object[]) event.data;
-                FasterWorldManager.getWorld((ServerWorld) chunkUnloadData[0]).deleteChunkData((Chunk) chunkUnloadData[1]);
-                break;
             case PLAYER_MOVE:
                 Object[] moveData = (Object[]) event.data;
                 player = (ServerPlayerEntity) moveData[0];

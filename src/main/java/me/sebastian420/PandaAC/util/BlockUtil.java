@@ -1,8 +1,6 @@
 package me.sebastian420.PandaAC.util;
 
 import me.sebastian420.PandaAC.cast.Player;
-import me.sebastian420.PandaAC.manager.object.FasterWorld;
-import net.minecraft.SaveVersion;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
@@ -10,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
@@ -20,7 +19,7 @@ import java.util.List;
 
 public class BlockUtil {
 
-    public static BlockState checkVicinityBoat(FasterWorld world, int x, int y, int z){
+    public static BlockState checkVicinityBoat(World world, int x, int y, int z){
         int fastestSpeedLevel = 0;
         BlockState savedState = Blocks.AIR.getDefaultState();
 
@@ -34,7 +33,7 @@ public class BlockUtil {
 
                     if ((state.getFluidState().isIn(FluidTags.WATER) ||
                             state.isIn(BlockTags.ICE)) &&
-                            stateTop.getCollisionShape(world.realWorld, onTopPos).isEmpty()) {
+                            stateTop.getCollisionShape(world, onTopPos).isEmpty()) {
 
                         if (state.getFluidState().isIn(FluidTags.WATER) && fastestSpeedLevel < 1) {
                             fastestSpeedLevel = 1;
@@ -56,7 +55,7 @@ public class BlockUtil {
         return savedState;
     }
 
-    public static BlockState checkVicinityIce(FasterWorld world, int x, int y, int z){
+    public static BlockState checkVicinityIce(World world, int x, int y, int z){
         int fastestSpeedLevel = 0;
         BlockState savedState = Blocks.AIR.getDefaultState();
 
@@ -68,7 +67,7 @@ public class BlockUtil {
                     BlockPos onTopPos = pos.offset(Direction.UP, 1);
                     BlockState stateTop = world.getBlockState(onTopPos);
                     if (state.isIn(BlockTags.ICE) &&
-                            stateTop.getCollisionShape(world.realWorld, onTopPos).isEmpty()) {
+                            stateTop.getCollisionShape(world, onTopPos).isEmpty()) {
                        if (state.isIn(BlockTags.ICE)) {
                             if (state.getBlock() == Blocks.BLUE_ICE && fastestSpeedLevel < 3) {
                                 fastestSpeedLevel = 3;
@@ -265,7 +264,7 @@ public class BlockUtil {
     }
 
 
-    public static boolean checkVicinityStairs(FasterWorld world, int x, int y, int z){
+    public static boolean checkVicinityStairs(ServerWorld world, int x, int y, int z){
 
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
@@ -275,7 +274,7 @@ public class BlockUtil {
                     BlockPos onTopPos = pos.offset(Direction.UP, 1);
                     BlockState stateTop = world.getBlockState(onTopPos);
 
-                    if (state.isIn(BlockTags.STAIRS) && stateTop.getCollisionShape(world.realWorld, onTopPos).isEmpty()) {
+                    if (state.isIn(BlockTags.STAIRS) && stateTop.getCollisionShape(world, onTopPos).isEmpty()) {
                         return true;
                     }
                 }

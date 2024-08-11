@@ -1,19 +1,17 @@
 package me.sebastian420.PandaAC.util;
 
-import me.sebastian420.PandaAC.PandaACThread;
-import me.sebastian420.PandaAC.manager.FasterWorldManager;
-import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public class PacketUtil {
 
-    private static BlockState checkVicinityGround(FasterWorld world, int x, int y, int z){
+    private static BlockState checkVicinityGround(ServerWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
                 BlockPos pos = new BlockPos(x + xx, y, z + zz);
@@ -21,8 +19,8 @@ public class PacketUtil {
                 BlockPos onTopPos = pos.offset(Direction.UP,1);
                 BlockState stateTop = world.getBlockState(onTopPos);
 
-                if (!state.getCollisionShape(world.realWorld,pos).isEmpty() &&
-                        stateTop.getCollisionShape(world.realWorld,onTopPos).isEmpty()){
+                if (!state.getCollisionShape(world,pos).isEmpty() &&
+                        stateTop.getCollisionShape(world,onTopPos).isEmpty()){
                     return state;
                 }
             }
@@ -30,12 +28,12 @@ public class PacketUtil {
         return null;
     }
 
-    private static BlockState checkVicinity(FasterWorld world, int x, int y, int z){
+    private static BlockState checkVicinity(ServerWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
                 BlockPos pos = new BlockPos(x + xx, y, z + zz);
                 BlockState state = world.getBlockState(pos);
-                if (!state.getCollisionShape(world.realWorld,pos).isEmpty()) {
+                if (!state.getCollisionShape(world,pos).isEmpty()) {
                     return state;
                 }
             }
@@ -43,7 +41,7 @@ public class PacketUtil {
         return null;
     }
 
-    private static BlockState checkVicinityBouncy(FasterWorld world, int x, int y, int z){
+    private static BlockState checkVicinityBouncy(ServerWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
                 BlockState state = world.getBlockState(new BlockPos(x + xx, y, z + zz));
@@ -55,13 +53,13 @@ public class PacketUtil {
         return null;
     }
 
-    private static BlockState checkVicinityAbove(FasterWorld world, int x, int y, int z){
+    private static BlockState checkVicinityAbove(ServerWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
                 BlockPos pos = new BlockPos(x + xx, y, z + zz);
                 BlockState state = world.getBlockState(pos);
                 BlockState oneBelowState = world.getBlockState(new BlockPos(x + xx, y - 1, z + zz));
-                if (!state.getCollisionShape(world.realWorld, pos).isEmpty() && oneBelowState.getBlock() == Blocks.AIR) {
+                if (!state.getCollisionShape(world, pos).isEmpty() && oneBelowState.getBlock() == Blocks.AIR) {
                     return state;
                 }
             }
@@ -69,7 +67,7 @@ public class PacketUtil {
         return null;
     }
 
-    private static BlockState checkVicinityClimbable(FasterWorld world, int x, int y, int z){
+    private static BlockState checkVicinityClimbable(ServerWorld world, int x, int y, int z){
         for(int xx = -1; xx <= 1; xx ++) {
             for (int zz = -1; zz <= 1; zz++) {
                 for (int yy = -1; yy <= 1; yy++) {
@@ -92,7 +90,7 @@ public class PacketUtil {
     }
 
 
-    public static boolean checkPassage(FasterWorld world, PlayerMoveC2SPacketView packetView) {
+    public static boolean checkPassage(ServerWorld world, PlayerMoveC2SPacketView packetView) {
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());
@@ -108,7 +106,7 @@ public class PacketUtil {
     }
 
 
-    public static BlockState checkBouncyBelow(FasterWorld world, PlayerMoveC2SPacketView packetView) {
+    public static BlockState checkBouncyBelow(ServerWorld world, PlayerMoveC2SPacketView packetView) {
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());
@@ -123,7 +121,7 @@ public class PacketUtil {
     }
 
 
-    public static boolean checkClimbable(FasterWorld world, PlayerMoveC2SPacketView packetView) {
+    public static boolean checkClimbable(ServerWorld world, PlayerMoveC2SPacketView packetView) {
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());
@@ -135,7 +133,8 @@ public class PacketUtil {
 
     public static boolean checkGround(ServerPlayerEntity serverPlayerEntity, PlayerMoveC2SPacketView packetView) {
 
-        FasterWorld world = FasterWorldManager.getWorld(serverPlayerEntity.getServerWorld());
+        ServerWorld world = serverPlayerEntity.getServerWorld();
+        
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());

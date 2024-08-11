@@ -1,8 +1,6 @@
 package me.sebastian420.PandaAC.manager;
 
-import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.data.SpeedLimits;
-import me.sebastian420.PandaAC.manager.object.FasterWorld;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
@@ -12,25 +10,16 @@ import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.projectile.WindChargeEntity;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.server.world.ServerWorld;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -56,7 +45,7 @@ public class MovementManager {
             vehicleData.setUUID(null);
         }
 
-        FasterWorld fasterWorld = FasterWorldManager.getWorld(player.getServerWorld());
+        ServerWorld world = player.getServerWorld();
 
         if (packetView.isChangePosition()) {
 
@@ -64,7 +53,7 @@ public class MovementManager {
             double verticalSpeedPotential;
 
             boolean inFluid = false;
-            boolean nearClimbable = PacketUtil.checkClimbable(fasterWorld, packetView);
+            boolean nearClimbable = PacketUtil.checkClimbable(world, packetView);
             boolean onGround = BlockUtil.checkGround(player, packetView.getY());
 
 
@@ -103,11 +92,11 @@ public class MovementManager {
                     speedPotential += Math.abs(player.getVelocity().getY());
                 } else if (onGround) {
                     if (!player.isSneaking() && !player.isCrawling()) {
-                        BlockState blockStateUnder = BlockUtil.checkVicinityIce(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
+                        BlockState blockStateUnder = BlockUtil.checkVicinityIce(world, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
                         //If they have enough hunger assume they are sprinting
                         if (player.getHungerManager().getFoodLevel() > 6) {
                             //If they are in a 2 block tall passage assume they are jumping
-                            if (PacketUtil.checkPassage(fasterWorld, packetView)) {
+                            if (PacketUtil.checkPassage(world, packetView)) {
 
                                 if (blockStateUnder.isIn(BlockTags.ICE)) {
                                     if (blockStateUnder.getBlock() == Blocks.BLUE_ICE) {
@@ -152,7 +141,7 @@ public class MovementManager {
                 if (!inFluid) {
                     if (player.getVelocity().getY() > 0 || Math.abs(player.getVelocity().getY()) < 0.1) {
                         if (!inFluid) {
-                            if (BlockUtil.checkVicinityStairs(fasterWorld, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
+                            if (BlockUtil.checkVicinityStairs(world, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ())) {
                                 verticalSpeedPotential = SpeedLimits.UP_SPEED_STAIRS + Math.abs(player.getVelocity().getY()) * 20;
                                 speedPotential *= 1.25;
                             }
@@ -211,7 +200,7 @@ public class MovementManager {
             }
 
             if( onGround || nearClimbable) {
-                BlockState belowState = PacketUtil.checkBouncyBelow(fasterWorld, packetView);
+                BlockState belowState = PacketUtil.checkBouncyBelow(world, packetView);
                 playerData.setLastAttached(packetView.getX(), packetView.getY(), packetView.getZ(), belowState, player.getVelocity().getY(), time);
                 playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
                 playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
@@ -242,8 +231,6 @@ public class MovementManager {
                 speedPotential *= slowChange;
             }
 
-            ItemEnchantmentsComponent enchants = EnchantmentHelper.getEnchantments(player.getEquippedStack(EquipmentSlot.FEET));
-            enchants.getLevel(player.getWorld().getRegistryManager().get())
 
             if (playerMoveLength > ((speedPotential * SpeedLimits.FUDGE + playerData.getStoredSpeed()) / 18)*speedMult) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
