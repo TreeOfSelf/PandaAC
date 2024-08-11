@@ -89,6 +89,22 @@ public class PacketUtil {
         return null;
     }
 
+    public static boolean checkVicinitySoul(ServerWorld world, int x, int y, int z){
+        for(int xx = -1; xx <= 1; xx ++) {
+            for (int zz = -1; zz <= 1; zz++) {
+                for (int yy = -1; yy <= 1; yy++) {
+                    BlockState state = world.getBlockState(new BlockPos(x + xx, y + yy, z + zz));
+                    if (state.getBlock() == Blocks.SOUL_SAND ||
+                            state.getBlock() == Blocks.SOUL_SOIL) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
 
     public static boolean checkPassage(ServerWorld world, PlayerMoveC2SPacketView packetView) {
         int x = (int) Math.round(packetView.getX());

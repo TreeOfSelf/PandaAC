@@ -10,12 +10,18 @@ import me.sebastian420.PandaAC.util.PandaLogger;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -36,6 +42,13 @@ public class MovementManager {
 
         PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
         PlayerMovementData playerData = getPlayer(player);
+
+        ItemStack boots = player.getEquippedStack(EquipmentSlot.FEET);
+        ItemStack leggings = player.getEquippedStack(EquipmentSlot.LEGS);
+
+        int soulSpeed = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.SOUL_SPEED), boots);
+        int depthStrider = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.DEPTH_STRIDER), boots);
+        int swiftSneak = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.SWIFT_SNEAK), leggings);
 
 
         //Clear vehicle UUID if not in vehicle
@@ -79,7 +92,7 @@ public class MovementManager {
                 BlockState currentFluidState = BlockUtil.checkFluid(player, player.getY());
 
                 if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
-                    speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER;
+                    speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER * (1 * depthStrider * 0.5);
 
                     StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
                     if (dolphinsGrace != null) speedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 2);
@@ -125,7 +138,7 @@ public class MovementManager {
                         }
                     } else {
                         if (player.isSneaking()) {
-                            speedPotential = SpeedLimits.SNEAKING;
+                            speedPotential = SpeedLimits.SNEAKING * (1 + swiftSneak * 0.5);
                         } else {
                             speedPotential = SpeedLimits.CRAWLING;
                         }
@@ -147,7 +160,7 @@ public class MovementManager {
                             }
                         } else {
                             if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
-                                verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP + Math.abs(player.getVelocity().getY()) * 20;
+                                verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP  * (1 * depthStrider * 0.5) + Math.abs(player.getVelocity().getY()) * 20;
                                 StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
                                 if (dolphinsGrace != null) verticalSpeedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 2);
                             } else {
@@ -231,7 +244,13 @@ public class MovementManager {
                 speedPotential *= slowChange;
             }
 
+            if (soulSpeed > 0) {
+                if (PacketUtil.checkVicinitySoul(player.getServerWorld(), (int) packetView.getX(), (int) packetView.getY(), (int) packetView.getZ()) {
+                    speedPotential *= 1 + (soulSpeed * 0.5);
+                }
+            }
 
+            
             if (playerMoveLength > ((speedPotential * SpeedLimits.FUDGE + playerData.getStoredSpeed()) / 18)*speedMult) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
                     playerData.incrementShortSpeedFlagCount();
