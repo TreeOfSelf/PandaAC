@@ -56,6 +56,7 @@ public class WallHitCheck implements AttackEntityCallback, UseEntityCallback {
             }
 
             if (!clearLineOfSight) {
+                PandaLogger.getLogger().info("FAILED TO HIT MOB BLOCK THROUGH");
                 return ActionResult.FAIL;
             }
         }

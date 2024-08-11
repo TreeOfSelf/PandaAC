@@ -1,5 +1,6 @@
 package me.sebastian420.PandaAC.event.combat;
 
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.entity.Entity;
@@ -52,6 +53,7 @@ public class AngleCheck implements UseEntityCallback, AttackEntityCallback {
 
             if(Math.abs(victimDistance * Math.sin(phi)) > allowedAttackSpace / 2 + 0.2D) {
                 // Fine check
+                PandaLogger.getLogger().info("FAILED TO HIT MOB ANGLE");
                 return ActionResult.FAIL;
             }
         }

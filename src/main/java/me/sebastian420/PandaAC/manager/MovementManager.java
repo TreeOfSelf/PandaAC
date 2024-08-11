@@ -140,7 +140,7 @@ public class MovementManager {
                         if (player.isSneaking()) {
                             speedPotential = SpeedLimits.SNEAKING * (1 + swiftSneak * 0.5);
                         } else {
-                            speedPotential = SpeedLimits.CRAWLING;
+                            speedPotential = SpeedLimits.CRAWLING * (1 + swiftSneak * 0.5);
                         }
                     }
                     playerData.setLastSpeed(speedPotential);
@@ -245,12 +245,12 @@ public class MovementManager {
             }
 
             if (soulSpeed > 0) {
-                if (PacketUtil.checkVicinitySoul(player.getServerWorld(), (int) packetView.getX(), (int) packetView.getY(), (int) packetView.getZ()) {
+                if (PacketUtil.checkVicinitySoul(player.getServerWorld(), (int) packetView.getX(), (int) packetView.getY(), (int) packetView.getZ())) {
                     speedPotential *= 1 + (soulSpeed * 0.5);
                 }
             }
 
-            
+
             if (playerMoveLength > ((speedPotential * SpeedLimits.FUDGE + playerData.getStoredSpeed()) / 18)*speedMult) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
                     playerData.incrementShortSpeedFlagCount();

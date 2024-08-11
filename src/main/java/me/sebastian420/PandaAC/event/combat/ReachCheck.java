@@ -33,6 +33,7 @@ public class ReachCheck implements UseEntityCallback, AttackEntityCallback {
             double victimDistanceSquared = entityHit.squaredDistanceTo(player);
 
             if (pandaConfig.combat.checkHitDistance && !player.isSpectator() && !player.isCreative() && victimDistanceSquared > 11) {
+                PandaLogger.getLogger().info("FAILED TO HIT MOB REACH");
                 return ActionResult.FAIL;
             }
         }
