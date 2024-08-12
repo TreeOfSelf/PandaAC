@@ -44,6 +44,9 @@ public class PlayerMovementData {
     public double[] verticalSpeedPotential = new double[100];
     int verticalSpeedPotentialPointer = 0;
 
+    public double[] averageSpeed = new double[4];
+    int averageSpeedPointer = 0;
+
     private double carriedPotential = 0;
 
     private int packetCount;
@@ -258,6 +261,18 @@ public class PlayerMovementData {
         speedPotentialPointer++;
         if (speedPotentialPointer > speedPotential.length-1) speedPotentialPointer = 0;
     }
+
+
+    public void setAverageSpeed(double speed) {
+        averageSpeed[averageSpeedPointer] = speed;
+        averageSpeedPointer++;
+        if (averageSpeedPointer > averageSpeed.length-1) averageSpeedPointer = 0;
+    }
+
+    public double getAverageSpeed() {
+        return Arrays.stream(averageSpeed).sum() / averageSpeed.length;
+    }
+
 
     public void setVerticalSpeedPotential(double speed) {
         verticalSpeedPotential[verticalSpeedPotentialPointer] = speed;

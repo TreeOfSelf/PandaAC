@@ -251,7 +251,7 @@ public class MovementManager {
             }
 
 
-            if (playerMoveLength > ((speedPotential * SpeedLimits.FUDGE + playerData.getStoredSpeed()) / 18)*speedMult) {
+            if (playerMoveLength > ((speedPotential * SpeedLimits.SHORT_FUDGE + playerData.getStoredSpeed()) / 18)*speedMult) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
                     playerData.incrementShortSpeedFlagCount();
                     if (playerData.getShortSpeedFlagCount() > 6) {

@@ -26,6 +26,7 @@ public class HorizontalSpeedCheck {
             double storedSpeed = playerData.getStoredSpeed();
 
             double speedPotential = (playerData.getSpeedPotential((double) timeDifMs / 1000d)) * SpeedLimits.FUDGE;
+            playerData.setAverageSpeed(speedPotential);
             double totalPotential = speedPotential + storedSpeed;
             double lastPotential = playerData.getLastSpeedPotential() + storedSpeed;
 
@@ -37,7 +38,9 @@ public class HorizontalSpeedCheck {
                 playerData.setStoredSpeed(0);
             }
 
-            if ( (speedMps > totalPotential && speedMps > lastPotential) || playerData.getPossibleTimer()) {
+            double avgSpeed = playerData.getAverageSpeed();
+
+            if ( (speedMps > totalPotential && speedMps > lastPotential && avgSpeed > totalPotential) || playerData.getPossibleTimer()) {
                 playerData.incrementSpeedFlagCount();
                 if (playerData.getSpeedFlagCount() > 4 || playerData.getPossibleTimer()) {
                     PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {}", speedMps, speedPotential, storedSpeed, playerData.getPacketCount());

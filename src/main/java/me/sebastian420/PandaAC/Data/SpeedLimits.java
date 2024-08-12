@@ -5,7 +5,9 @@ public class SpeedLimits {
     /*
      */
 
-    public static final double FUDGE = 1.15;
+    public static final double FUDGE = 1.0;
+    public static final double SHORT_FUDGE = 1.1;
+
     public static final double CRAWLING = 1.6;
     public static final double SNEAKING = 2.2;
 
