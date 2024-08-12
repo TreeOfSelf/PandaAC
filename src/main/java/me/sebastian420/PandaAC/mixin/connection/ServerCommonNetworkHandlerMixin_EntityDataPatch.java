@@ -16,6 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -35,7 +36,9 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
     @Shadow protected abstract GameProfile getProfile();
 
     @Shadow @Final protected MinecraftServer server;
+    @Unique
     private static final TrackedData<Float> LIVING_ENTITY_HEALTH = LivingEntityAccessor.getHealth();
+    @Unique
     private static final TrackedData<Float> PLAYER_ENTITY_ABSORPTION = PlayerEntityAccessor.getAbsorption();
 
 
@@ -46,6 +49,8 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
         GameProfile profile = this.getProfile();
         ServerPlayerEntity player = this.server.getPlayerManager().getPlayer(profile.getId());
 
+        if (player == null) return;
+
         if (packet instanceof EntityTrackerUpdateS2CPacket trackerPacket) {
             List<DataTracker.SerializedEntry<?>> trackedValues = trackerPacket.trackedValues();
             if (trackedValues == null) return;
@@ -53,10 +58,10 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
             Entity entity = player.getWorld().getEntityById(trackerPacket.id());
 
             if (pandaConfig.packet.removeHealthTags && entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
-
-                if (entity.getType() != EntityType.WITHER && entity.getType() != EntityType.WOLF && entity.getType() != EntityType.IRON_GOLEM)
+                if (entity.getType() == EntityType.PLAYER) {
                     trackedValues.removeIf(trackedValue -> trackedValue.id() == LIVING_ENTITY_HEALTH.id());
-                trackedValues.removeIf(trackedValue -> trackedValue.id() == PLAYER_ENTITY_ABSORPTION.id());
+                    trackedValues.removeIf(trackedValue -> trackedValue.id() == PLAYER_ENTITY_ABSORPTION.id());
+                }
             }
         }
     }
