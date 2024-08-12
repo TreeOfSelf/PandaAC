@@ -92,7 +92,7 @@ public class MovementManager {
                 BlockState currentFluidState = BlockUtil.checkFluid(player, player.getY());
 
                 if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
-                    speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER * (1 * depthStrider * 0.5);
+                    speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER * (1 + depthStrider * 0.5);
 
                     StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
                     if (dolphinsGrace != null) speedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 2);
@@ -160,7 +160,7 @@ public class MovementManager {
                             }
                         } else {
                             if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
-                                verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP  * (1 * depthStrider * 0.5) + Math.abs(player.getVelocity().getY()) * 20;
+                                verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP  * (1 + depthStrider * 0.5) + Math.abs(player.getVelocity().getY()) * 20;
                                 StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
                                 if (dolphinsGrace != null) verticalSpeedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 2);
                             } else {
