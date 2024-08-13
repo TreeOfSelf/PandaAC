@@ -33,13 +33,13 @@ public class VehicleMovementData {
     private int speedFlagCount;
     private double storedSpeed;
 
-    public double[] speedPotential = new double[100];
+    public double[] speedPotential = new double[5];
     int speedPotentialPointer = 0;
 
-    public double[] verticalSpeedPotential = new double[100];
+    public double[] verticalSpeedPotential = new double[5];
     int verticalSpeedPotentialPointer = 0;
 
-    public double[] yawPotential = new double[100];
+    public double[] yawPotential = new double[5];
     int yawPotentialPointer = 0;
 
     private double carriedPotential;
@@ -164,7 +164,7 @@ public class VehicleMovementData {
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
     public void setCarriedPotential(double carriedPotential) {this.carriedPotential = carriedPotential;}
 
-    public double[] averageSpeed = new double[4];
+    public double[] averageSpeed = new double[5];
     int averageSpeedPointer = 0;
 
     public void setHover(boolean hover){this.hover = hover;}

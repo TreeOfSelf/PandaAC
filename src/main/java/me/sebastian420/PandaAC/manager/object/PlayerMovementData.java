@@ -38,13 +38,13 @@ public class PlayerMovementData {
     private double elytraMaxElevation;
     private long elytraLastRocketTime;
 
-    public double[] speedPotential = new double[100];
+    public double[] speedPotential = new double[5];
     int speedPotentialPointer = 0;
 
-    public double[] verticalSpeedPotential = new double[100];
+    public double[] verticalSpeedPotential = new double[5];
     int verticalSpeedPotentialPointer = 0;
 
-    public double[] averageSpeed = new double[4];
+    public double[] averageSpeed = new double[5];
     int averageSpeedPointer = 0;
 
     private double carriedPotential = 0;
@@ -72,6 +72,7 @@ public class PlayerMovementData {
     private boolean hover;
     private boolean onGround;
     private boolean flying;
+    private boolean onIce;
 
     private boolean possibleTimer;
 
@@ -165,9 +166,9 @@ public class PlayerMovementData {
     public long getElytraLastRocketTime() {return elytraLastRocketTime;}
     public void setElytraLastRocketTime(long time) {elytraLastRocketTime = time;}
 
-    public void incrementShortSpeedFlagCount() {speedFlagCount++;}
-    public void decrementShortSpeedFlagCount() {speedFlagCount--; if(speedFlagCount<0) speedFlagCount = 0;}
-    public int getShortSpeedFlagCount() {return speedFlagCount;}
+    public void incrementShortSpeedFlagCount() {shortSpeedFlagCount++;}
+    public void decrementShortSpeedFlagCount() {shortSpeedFlagCount--; if(shortSpeedFlagCount<0) shortSpeedFlagCount = 0;}
+    public int getShortSpeedFlagCount() {return shortSpeedFlagCount;}
 
     public void incrementUpSpeedFlagCount() {upSpeedFlagCount++;}
     public void decrementUpSpeedFlagCount() {upSpeedFlagCount--; if(upSpeedFlagCount<0) upSpeedFlagCount = 0;}
@@ -313,4 +314,9 @@ public class PlayerMovementData {
 
     public void setLastLevitation(long time) {lastLevitation = time;}
     public long getLastLevitation() {return lastLevitation;}
+
+    public void setOnIce(boolean b) {
+        onIce = b;
+    }
+    public boolean getOnIce(){return onIce;}
 }

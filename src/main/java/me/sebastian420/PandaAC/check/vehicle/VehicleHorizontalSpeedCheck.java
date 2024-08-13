@@ -12,8 +12,6 @@ public class VehicleHorizontalSpeedCheck {
         //If the player has since had a movement packet
         boolean flagged = false;
 
-        PandaLogger.getLogger().info("Trying?");
-
         if (vehicleData.getChanged()) {
 
             PandaLogger.getLogger().info("Doing check");
@@ -43,8 +41,6 @@ public class VehicleHorizontalSpeedCheck {
             }
 
             double avgSpeed = vehicleData.getAverageSpeed();
-
-            PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {} Avg {}", speedMps, speedPotential, storedSpeed, vehicleData.getPacketCount(), avgSpeed);
 
 
             if ( (speedMps > totalPotential && speedMps > lastPotential && avgSpeed > totalPotential) || vehicleData.getPossibleTimer()) {

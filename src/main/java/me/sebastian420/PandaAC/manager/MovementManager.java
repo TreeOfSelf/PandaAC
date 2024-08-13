@@ -106,6 +106,14 @@ public class MovementManager {
                 } else if (onGround) {
                     if (!player.isSneaking() && !player.isCrawling()) {
                         BlockState blockStateUnder = BlockUtil.checkVicinityIce(world, (int) playerData.getX(), (int) playerData.getY(), (int) playerData.getZ());
+                        if (blockStateUnder.isIn(BlockTags.ICE)) {
+                            playerData.setOnIce(true);
+                        } else {
+                            if (playerData.getOnIce()) {
+                                playerData.setStoredSpeed(10.0);
+                            }
+                            playerData.setOnIce(false);
+                        }
                         //If they have enough hunger assume they are sprinting
                         if (player.getHungerManager().getFoodLevel() > 6) {
                             //If they are in a 2 block tall passage assume they are jumping
@@ -146,6 +154,11 @@ public class MovementManager {
                     playerData.setLastSpeed(speedPotential);
                     //If you are in air, use last speed potential from when you were on the ground
                 } else {
+
+                    if (playerData.getOnIce()) {
+                        playerData.setStoredSpeed(10.0);
+                    }
+                    playerData.setOnIce(false);
                     speedPotential = playerData.getLastSpeed();
                     //Quick fix for jump + sneak
                     if (speedPotential <= SpeedLimits.SNEAKING) speedPotential = SpeedLimits.WALKING_AND_JUMPING;
