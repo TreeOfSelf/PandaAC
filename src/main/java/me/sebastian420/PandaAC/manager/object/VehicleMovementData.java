@@ -24,11 +24,13 @@ public class VehicleMovementData {
     private double lastAttachedY;
     private double lastAttachedZ;
 
+    private double lastSpeedPotential;
+
     private double currentX;
     private double currentY;
     private double currentZ;
     private double currentYaw;
-
+    private int speedFlagCount;
     private double storedSpeed;
 
     public double[] speedPotential = new double[100];
@@ -125,6 +127,11 @@ public class VehicleMovementData {
     }
 
 
+    public void incrementSpeedFlagCount() {speedFlagCount++;}
+    public void decrementSpeedFlagCount() {speedFlagCount--; if(speedFlagCount<0) speedFlagCount = 0;}
+    public int getSpeedFlagCount() {return speedFlagCount;}
+
+
     public boolean getChanged() {return changed;}
     public boolean getPossibleTimer() {return possibleTimer;}
     public boolean getOnIce() {return onIce;}
@@ -156,6 +163,9 @@ public class VehicleMovementData {
 
     public void setPossibleTimer(boolean timer){this.possibleTimer = timer;}
     public void setCarriedPotential(double carriedPotential) {this.carriedPotential = carriedPotential;}
+
+    public double[] averageSpeed = new double[4];
+    int averageSpeedPointer = 0;
 
     public void setHover(boolean hover){this.hover = hover;}
     public boolean getHover(){return hover;}
@@ -219,6 +229,18 @@ public class VehicleMovementData {
     }
 
 
+    public void setAverageSpeed(double speed) {
+        averageSpeed[averageSpeedPointer] = speed;
+        averageSpeedPointer++;
+        if (averageSpeedPointer > averageSpeed.length-1) averageSpeedPointer = 0;
+    }
+
+    public double getAverageSpeed() {
+        return Arrays.stream(averageSpeed).sum() / averageSpeed.length;
+    }
+
+    public void setLastSpeedPotential(double speedPotential) {lastSpeedPotential = speedPotential;}
+    public double getLastSpeedPotential() {return lastSpeedPotential;}
 
 }
 

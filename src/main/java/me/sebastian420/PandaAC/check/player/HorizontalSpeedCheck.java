@@ -26,7 +26,7 @@ public class HorizontalSpeedCheck {
             double storedSpeed = playerData.getStoredSpeed();
 
             double speedPotential = (playerData.getSpeedPotential((double) timeDifMs / 1000d)) * SpeedLimits.FUDGE;
-            playerData.setAverageSpeed(speedPotential);
+            playerData.setAverageSpeed(speedMps);
             double totalPotential = speedPotential + storedSpeed;
             double lastPotential = playerData.getLastSpeedPotential() + storedSpeed;
 

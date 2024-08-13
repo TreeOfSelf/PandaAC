@@ -12,6 +12,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -157,7 +159,8 @@ public class PandaACThread extends Thread {
                 //Handle every 5 ticks
                 if (tickCount % 5 == 0) {
                     long time = System.currentTimeMillis();
-                    for (ServerPlayerEntity serverPlayerEntity : minecraftServer.getPlayerManager().getPlayerList()) {
+                    List<ServerPlayerEntity> playerList = new ArrayList<>(minecraftServer.getPlayerManager().getPlayerList());
+                    for (ServerPlayerEntity serverPlayerEntity : playerList) {
                         if (!serverPlayerEntity.isDisconnected()) {
                             CheckManager.run(serverPlayerEntity, time);
                         }

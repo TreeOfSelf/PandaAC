@@ -1,9 +1,8 @@
 package me.sebastian420.PandaAC.check.vehicle;
 
+import me.sebastian420.PandaAC.data.SpeedLimits;
 import me.sebastian420.PandaAC.manager.CheckManager;
-import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
-import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.MathUtil;
 import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -13,21 +12,27 @@ public class VehicleHorizontalSpeedCheck {
         //If the player has since had a movement packet
         boolean flagged = false;
 
+        PandaLogger.getLogger().info("Trying?");
 
-        if (vehicleData.getChanged() && !BlockUtil.checkOtherEntityVehicle(serverPlayerEntity, vehicleData.getY())) {
+        if (vehicleData.getChanged()) {
+
+            PandaLogger.getLogger().info("Doing check");
 
             long timeDifMs = time - vehicleData.getLastCheck();
             double distance = MathUtil.getDistance(vehicleData.getLastX(), vehicleData.getLastZ(), vehicleData.getX(), vehicleData.getZ());
             double speedMps = (distance * 1000.0) / timeDifMs;
 
+            //We should do a better timer check it is tricky though. Like the player sends 7 packets when standing on a boat for some reason
             if (vehicleData.getPacketCount() <= 6) {
                 vehicleData.setPossibleTimer(false);
             }
 
             double storedSpeed = vehicleData.getStoredSpeed();
 
-            double speedPotential = vehicleData.getSpeedPotential((double) timeDifMs / 1000d);
-            double totalPotential = speedPotential + vehicleData.getCarriedPotential() + storedSpeed;
+            double speedPotential = (vehicleData.getSpeedPotential((double) timeDifMs / 1000d)) * SpeedLimits.FUDGE;
+            vehicleData.setAverageSpeed(speedMps);
+            double totalPotential = speedPotential + storedSpeed;
+            double lastPotential = vehicleData.getLastSpeedPotential() + storedSpeed;
 
             double newStoredSpeed = storedSpeed - speedMps;
 
@@ -37,18 +42,28 @@ public class VehicleHorizontalSpeedCheck {
                 vehicleData.setStoredSpeed(0);
             }
 
-            if (speedMps > totalPotential || vehicleData.getPossibleTimer()) {
-                PandaLogger.getLogger().warn("Speed {} Potential {} Count {}", speedMps, totalPotential, vehicleData.getPacketCount());
-                CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
-                vehicleData.setCarriedPotential(0);
-                flagged = true;
+            double avgSpeed = vehicleData.getAverageSpeed();
+
+            PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {} Avg {}", speedMps, speedPotential, storedSpeed, vehicleData.getPacketCount(), avgSpeed);
+
+
+            if ( (speedMps > totalPotential && speedMps > lastPotential && avgSpeed > totalPotential) || vehicleData.getPossibleTimer()) {
+                vehicleData.incrementSpeedFlagCount();
+                if (vehicleData.getSpeedFlagCount() > 4 || vehicleData.getPossibleTimer()) {
+                    PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {}", speedMps, speedPotential, storedSpeed, vehicleData.getPacketCount());
+                    CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
+                    flagged = true;
+                }
             } else {
-                vehicleData.setCarriedPotential(speedPotential - speedMps);
+                vehicleData.decrementSpeedFlagCount();
             }
 
             if (vehicleData.getPacketCount() > 6) {
                 vehicleData.setPossibleTimer(true);
             }
+
+            vehicleData.setLastSpeedPotential(speedPotential);
+
 
         }
         return flagged;
