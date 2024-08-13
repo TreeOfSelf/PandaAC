@@ -237,7 +237,9 @@ public class MovementManager {
                     time - playerData.getLastLevitation() > 500L) {
                 if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying()) CheckManager.rollBack(player ,playerData);
             } else if (inFluid) {
-                playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
+                if (player.isInFluid()) {
+                    playerData.setLastAttachedFluid(packetView.getX(), packetView.getY(), packetView.getZ(), time);
+                }
                 playerData.setStoredSpeed(playerData.getStoredSpeed() * 0.75);
                 playerData.setStoredSpeedVertical(playerData.getStoredSpeedVertical() * 0.75);
             }
