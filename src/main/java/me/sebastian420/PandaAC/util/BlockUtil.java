@@ -219,6 +219,25 @@ public class BlockUtil {
                 .orElse(Blocks.AIR.getDefaultState());
     }
 
+    public static BlockState checkFluidThicc(ServerPlayerEntity player, double y) {
+        Entity bottomEntity = player.getRootVehicle();
+        if (bottomEntity == null) {
+            bottomEntity = player;
+        }
+        final Box bBox = bottomEntity.getBoundingBox().expand(0.5, 0.5, 0.5);
+
+        // Get the world from the player
+        World world = player.getWorld();
+
+        // Check for fluid blocks within the bounding box
+        return BlockPos.stream(bBox)
+                .map(world::getBlockState)
+                .filter(blockState -> blockState.getFluidState().isStill() || blockState.getBlock() instanceof FluidBlock)
+                .findFirst()
+                .orElse(Blocks.AIR.getDefaultState());
+    }
+
+
 
     public static boolean checkGroundThicc(ServerPlayerEntity player){
 
