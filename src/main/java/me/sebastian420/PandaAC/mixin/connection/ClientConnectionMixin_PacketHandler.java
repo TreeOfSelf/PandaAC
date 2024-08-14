@@ -6,6 +6,10 @@ import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.MovementManager;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.PandaLogger;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.WrittenBookItem;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.listener.PacketListener;
@@ -42,8 +46,6 @@ public class ClientConnectionMixin_PacketHandler {
         if (packetListener instanceof ServerPlayNetworkHandler) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
 
-            //System.out.println(packet.getClass().getSimpleName());
-
             if (!serverPlayerEntity.isAlive()) {
                 if (!(packet instanceof ClientStatusC2SPacket)
                 && !(packet instanceof CustomPayloadC2SPacket)
@@ -63,6 +65,12 @@ public class ClientConnectionMixin_PacketHandler {
                     String[] text = signPacket.getText();
                     for (int x = 0; x < text.length; x++) {
                         text[x] = text[x].replaceAll("§", "");
+                    }
+                } else if (packet instanceof BookUpdateC2SPacket bookPacket) {
+                    ItemStack bookStack = serverPlayerEntity.getInventory().getStack(bookPacket.slot());
+                    PandaLogger.getLogger().info(bookStack);
+                    if (bookStack.getItem() == Items.WRITTEN_BOOK) {
+                        ci.cancel();
                     }
                 }
             }
