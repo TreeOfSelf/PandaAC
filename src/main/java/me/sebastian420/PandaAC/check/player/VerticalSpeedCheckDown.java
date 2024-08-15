@@ -38,7 +38,7 @@ public class VerticalSpeedCheckDown {
 
 
             long solidBlockTimeDif = time - playerData.getLastSolidTouch();
-            if ( (solidBlockTimeDif > 1000 && speedMps < speedPotential / 5 && airTimeDif > 500)) {
+            if ( (solidBlockTimeDif > 1000 && speedMps < speedPotential / 5 && airTimeDif > 1000)) {
                 PandaLogger.getLogger().info("SPEED DOWN INFO speedMps {} Potential {}", speedMps, speedPotential);
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
