@@ -66,7 +66,7 @@ public class CheckManager {
                         // Out of water checks
                     } else {
                         if (serverPlayerEntity.isDisconnected()) break;
-                        if (HoverCheck.check(serverPlayerEntity, playerData)) {
+                        if (HoverCheck.check(serverPlayerEntity, playerData, time)) {
                             PandaLogger.getLogger().warn("Flagged Hover");
                             playerData.moveCurrentToLast(time);
                             break;
