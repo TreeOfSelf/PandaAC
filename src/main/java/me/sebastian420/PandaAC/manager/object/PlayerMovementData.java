@@ -73,6 +73,7 @@ public class PlayerMovementData {
     private boolean onGround;
     private boolean flying;
     private boolean onIce;
+    private boolean hasStarted = false;
 
     private boolean possibleTimer;
 
@@ -214,6 +215,8 @@ public class PlayerMovementData {
         lastX = currentX;
         lastY = currentY;
         lastZ = currentZ;
+        hasStarted = true;
+
         changed = false;
         lastCheck = time;
         firstPacketTime = 0;
@@ -240,6 +243,10 @@ public class PlayerMovementData {
         if (firstPacketTime == 0) firstPacketTime = time;
         lastPacketTime = time;
         if (packetChanged) packetCount ++;
+    }
+
+    public boolean getStarted() {
+        return hasStarted;
     }
 
     public void teleport(double x, double y, double z, long time) {

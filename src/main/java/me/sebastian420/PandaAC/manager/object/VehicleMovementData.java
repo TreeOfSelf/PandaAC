@@ -48,6 +48,7 @@ public class VehicleMovementData {
     private boolean possibleTimer;
     private boolean hover;
     private boolean onIce;
+    private boolean hasStarted = false;
 
     private int packetCount = 0;
 
@@ -99,7 +100,6 @@ public class VehicleMovementData {
         }
 
 
-
     }
 
     public void moveCurrentToLast(long time) {
@@ -112,6 +112,11 @@ public class VehicleMovementData {
         lastCheck = time;
         Arrays.fill(speedPotential, 0);
         Arrays.fill(yawPotential, 0);
+        hasStarted = true;
+    }
+
+    public boolean getStarted() {
+        return hasStarted;
     }
 
     public void teleport(double x, double y, double z, long time) {
