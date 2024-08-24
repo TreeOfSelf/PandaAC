@@ -252,6 +252,10 @@ public class MovementManager {
             StatusEffectInstance speedEffect = player.getStatusEffect(StatusEffects.SPEED);
             if (speedEffect != null) speedPotential *= 1 + (double) speedEffect.getAmplifier() / 2;
 
+            StatusEffectInstance conduitPower = player.getStatusEffect(StatusEffects.CONDUIT_POWER);
+            if (conduitPower != null) speedPotential *= 1 + (double) conduitPower.getAmplifier() / 2;
+
+
             StatusEffectInstance slowEffect = player.getStatusEffect(StatusEffects.SLOWNESS);
             if (onGround && slowEffect != null) {
                 double slowChange = 1 - slowEffect.getAmplifier() * 0.075;
