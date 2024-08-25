@@ -69,7 +69,7 @@ public class ClientConnectionMixin_PacketHandler {
                 } else if (packet instanceof BookUpdateC2SPacket bookPacket) {
                     ItemStack bookStack = serverPlayerEntity.getInventory().getStack(bookPacket.slot());
                     PandaLogger.getLogger().info(bookStack);
-                    if (bookStack.getItem() == Items.WRITTEN_BOOK) {
+                    if (bookStack.getItem() != Items.WRITABLE_BOOK) {
                         ci.cancel();
                     }
                 }
