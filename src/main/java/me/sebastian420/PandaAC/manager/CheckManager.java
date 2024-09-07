@@ -185,6 +185,7 @@ public class CheckManager {
 
     public static void rollBack(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData){
         if (!playerData.getStarted()) return;
+        if (playerData.getX() == 0 && playerData.getY() == 0 && playerData.getZ() == 0) return;
         long time = System.currentTimeMillis();
         //We should do something like this where your velocity is counted til you hit the ground
         //Vec3d velocity = serverPlayerEntity.getVelocity();
@@ -196,6 +197,8 @@ public class CheckManager {
 
     public static void rollBackVehicle(ServerPlayerEntity serverPlayerEntity, VehicleMovementData vehicleData) {
         if (!vehicleData.getStarted()) return;
+        if (vehicleData.getX() == 0 && vehicleData.getY() == 0 && vehicleData.getZ() == 0) return;
+
         long time = System.currentTimeMillis();
 
         Entity vehicle = serverPlayerEntity.getVehicle();
