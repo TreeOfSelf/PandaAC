@@ -103,6 +103,8 @@ public class VehicleMovementData {
     }
 
     public void moveCurrentToLast(long time) {
+        if (!changed) return;
+
         lastX = currentX;
         lastY = currentY;
         lastZ = currentZ;

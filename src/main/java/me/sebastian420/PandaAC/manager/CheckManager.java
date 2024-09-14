@@ -192,6 +192,7 @@ public class CheckManager {
         serverPlayerEntity.setOnGround(Vec3d.of(Vec3i.ZERO));
         serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
         playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), time);
+        PandaLogger.getLogger().info("TELEPORTED TO {} {} {}", playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
         //serverPlayerEntity.setVelocity(velocity);
     }
 
