@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ServerPlayerEntityMixin_Disconnect {
     @Inject(method = "onDisconnect", at = @At("HEAD"))
     public void onDisconnect(CallbackInfo ci) {
-        long time = System.currentTimeMillis();
-        CheckManager.run((ServerPlayerEntity)(Object)this, time);
+        //long time = System.currentTimeMillis();
+        //CheckManager.run((ServerPlayerEntity)(Object)this, time);
     }
 }
