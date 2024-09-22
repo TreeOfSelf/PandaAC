@@ -1,5 +1,6 @@
 package me.sebastian420.PandaAC.util;
 
+import me.sebastian420.PandaAC.manager.object.MovementPacketData;
 import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -106,7 +107,7 @@ public class PacketUtil {
 
 
 
-    public static boolean checkPassage(ServerWorld world, PlayerMoveC2SPacketView packetView) {
+    public static boolean checkPassage(ServerWorld world, MovementPacketData packetView) {
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());
@@ -122,7 +123,7 @@ public class PacketUtil {
     }
 
 
-    public static BlockState checkBouncyBelow(ServerWorld world, PlayerMoveC2SPacketView packetView) {
+    public static BlockState checkBouncyBelow(ServerWorld world, MovementPacketData packetView) {
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());
@@ -137,7 +138,7 @@ public class PacketUtil {
     }
 
 
-    public static boolean checkClimbable(ServerWorld world, PlayerMoveC2SPacketView packetView) {
+    public static boolean checkClimbable(ServerWorld world, MovementPacketData packetView) {
         int x = (int) Math.round(packetView.getX());
         int y = (int) Math.round(packetView.getY());
         int z = (int) Math.round(packetView.getZ());
@@ -147,7 +148,7 @@ public class PacketUtil {
         return climbable != null;
     }
 
-    public static boolean checkGround(ServerPlayerEntity serverPlayerEntity, PlayerMoveC2SPacketView packetView) {
+    public static boolean checkGround(ServerPlayerEntity serverPlayerEntity, MovementPacketData packetView) {
 
         ServerWorld world = serverPlayerEntity.getServerWorld();
         

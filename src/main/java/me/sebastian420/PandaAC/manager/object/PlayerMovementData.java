@@ -227,7 +227,7 @@ public class PlayerMovementData {
         packetCount = 0;
     }
 
-    public void setNew(PlayerMoveC2SPacketView packetView, long time) {
+    public void setNew(MovementPacketData packetView, long time) {
 
         boolean packetChanged = false;
 

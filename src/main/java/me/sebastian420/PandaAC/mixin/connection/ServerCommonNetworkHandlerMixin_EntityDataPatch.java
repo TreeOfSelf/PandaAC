@@ -60,7 +60,7 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
             if (pandaConfig.packet.removeHealthTags && entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
                 if (entity.getType() == EntityType.PLAYER) {
                     trackedValues.removeIf(trackedValue -> trackedValue.id() == LIVING_ENTITY_HEALTH.id());
-                    trackedValues.removeIf(trackedValue -> trackedValue.id() == PLAYER_ENTITY_ABSORPTION.id());
+                    //trackedValues.removeIf(trackedValue -> trackedValue.id() == PLAYER_ENTITY_ABSORPTION.id());
                 }
             }
         }

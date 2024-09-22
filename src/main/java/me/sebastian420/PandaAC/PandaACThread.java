@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC;
 
 import me.sebastian420.PandaAC.manager.*;
+import me.sebastian420.PandaAC.manager.object.MovementPacketData;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
@@ -67,24 +68,24 @@ public class PandaACThread extends Thread {
         EVENT_QUEUE.add(new QueuedEvent(EventType.CHUNK_UNLOAD, new Object[]{world, chunk}));
     }
 
-    public static void queuePlayerMove(ServerPlayerEntity player, PlayerMoveC2SPacket packet, long packetTime) {
+    public static void queuePlayerMove(ServerPlayerEntity player, MovementPacketData packet, long packetTime) {
         EVENT_QUEUE.add(new QueuedEvent(EventType.PLAYER_MOVE, new Object[]{player, packet, packetTime}));
     }
 
-    public static void queueVehicleMove(ServerPlayerEntity player, VehicleMoveC2SPacket packet, long packetTime) {
+    public static void queueVehicleMove(ServerPlayerEntity player, MovementPacketData packet, long packetTime) {
         EVENT_QUEUE.add(new QueuedEvent(EventType.VEHICLE_MOVE, new Object[]{player, packet, packetTime}));
     }
 
-    public static void queuePlayerTeleport(ServerPlayerEntity player, PlayerPositionLookS2CPacket packet) {
+    public static void queuePlayerTeleport(ServerPlayerEntity player, MovementPacketData packet) {
         EVENT_QUEUE.add(new QueuedEvent(EventType.PLAYER_TELEPORT, new Object[]{player, packet}));
     }
 
-    public static void queuePlayerVelocity(ServerPlayerEntity player, EntityVelocityUpdateS2CPacket packet) {
+    public static void queuePlayerVelocity(ServerPlayerEntity player, MovementPacketData packet) {
         EVENT_QUEUE.add(new QueuedEvent(EventType.PLAYER_VELOCITY, new Object[]{player, packet}));
 
     }
 
-    public static void queueServerVehicleMove(ServerPlayerEntity player, VehicleMoveS2CPacket packet) {
+    public static void queueServerVehicleMove(ServerPlayerEntity player, MovementPacketData packet) {
         EVENT_QUEUE.add(new QueuedEvent(EventType.SERVER_VEHICLE_MOVE, new Object[]{player, packet}));
     }
 
@@ -122,36 +123,41 @@ public class PandaACThread extends Thread {
             case PLAYER_MOVE:
                 Object[] moveData = (Object[]) event.data;
                 player = (ServerPlayerEntity) moveData[0];
+                if (!player.networkHandler.isConnectionOpen()) return;
                 if (!player.isDisconnected()) {
-                    MovementManager.read(player, (PlayerMoveC2SPacket) moveData[1], (long) moveData[2]);
+                    MovementManager.read(player, (MovementPacketData) moveData[1], (long) moveData[2]);
                 }
                 break;
             case PLAYER_TELEPORT:
                 Object[] teleportData = (Object[]) event.data;
                 player = (ServerPlayerEntity) teleportData[0];
+                if (!player.networkHandler.isConnectionOpen()) return;
                 if (!player.isDisconnected()) {
-                    MovementManager.receiveTeleport(player, (PlayerPositionLookS2CPacket) teleportData[1]);
+                    MovementManager.receiveTeleport(player, (MovementPacketData) teleportData[1]);
                 }
                 break;
             case PLAYER_VELOCITY:
                 Object[] velocityData = (Object[]) event.data;
                 player = (ServerPlayerEntity) velocityData[0];
+                if (!player.networkHandler.isConnectionOpen()) return;
                 if (!player.isDisconnected()) {
-                    MovementManager.receiveVelocity(player, (EntityVelocityUpdateS2CPacket) velocityData[1]);
+                    MovementManager.receiveVelocity(player, (MovementPacketData) velocityData[1]);
                 }
                 break;
             case VEHICLE_MOVE:
                 Object[] vehicleMoveData = (Object[]) event.data;
                 player = (ServerPlayerEntity) vehicleMoveData[0];
+                if (!player.networkHandler.isConnectionOpen()) return;
                 if (!player.isDisconnected()) {
-                    VehicleMovementManager.read(player, (VehicleMoveC2SPacket) vehicleMoveData[1], (long) vehicleMoveData[2]);
+                    VehicleMovementManager.read(player, (MovementPacketData) vehicleMoveData[1], (long) vehicleMoveData[2]);
                 }
                 break;
             case SERVER_VEHICLE_MOVE:
                 Object[] serverVehicleMoveData = (Object[]) event.data;
                 player = (ServerPlayerEntity) serverVehicleMoveData[0];
+                if (!player.networkHandler.isConnectionOpen()) return;
                 if (!player.isDisconnected()) {
-                    VehicleMovementManager.setData(player, (VehicleMoveS2CPacket) serverVehicleMoveData[1]);
+                    VehicleMovementManager.setData(player, (MovementPacketData) serverVehicleMoveData[1]);
                 }
                 break;
             case TICK:
@@ -161,6 +167,9 @@ public class PandaACThread extends Thread {
                     long time = System.currentTimeMillis();
                     List<ServerPlayerEntity> playerList = new ArrayList<>(minecraftServer.getPlayerManager().getPlayerList());
                     for (ServerPlayerEntity serverPlayerEntity : playerList) {
+
+                        if (!serverPlayerEntity.networkHandler.isConnectionOpen()) continue;
+
                         if (!serverPlayerEntity.isDisconnected()) {
                             CheckManager.run(serverPlayerEntity, time);
                         }

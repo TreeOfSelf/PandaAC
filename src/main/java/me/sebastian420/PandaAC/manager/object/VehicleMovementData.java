@@ -81,7 +81,7 @@ public class VehicleMovementData {
         }
     }
 
-    public void setNew(VehicleMoveC2SPacket packet, UUID vehicleUUID) {
+    public void setNew(MovementPacketData packet, UUID vehicleUUID) {
         currentX = packet.getX();
         currentY = packet.getY();
         currentZ = packet.getZ();
@@ -221,7 +221,7 @@ public class VehicleMovementData {
         Arrays.fill(verticalSpeedPotential, 0);
     }
 
-    public void consumePacket(VehicleMoveS2CPacket packet) {
+    public void consumePacket(MovementPacketData packet) {
 
         currentX = packet.getX();
         currentY = packet.getY();

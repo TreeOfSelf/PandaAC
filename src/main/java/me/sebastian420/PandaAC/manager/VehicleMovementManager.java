@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.manager;
 
 import me.sebastian420.PandaAC.data.SpeedLimits;
+import me.sebastian420.PandaAC.manager.object.MovementPacketData;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
 import me.sebastian420.PandaAC.util.MathUtil;
@@ -10,8 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.*;
-import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
-import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -30,7 +29,7 @@ public class VehicleMovementManager {
         return vehicleMovementMap.computeIfAbsent(player.getUuid(), uuid -> new VehicleMovementData(player, vehicle));
     }
 
-    public static void read(ServerPlayerEntity player, VehicleMoveC2SPacket packet, long time) {
+    public static void read(ServerPlayerEntity player, MovementPacketData packet, long time) {
 
         Entity vehicle = player.getVehicle();
         if (vehicle == null) return;
@@ -146,7 +145,7 @@ public class VehicleMovementManager {
         vehicleData.setNew(packet, vehicle.getUuid());
     }
 
-    public static void setData(ServerPlayerEntity player, VehicleMoveS2CPacket packet) {
+    public static void setData(ServerPlayerEntity player, MovementPacketData packet) {
         Entity vehicle = player.getVehicle();
         if (vehicle == null) return;
 

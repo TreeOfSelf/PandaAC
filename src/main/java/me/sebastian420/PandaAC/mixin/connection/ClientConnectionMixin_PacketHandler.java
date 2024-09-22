@@ -4,8 +4,10 @@ import com.google.gson.internal.reflect.ReflectionHelper;
 import io.netty.channel.ChannelHandlerContext;
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.MovementManager;
+import me.sebastian420.PandaAC.manager.object.MovementPacketData;
 import me.sebastian420.PandaAC.manager.object.PlayerMovementData;
 import me.sebastian420.PandaAC.util.PandaLogger;
+import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -39,8 +41,6 @@ public class ClientConnectionMixin_PacketHandler {
     @Shadow
     private PacketListener packetListener;
 
-
-
     @Inject(method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V", at = @At("HEAD"), cancellable = true)
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo ci) {
         if (packetListener instanceof ServerPlayNetworkHandler) {
@@ -54,13 +54,18 @@ public class ClientConnectionMixin_PacketHandler {
                 && !(packet instanceof ClientOptionsC2SPacket)
                 && !(packet instanceof AcknowledgeChunksC2SPacket)
                 ) {
-                    ci.cancel();
+                     ci.cancel();
                 }
             } else {
                 if (packet instanceof PlayerMoveC2SPacket) {
-                    PandaACThread.queuePlayerMove(serverPlayerEntity, (PlayerMoveC2SPacket) packet, System.currentTimeMillis());
+                    PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
+                    if (packetView.isChangePosition()) {
+                        MovementPacketData movementPacketData = new MovementPacketData(packetView);
+                        PandaACThread.queuePlayerMove(serverPlayerEntity, movementPacketData, System.currentTimeMillis());
+                    }
                 } else if (packet instanceof VehicleMoveC2SPacket) {
-                    PandaACThread.queueVehicleMove(serverPlayerEntity, (VehicleMoveC2SPacket) packet, System.currentTimeMillis());
+                    MovementPacketData movementPacketData = new MovementPacketData((VehicleMoveC2SPacket) packet);
+                    PandaACThread.queueVehicleMove(serverPlayerEntity, movementPacketData, System.currentTimeMillis());
                 } else if (packet instanceof UpdateSignC2SPacket signPacket) {
                     String[] text = signPacket.getText();
                     for (int x = 0; x < text.length; x++) {
@@ -91,14 +96,20 @@ public class ClientConnectionMixin_PacketHandler {
     public void send(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
         if (packet instanceof PlayerPositionLookS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-            PandaACThread.queuePlayerTeleport(serverPlayerEntity, (PlayerPositionLookS2CPacket) packet);
+            MovementPacketData movementPacketData = new MovementPacketData((PlayerPositionLookS2CPacket) packet);
+            PandaACThread.queuePlayerTeleport(serverPlayerEntity, movementPacketData);
         } else if (packet instanceof VehicleMoveS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-            PandaACThread.queueServerVehicleMove(serverPlayerEntity, (VehicleMoveS2CPacket) packet);
+            MovementPacketData movementPacketData = new MovementPacketData((VehicleMoveS2CPacket) packet);
+            PandaACThread.queueServerVehicleMove(serverPlayerEntity, movementPacketData);
         } else if (packet instanceof EntityVelocityUpdateS2CPacket entityVelocityPacket) {
+
+            MovementPacketData movementPacketData = new MovementPacketData(entityVelocityPacket);
+
+
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
             if (serverPlayerEntity.getId() == entityVelocityPacket.getId())
-                PandaACThread.queuePlayerVelocity(serverPlayerEntity, entityVelocityPacket);
+                PandaACThread.queuePlayerVelocity(serverPlayerEntity, movementPacketData);
         }
 
     }
