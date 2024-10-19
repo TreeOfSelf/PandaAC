@@ -249,5 +249,8 @@ public class VehicleMovementData {
     public void setLastSpeedPotential(double speedPotential) {lastSpeedPotential = speedPotential;}
     public double getLastSpeedPotential() {return lastSpeedPotential;}
 
+    public void setStarted(boolean b) {
+        hasStarted = b;
+    }
 }
 

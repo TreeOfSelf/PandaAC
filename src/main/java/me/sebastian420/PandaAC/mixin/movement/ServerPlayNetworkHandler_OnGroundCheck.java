@@ -31,6 +31,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
      * @param packet
      * @param ci
      */
+
     @Inject(
             method = "onPlayerMove(Lnet/minecraft/network/packet/c2s/play/PlayerMoveC2SPacket;)V",
             at = @At(

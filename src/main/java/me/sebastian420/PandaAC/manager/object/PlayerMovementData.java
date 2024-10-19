@@ -250,6 +250,10 @@ public class PlayerMovementData {
     public boolean getStarted() {
         return hasStarted;
     }
+    public void setStarted(boolean setStarted) {
+        hasStarted = setStarted;
+    }
+
 
     public void teleport(double x, double y, double z, long time) {
         currentX = x;

@@ -42,6 +42,7 @@ public class PandaAC implements ModInitializer {
 		BreakBlock.register();
 		UseBlock.register();
 		WindCharged.register();
+		WorldChanged.register();
 		CombatModule.registerEvents();
 		S2CPacketModule.registerEvents();
 	}

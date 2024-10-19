@@ -15,9 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerCommonNetworkHandler.class)
 public abstract class ServerPlayNetworkHandlerMixin_PacketEvents {
-
-
-
     @Shadow @Final private MinecraftServer server;
 
     /**

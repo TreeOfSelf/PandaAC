@@ -44,7 +44,10 @@ public class ClientConnectionMixin_PacketHandler {
     @Inject(method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/packet/Packet;)V", at = @At("HEAD"), cancellable = true)
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo ci) {
         if (packetListener instanceof ServerPlayNetworkHandler) {
+
+
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
+
 
             if (!serverPlayerEntity.isAlive()) {
                 if (!(packet instanceof ClientStatusC2SPacket)

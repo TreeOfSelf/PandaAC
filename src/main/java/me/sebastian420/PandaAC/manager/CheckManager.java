@@ -111,12 +111,12 @@ public class CheckManager {
                         break;
                     }
 
-                    if (serverPlayerEntity.isDisconnected()) break;
+                    /*if (serverPlayerEntity.isDisconnected()) break;
                     if (ElytraHoverCheck.check(serverPlayerEntity, playerData, time)) {
                         PandaLogger.getLogger().warn("Flagged Elytra Hover");
                         playerData.moveCurrentToLast(time);
                         break;
-                    }
+                    }*/
 
                     if (serverPlayerEntity.isDisconnected()) break;
                     if (ElytraVerticalSpeedCheck.check(serverPlayerEntity, playerData, time)) {
@@ -185,7 +185,9 @@ public class CheckManager {
 
     public static void rollBack(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData){
         if (!playerData.getStarted()) return;
-        if (playerData.getX() == 0 && playerData.getY() == 0 && playerData.getZ() == 0) return;
+        if (playerData.getLastX() == 0 && playerData.getLastY() == 0 && playerData.getLastZ() == 0) return;
+        if (Double.isNaN(playerData.getLastX()) || Double.isNaN(playerData.getLastY()) || Double.isNaN(playerData.getLastZ())) return;
+
         long time = System.currentTimeMillis();
         //We should do something like this where your velocity is counted til you hit the ground
         //Vec3d velocity = serverPlayerEntity.getVelocity();
@@ -198,7 +200,8 @@ public class CheckManager {
 
     public static void rollBackVehicle(ServerPlayerEntity serverPlayerEntity, VehicleMovementData vehicleData) {
         if (!vehicleData.getStarted()) return;
-        if (vehicleData.getX() == 0 && vehicleData.getY() == 0 && vehicleData.getZ() == 0) return;
+        if (vehicleData.getLastX() == 0 && vehicleData.getLastY() == 0 && vehicleData.getLastZ() == 0) return;
+        if (Double.isNaN(vehicleData.getLastX()) || Double.isNaN(vehicleData.getLastY()) || Double.isNaN(vehicleData.getLastZ())) return;
 
         long time = System.currentTimeMillis();
 
