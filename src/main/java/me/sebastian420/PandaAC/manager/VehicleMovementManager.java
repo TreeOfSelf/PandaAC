@@ -49,7 +49,7 @@ public class VehicleMovementManager {
             vehicleData.setLastAttached((int) packet.getX(), (int) packet.getY(), (int) packet.getZ(), time);
         }
 
-        if (type == EntityType.BOAT) {
+        if (type == EntityType.BOAT || type == EntityType.CHEST_BOAT) {
 
             boolean previousOnIce = vehicleData.getOnIce();
 

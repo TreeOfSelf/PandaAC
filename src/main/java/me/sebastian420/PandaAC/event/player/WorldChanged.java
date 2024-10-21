@@ -17,10 +17,9 @@ public class WorldChanged {
 
     private static void onPlayerWorldChange(ServerPlayerEntity serverPlayerEntity, ServerWorld serverWorld, ServerWorld serverWorld1) {
         PlayerMovementData playerData = MovementManager.getPlayer(serverPlayerEntity);
-        playerData.setStarted(false);
         VehicleMovementData vehicleData = VehicleMovementManager.getPlayer(serverPlayerEntity);
-        vehicleData.setStarted(false);
-
+        playerData.setInitial(serverPlayerEntity);
+        vehicleData.setInitial(serverPlayerEntity);
     }
 
 }
