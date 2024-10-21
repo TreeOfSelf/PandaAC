@@ -14,8 +14,6 @@ public class VehicleHorizontalSpeedCheck {
 
         if (vehicleData.getChanged()) {
 
-            PandaLogger.getLogger().info("Doing check");
-
             long timeDifMs = time - vehicleData.getLastCheck();
             double distance = MathUtil.getDistance(vehicleData.getLastX(), vehicleData.getLastZ(), vehicleData.getX(), vehicleData.getZ());
             double speedMps = (distance * 1000.0) / timeDifMs;
