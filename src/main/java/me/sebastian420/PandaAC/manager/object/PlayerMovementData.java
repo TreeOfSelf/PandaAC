@@ -332,4 +332,15 @@ public class PlayerMovementData {
         onIce = b;
     }
     public boolean getOnIce(){return onIce;}
+
+    public void setInitial(ServerPlayerEntity player) {
+        this.currentX = player.getX();
+        this.currentY = player.getY();
+        this.currentZ = player.getZ();
+        this.lastX = player.getX();
+        this.lastY = player.getY();
+        this.lastZ = player.getZ();
+        this.changed = true;
+        this.hasStarted = true;
+    }
 }

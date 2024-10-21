@@ -19,6 +19,6 @@ public interface EntityEquipmentUpdateS2CPacketAccessor {
     @Accessor("equipmentList")
     void setEquipment(List<Pair<EquipmentSlot, ItemStack>> equipmentList);
 
-    @Accessor("id")
+    @Accessor("entityId")
     int getEntityId();
 }

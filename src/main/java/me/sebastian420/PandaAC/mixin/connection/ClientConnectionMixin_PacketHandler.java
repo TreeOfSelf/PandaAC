@@ -60,10 +60,10 @@ public class ClientConnectionMixin_PacketHandler {
                      ci.cancel();
                 }
             } else {
-                if (packet instanceof PlayerMoveC2SPacket) {
-                    PlayerMoveC2SPacketView packetView = (PlayerMoveC2SPacketView) packet;
-                    if (packetView.isChangePosition()) {
-                        MovementPacketData movementPacketData = new MovementPacketData(packetView);
+                if (packet instanceof PlayerMoveC2SPacket movePacket) {
+                    if (movePacket.changesPosition() &&
+                            !(movePacket.getX(serverPlayerEntity.getX()) == 8.5 && (movePacket.getX(serverPlayerEntity.getZ()) == 8.5 ))) {
+                        MovementPacketData movementPacketData = new MovementPacketData(movePacket, serverPlayerEntity);
                         PandaACThread.queuePlayerMove(serverPlayerEntity, movementPacketData, System.currentTimeMillis());
                     }
                 } else if (packet instanceof VehicleMoveC2SPacket) {
@@ -111,7 +111,7 @@ public class ClientConnectionMixin_PacketHandler {
 
 
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();
-            if (serverPlayerEntity.getId() == entityVelocityPacket.getId())
+            if (serverPlayerEntity.getId() == entityVelocityPacket.getEntityId())
                 PandaACThread.queuePlayerVelocity(serverPlayerEntity, movementPacketData);
         }
 
