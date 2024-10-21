@@ -93,10 +93,13 @@ public class MovementManager {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_WATER * (1 + depthStrider * 0.5);
 
                 StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
-                if (dolphinsGrace != null) speedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 2);
-
+                if (dolphinsGrace != null) speedPotential *= 1 + (double) dolphinsGrace.getAmplifier() / 2;
+                StatusEffectInstance conduitPower = player.getStatusEffect(StatusEffects.CONDUIT_POWER);
+                if (conduitPower != null) speedPotential *= 1 + (double) (conduitPower.getAmplifier()+1) / 2;
+                
                 inFluid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
+
             } else if (currentFluidState.getFluidState().isIn(FluidTags.LAVA)) {
                 speedPotential = SpeedLimits.SWIM_SPEED_HORIZONTAL_LAVA;
                 inFluid = true;
@@ -173,7 +176,9 @@ public class MovementManager {
                         if (currentFluidState.getFluidState().isIn(FluidTags.WATER)) {
                             verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_WATER_UP  * (1 + depthStrider * 0.5) + Math.abs(player.getVelocity().getY()) * 20;
                             StatusEffectInstance dolphinsGrace = player.getStatusEffect(StatusEffects.DOLPHINS_GRACE);
-                            if (dolphinsGrace != null) verticalSpeedPotential *= (1 + (double) dolphinsGrace.getAmplifier() / 2);
+                            if (dolphinsGrace != null) verticalSpeedPotential *= (1 + (double) dolphinsGrace.getAmplifier());
+                            StatusEffectInstance conduitPower = player.getStatusEffect(StatusEffects.CONDUIT_POWER);
+                            if (conduitPower != null) verticalSpeedPotential *= (1 + (double) (conduitPower.getAmplifier()+1));
                         } else {
                             verticalSpeedPotential = SpeedLimits.SWIM_SPEED_VERTICAL_LAVA_UP + Math.abs(player.getVelocity().getY()) * 20;
                         }
@@ -205,6 +210,8 @@ public class MovementManager {
         if (player.isUsingRiptide()) {
             playerData.setStoredSpeedVertical(75);
             playerData.setStoredSpeed(75);
+            playerData.setElytraMaxElevation(player.getY() + 100);
+            playerData.setElytraElevation(player.getY() + 100);
             playerData.setAirTimeStartTime(time);
         }
 
@@ -251,7 +258,7 @@ public class MovementManager {
         if (speedEffect != null) speedPotential *= 1 + (double) speedEffect.getAmplifier() / 2;
 
         StatusEffectInstance conduitPower = player.getStatusEffect(StatusEffects.CONDUIT_POWER);
-        if (conduitPower != null) speedPotential *= 1 + (double) conduitPower.getAmplifier() / 2;
+        if (conduitPower != null) speedPotential *= 1 + (double) (conduitPower.getAmplifier()+1) / 2;
 
 
         StatusEffectInstance slowEffect = player.getStatusEffect(StatusEffects.SLOWNESS);
