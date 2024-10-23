@@ -96,7 +96,7 @@ public class MovementManager {
                 if (dolphinsGrace != null) speedPotential *= 1 + (double) dolphinsGrace.getAmplifier() / 2;
                 StatusEffectInstance conduitPower = player.getStatusEffect(StatusEffects.CONDUIT_POWER);
                 if (conduitPower != null) speedPotential *= 1 + (double) (conduitPower.getAmplifier()+1) / 2;
-                
+
                 inFluid = true;
                 speedPotential += Math.abs(player.getVelocity().getY());
 
