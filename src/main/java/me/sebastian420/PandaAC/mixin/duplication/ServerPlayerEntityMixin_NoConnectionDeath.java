@@ -1,8 +1,10 @@
 package me.sebastian420.PandaAC.mixin.duplication;
 
 import me.sebastian420.PandaAC.PandaAC;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +27,7 @@ public abstract class ServerPlayerEntityMixin_NoConnectionDeath {
      * Checks whether player is even connected before applying damage.
      */
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-    private void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    private void damage(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if(PandaAC.pandaConfig.duplication.patchDeathDuplication && this.isDisconnected())
             cir.setReturnValue(false);
     }
