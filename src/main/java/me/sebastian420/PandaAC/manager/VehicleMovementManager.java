@@ -11,7 +11,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.*;
+import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
@@ -49,7 +51,7 @@ public class VehicleMovementManager {
             vehicleData.setLastAttached((int) packet.getX(), (int) packet.getY(), (int) packet.getZ(), time);
         }
 
-        if (type == EntityType.BOAT || type == EntityType.CHEST_BOAT) {
+            if (vehicle.getType().isIn( EntityTypeTags.BOAT)){
 
             boolean previousOnIce = vehicleData.getOnIce();
 
@@ -102,7 +104,7 @@ public class VehicleMovementManager {
                     if (camelEntity.isDashing()) speedMult = 8;
                 }
 
-                speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.GENERIC_MOVEMENT_SPEED) * 40 * speedMult;
+                speedPotential = horseEntity.getAttributes().getValue(EntityAttributes.MOVEMENT_SPEED) * 40 * speedMult;
                 yawPotential = SpeedLimits.HORSE_YAW;
             } else {
                 List<Entity> passengers = vehicle.getPassengerList();

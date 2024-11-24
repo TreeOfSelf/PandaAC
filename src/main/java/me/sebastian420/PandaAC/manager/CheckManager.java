@@ -44,7 +44,7 @@ public class CheckManager {
                 BlockState lastBlockState = serverPlayerEntity.getServerWorld().getBlockState(lastBlockPos);
 
                 //Non-Elytra
-                if (!serverPlayerEntity.isFallFlying()) {
+                if (!serverPlayerEntity.isGliding()) {
                     //Fluid checks
                     if (lastBlockState.getFluidState().isIn(FluidTags.WATER) ||
                             lastBlockState.getFluidState().isIn(FluidTags.LAVA)) {
@@ -191,8 +191,8 @@ public class CheckManager {
         long time = System.currentTimeMillis();
         //We should do something like this where your velocity is counted til you hit the ground
         //Vec3d velocity = serverPlayerEntity.getVelocity();
-        serverPlayerEntity.setOnGround(Vec3d.of(Vec3i.ZERO));
-        serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch());
+
+        serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(),PositionFlag.VALUES , serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch(), false);
         playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), time);
         PandaLogger.getLogger().info("TELEPORTED TO {} {} {}", playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
         //serverPlayerEntity.setVelocity(velocity);
@@ -210,7 +210,7 @@ public class CheckManager {
 
         List<Entity> passengers = vehicle.getPassengerList();
         passengers.iterator().forEachRemaining(Entity::dismountVehicle);
-        vehicle.teleport((ServerWorld) vehicle.getWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.VALUES, vehicle.getYaw(), vehicle.getPitch());
+        vehicle.teleport((ServerWorld) vehicle.getWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.VALUES, vehicle.getYaw(), vehicle.getPitch(), false);
         vehicleData.teleport(vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), time);
 
         vehicle.setVelocity(new Vec3d(0,0,0));

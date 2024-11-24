@@ -46,9 +46,9 @@ public class MovementManager {
         ItemStack boots = player.getEquippedStack(EquipmentSlot.FEET);
         ItemStack leggings = player.getEquippedStack(EquipmentSlot.LEGS);
 
-        int soulSpeed = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.SOUL_SPEED), boots);
-        int depthStrider = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.DEPTH_STRIDER), boots);
-        int swiftSneak = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getWrapperOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.SWIFT_SNEAK), leggings);
+        int soulSpeed = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.SOUL_SPEED), boots);
+        int depthStrider = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.DEPTH_STRIDER), boots);
+        int swiftSneak = EnchantmentHelper.getLevel(player.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(Enchantments.SWIFT_SNEAK), leggings);
 
 
         //Clear vehicle UUID if not in vehicle
@@ -68,7 +68,7 @@ public class MovementManager {
         boolean onGround = BlockUtil.checkGround(player, packet.getY());
 
 
-        if (!player.isFallFlying()) {
+        if (!player.isGliding()) {
             //Save momentum
             if (playerData.getFlying()) {
                 if (time - playerData.getLastElytraStoreTime() < 1000) {
@@ -240,7 +240,7 @@ public class MovementManager {
                 !inFluid && time - playerData.getLastFluidTime() > 500L * jumpBoostLevel &&
                 playerData.getStoredSpeedVertical()<=0 &&
                 time - playerData.getLastLevitation() > 500L) {
-            if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying()) CheckManager.rollBack(player ,playerData);
+            if (!player.isCreative() && !player.isSpectator() && !player.isGliding()) CheckManager.rollBack(player ,playerData);
         } else if (inFluid) {
             if (player.isInFluid()) {
                 playerData.setLastAttachedFluid(packet.getX(), packet.getY(), packet.getZ(), time);
@@ -276,7 +276,7 @@ public class MovementManager {
 
 
         if (playerMoveLength > ((speedPotential * SpeedLimits.SHORT_FUDGE + playerData.getStoredSpeed()) / 18)*speedMult) {
-            if (!player.isCreative() && !player.isSpectator() && !player.isFallFlying() && !player.isUsingRiptide()) {
+            if (!player.isCreative() && !player.isSpectator() && !player.isGliding() && !player.isUsingRiptide()) {
                 playerData.incrementShortSpeedFlagCount();
                 if (playerData.getShortSpeedFlagCount() > 6) {
                     PandaLogger.getLogger().info("Flagged Short term speed Speed {} Pot {}",playerMoveLength, ((speedPotential + playerData.getStoredSpeed()) / 18)*speedMult);

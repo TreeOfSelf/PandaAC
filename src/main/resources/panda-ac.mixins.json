@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "accessor.EntityEquipmentUpdateS2CPacketAccessor",
-    "accessor.EntityPositionS2CPacketAccessor",
     "accessor.InventoryS2CPacketAccessor",
     "accessor.LivingEntityAccessor",
     "accessor.PlayerEntityAccessor",

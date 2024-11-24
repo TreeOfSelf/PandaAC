@@ -8,8 +8,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 public class UseRocket {
@@ -17,10 +17,10 @@ public class UseRocket {
         UseItemCallback.EVENT.register(UseRocket::onUseItem);
     }
 
-    private static TypedActionResult<ItemStack> onUseItem(PlayerEntity player, World world, Hand hand) {
+    private static ActionResult onUseItem(PlayerEntity player, World world, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
 
-        if (player.isFallFlying()) {
+        if (player.isGliding()) {
             if (stack.getItem() == Items.FIREWORK_ROCKET) {
                 PlayerMovementData playerData = MovementManager.getPlayer((ServerPlayerEntity) player);
                 int duration = stack.getComponents().get(DataComponentTypes.FIREWORKS).flightDuration();
@@ -42,7 +42,9 @@ public class UseRocket {
         }
 
 
-        return TypedActionResult.pass(stack);
+        return ActionResult.SUCCESS;
 
     }
+
+
 }

@@ -24,7 +24,7 @@ public abstract class ServerPlayerEntityMixin_NoConnectionDeath {
     /**
      * Checks whether player is even connected before applying damage.
      */
-    @Inject(method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     private void damage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if(PandaAC.pandaConfig.duplication.patchDeathDuplication && this.isDisconnected())
             cir.setReturnValue(false);

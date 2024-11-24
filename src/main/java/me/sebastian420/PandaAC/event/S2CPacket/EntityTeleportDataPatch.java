@@ -4,7 +4,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import me.sebastian420.PandaAC.mixin.accessor.EntityPositionS2CPacketAccessor;
 
 import static me.sebastian420.PandaAC.PandaAC.pandaConfig;
 
@@ -23,10 +22,8 @@ public class EntityTeleportDataPatch implements S2CPacketCallback {
 
     @Override
     public void preSendPacket(Packet<?> packet, ServerPlayerEntity player, MinecraftServer server) {
-        if(pandaConfig.packet.removeTeleportData && packet instanceof EntityPositionS2CPacket) {
-            EntityPositionS2CPacketAccessor packetAccessor = (EntityPositionS2CPacketAccessor) packet;
-
-            // Similar to SoundExploitPatch#preSendPacket
+        if(pandaConfig.packet.removeTeleportData && packet instanceof EntityPositionS2CPacket packetAccessor) {
+            /*// Similar to SoundExploitPatch#preSendPacket
             int maxPlayerDistance = server.getPlayerManager().getViewDistance() * 16;
             double deltaX = player.getX() - packetAccessor.getX();
             double deltaZ = player.getZ() - packetAccessor.getZ();
@@ -37,7 +34,7 @@ public class EntityTeleportDataPatch implements S2CPacketCallback {
                 // Can not track this entity (teleporter), why send data?
                 packetAccessor.setX(player.getX() + maxPlayerDistance);
                 packetAccessor.setZ(player.getZ() + maxPlayerDistance);
-            }
+            }*/
         }
     }
 }

@@ -54,11 +54,12 @@ public class MovementPacketData {
     }
 
     public MovementPacketData(PlayerPositionLookS2CPacket packet) {
-        this.x = packet.getX();
-        this.y = packet.getY();
-        this.z = packet.getZ();
-        this.yaw = packet.getYaw();
-        this.pitch = packet.getPitch();
+
+        this.x = packet.change().position().x;
+        this.y = packet.change().position().y;
+        this.z = packet.change().position().z;
+        this.yaw = packet.change().yaw();
+        this.pitch = packet.change().pitch();
         /*if (Math.abs(this.x) < 10 || Math.abs(this.z) < 10) {
             PandaLogger.getLogger().info("PlayerPositionLookS2CPacket");
         }*/
