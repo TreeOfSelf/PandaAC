@@ -192,7 +192,7 @@ public class CheckManager {
         //We should do something like this where your velocity is counted til you hit the ground
         //Vec3d velocity = serverPlayerEntity.getVelocity();
 
-        serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(),PositionFlag.VALUES , serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch(), false);
+        serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(),PositionFlag.DELTA , serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch(), false);
         playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), time);
         PandaLogger.getLogger().info("TELEPORTED TO {} {} {}", playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
         //serverPlayerEntity.setVelocity(velocity);
@@ -210,7 +210,7 @@ public class CheckManager {
 
         List<Entity> passengers = vehicle.getPassengerList();
         passengers.iterator().forEachRemaining(Entity::dismountVehicle);
-        vehicle.teleport((ServerWorld) vehicle.getWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.VALUES, vehicle.getYaw(), vehicle.getPitch(), false);
+        vehicle.teleport((ServerWorld) vehicle.getWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.DELTA, vehicle.getYaw(), vehicle.getPitch(), false);
         vehicleData.teleport(vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), time);
 
         vehicle.setVelocity(new Vec3d(0,0,0));
