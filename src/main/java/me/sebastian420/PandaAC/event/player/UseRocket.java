@@ -42,7 +42,7 @@ public class UseRocket {
         }
 
 
-        return ActionResult.SUCCESS;
+        return ActionResult.PASS;
 
     }
 
