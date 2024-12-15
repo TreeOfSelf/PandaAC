@@ -32,22 +32,22 @@ public class MovementPacketData {
 
 
     public MovementPacketData(VehicleMoveC2SPacket packet) {
-        this.x = packet.getX();
-        this.y = packet.getY();
-        this.z = packet.getZ();
-        this.yaw = packet.getYaw();
-        this.pitch = packet.getPitch();
+        this.x = packet.position().getX();
+        this.y = packet.position().getY();
+        this.z = packet.position().getZ();
+        this.yaw = packet.yaw();
+        this.pitch = packet.pitch();
         /*if (Math.abs(this.x) < 10 || Math.abs(this.z) < 10) {
             PandaLogger.getLogger().info("VehicleMoveC2SPacket");
         }*/
     }
 
     public MovementPacketData(VehicleMoveS2CPacket packet) {
-        this.x = packet.getX();
-        this.y = packet.getY();
-        this.z = packet.getZ();
-        this.yaw = packet.getYaw();
-        this.pitch = packet.getPitch();
+        this.x = packet.position().getX();
+        this.y = packet.position().getY();
+        this.z = packet.position().getZ();
+        this.yaw = packet.yaw();
+        this.pitch = packet.pitch();
         /*if (Math.abs(this.x) < 10 || Math.abs(this.z) < 10) {
             PandaLogger.getLogger().info("VehicleMoveS2CPacket");
         }*/
