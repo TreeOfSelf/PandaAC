@@ -20,6 +20,7 @@ public class HoverCheck {
                 if (playerData.getLastY() == playerData.getY()) {
                     if (playerData.getHover()) {
                         CheckManager.rollBack(serverPlayerEntity, playerData);
+                        PandaLogger.getLogger().warn("Hover {}",  serverPlayerEntity.getPlayerListName());
                         flagged = true;
                     }
                     playerData.setHover(true);

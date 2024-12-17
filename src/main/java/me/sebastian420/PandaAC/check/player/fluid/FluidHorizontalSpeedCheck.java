@@ -40,7 +40,7 @@ public class FluidHorizontalSpeedCheck {
 
             if (speedMps > totalPotential || playerData.getPossibleTimer()) {
 
-                PandaLogger.getLogger().warn("Swim Horizontal Speed {} Potential {} Count {}", speedMps, totalPotential, playerData.getPacketCount());
+                PandaLogger.getLogger().warn("Swim Horizontal Speed {} Potential {} Count {} {}", speedMps, totalPotential, playerData.getPacketCount(), serverPlayerEntity.getPlayerListName());
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 playerData.setCarriedPotential(0);
                 flagged = true;

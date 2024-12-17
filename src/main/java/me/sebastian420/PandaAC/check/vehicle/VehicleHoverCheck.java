@@ -3,6 +3,7 @@ package me.sebastian420.PandaAC.check.vehicle;
 import me.sebastian420.PandaAC.manager.CheckManager;
 import me.sebastian420.PandaAC.manager.object.VehicleMovementData;
 import me.sebastian420.PandaAC.util.BlockUtil;
+import me.sebastian420.PandaAC.util.PandaLogger;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -18,6 +19,7 @@ public class VehicleHoverCheck {
                 if (vehicleData.getLastY() == vehicleData.getY()) {
                     if (vehicleData.getHover()) {
                         CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
+                        PandaLogger.getLogger().warn("Vehicle hover {}",  serverPlayerEntity.getPlayerListName());
                         flagged = true;
                     }
                     vehicleData.setHover(true);

@@ -33,7 +33,7 @@ public class VerticalSpeedCheckUp {
                 if (speedMps > speedPotential) {
                     playerData.incrementUpSpeedFlagCount();
                     if (playerData.getUpSpeedFlagCount() > 1) {
-                        PandaLogger.getLogger().warn("Speed {} Potential {}", speedMps, speedPotential);
+                        PandaLogger.getLogger().warn("Speed {} Potential {} {}", speedMps, speedPotential, serverPlayerEntity.getPlayerListName());
                         CheckManager.rollBack(serverPlayerEntity, playerData);
                         flagged = true;
                     }

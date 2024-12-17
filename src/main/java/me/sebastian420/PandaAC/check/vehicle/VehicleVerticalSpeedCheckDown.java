@@ -27,7 +27,7 @@ public class VehicleVerticalSpeedCheckDown {
 
 
             if ( speedMps < speedPotential && airTimeDif > 500) {
-                PandaLogger.getLogger().info("SPEED DOWN INFO speedMps {} Potential {}", speedMps, speedPotential);
+                PandaLogger.getLogger().info("SPEED DOWN INFO speedMps {} Potential {} {}", speedMps, speedPotential, serverPlayerEntity.getPlayerListName());
                 CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                 flagged = true;
             }

@@ -20,7 +20,7 @@ public class ElytraHoverCheck {
             if (yDistance < 0.17 && horizontalDistance < 3) {
                 playerData.incrementElytraHoverCount();
                 if (playerData.getElytraHoverCount() > 3) {
-                    PandaLogger.getLogger().warn("yDistance {} horizontalDistance {}", yDistance, horizontalDistance);
+                    PandaLogger.getLogger().warn("yDistance {} horizontalDistance {} {}", yDistance, horizontalDistance, serverPlayerEntity.getPlayerListName());
                     CheckManager.rollBack(serverPlayerEntity, playerData);
                     flagged = true;
                 }

@@ -22,7 +22,7 @@ public class VehicleYawCheck {
             double totalPotential = vehicleData.getYawPotential((double) timeDifMs / 1000d);
 
             if (speedMps > totalPotential) {
-                PandaLogger.getLogger().warn("Yaw Speed {} Potential {}", speedMps, totalPotential);
+                PandaLogger.getLogger().warn("Yaw Speed {} Potential {} {}", speedMps, totalPotential, serverPlayerEntity.getPlayerListName());
                 CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                 flagged = true;
             }

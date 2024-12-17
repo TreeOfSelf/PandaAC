@@ -23,7 +23,7 @@ public class VerticalSpeedCheckDown {
             StatusEffectInstance levitation = serverPlayerEntity.getStatusEffect(StatusEffects.LEVITATION);
 
             if (levitation != null) {
-                PandaLogger.getLogger().info("SPEED DOWN INFO WENT DOWN WHILE LEVITATING");
+                PandaLogger.getLogger().info("SPEED DOWN INFO WENT DOWN WHILE LEVITATING {}", serverPlayerEntity.getPlayerListName());
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
                 return (flagged);
@@ -39,7 +39,7 @@ public class VerticalSpeedCheckDown {
 
             long solidBlockTimeDif = time - playerData.getLastSolidTouch();
             if ( (solidBlockTimeDif > 1000 && speedMps < speedPotential / 5 && airTimeDif > 2000)) {
-                PandaLogger.getLogger().info("SPEED DOWN INFO speedMps {} Potential {}", speedMps, speedPotential);
+                PandaLogger.getLogger().info("SPEED DOWN INFO speedMps {} Potential {} {}", speedMps, speedPotential, serverPlayerEntity.getPlayerListName());
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }

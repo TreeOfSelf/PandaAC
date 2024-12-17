@@ -30,7 +30,7 @@ public class VehicleJumpHeightCheck {
 
             if (vehicleData.getY() - vehicleData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
                     vehicleData.getY() > vehicleData.getLastY()) {
-                PandaLogger.getLogger().info("Height dif {} Checkheight {}", vehicleData.getY() - vehicleData.getLastAttachedY(), checkHeight);
+                PandaLogger.getLogger().info("Height dif {} Checkheight {} {}", vehicleData.getY() - vehicleData.getLastAttachedY(), checkHeight, serverPlayerEntity.getPlayerListName());
                 CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                 flagged = true;
             }

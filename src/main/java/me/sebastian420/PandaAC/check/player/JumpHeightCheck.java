@@ -38,7 +38,7 @@ public class JumpHeightCheck {
 
             if (playerData.getY() - playerData.getLastAttachedY() > checkHeight * JumpHeights.FUDGE &&
             playerData.getY() > playerData.getLastY()) {
-                PandaLogger.getLogger().info("Y dif {} check height {}", playerData.getY() - playerData.getLastAttachedY(), checkHeight * JumpHeights.FUDGE);
+                PandaLogger.getLogger().info("Y dif {} check height {} {}", playerData.getY() - playerData.getLastAttachedY(), checkHeight * JumpHeights.FUDGE, serverPlayerEntity.getPlayerListName());
                 CheckManager.rollBack(serverPlayerEntity, playerData);
                 flagged = true;
             }

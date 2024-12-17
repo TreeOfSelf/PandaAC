@@ -44,7 +44,7 @@ public class VehicleHorizontalSpeedCheck {
             if ( (speedMps > totalPotential && speedMps > lastPotential && avgSpeed > totalPotential) || vehicleData.getPossibleTimer()) {
                 vehicleData.incrementSpeedFlagCount();
                 if (vehicleData.getSpeedFlagCount() > 4 || vehicleData.getPossibleTimer()) {
-                    PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {}", speedMps, speedPotential, storedSpeed, vehicleData.getPacketCount());
+                    PandaLogger.getLogger().warn("Speed {} Potential {} Stored {} Count {} {}", speedMps, speedPotential, storedSpeed, vehicleData.getPacketCount(), serverPlayerEntity.getPlayerListName());
                     CheckManager.rollBackVehicle(serverPlayerEntity, vehicleData);
                     flagged = true;
                 }
