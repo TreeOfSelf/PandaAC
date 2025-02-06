@@ -1,6 +1,5 @@
 package me.sebastian420.PandaAC;
 
-import me.sebastian420.PandaAC.cast.Player;
 import me.sebastian420.PandaAC.event.player.*;
 import me.sebastian420.PandaAC.event.server.ServerStartedEvent;
 import me.sebastian420.PandaAC.event.server.ServerStopEvent;
@@ -46,6 +45,7 @@ public class PandaAC implements ModInitializer {
 		WorldChanged.register();
 		PlayerJoin.register();
 		PlayerLeave.register();
+		PlayerChangeDimension.register();
 		CombatModule.registerEvents();
 		S2CPacketModule.registerEvents();
 	}

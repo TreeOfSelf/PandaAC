@@ -228,7 +228,6 @@ public class PlayerMovementData {
     }
 
     public void setNew(MovementPacketData packetView, long time) {
-
         boolean packetChanged = false;
 
         if (currentX != packetView.getX() ||

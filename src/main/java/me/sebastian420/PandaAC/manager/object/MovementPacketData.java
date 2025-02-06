@@ -1,7 +1,5 @@
 package me.sebastian420.PandaAC.manager.object;
 
-import me.sebastian420.PandaAC.util.PandaLogger;
-import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
@@ -23,11 +21,6 @@ public class MovementPacketData {
         this.z = packet.getZ(serverPlayerEntity.getZ());
         this.yaw = packet.getYaw(serverPlayerEntity.getYaw());
         this.pitch = packet.getPitch(serverPlayerEntity.getPitch());
-
-        /*if (Math.abs(this.x) < 10 || Math.abs(this.z) < 10) {
-            PandaLogger.getLogger().info("PlayerMoveC2SPacket");
-            PandaLogger.getLogger().info("{} {} {} {}", packet.changesPosition(), packet.changesLook(), packet.getX(serverPlayerEntity.getX()), packet.getZ(serverPlayerEntity.getZ()));
-        }*/
     }
 
 
@@ -37,9 +30,6 @@ public class MovementPacketData {
         this.z = packet.position().getZ();
         this.yaw = packet.yaw();
         this.pitch = packet.pitch();
-        /*if (Math.abs(this.x) < 10 || Math.abs(this.z) < 10) {
-            PandaLogger.getLogger().info("VehicleMoveC2SPacket");
-        }*/
     }
 
     public MovementPacketData(VehicleMoveS2CPacket packet) {
@@ -48,9 +38,6 @@ public class MovementPacketData {
         this.z = packet.position().getZ();
         this.yaw = packet.yaw();
         this.pitch = packet.pitch();
-        /*if (Math.abs(this.x) < 10 || Math.abs(this.z) < 10) {
-            PandaLogger.getLogger().info("VehicleMoveS2CPacket");
-        }*/
     }
 
     public MovementPacketData(PlayerPositionLookS2CPacket packet) {
@@ -60,9 +47,6 @@ public class MovementPacketData {
         this.z = packet.change().position().z;
         this.yaw = packet.change().yaw();
         this.pitch = packet.change().pitch();
-        /*if (Math.abs(this.x) < 10 || Math.abs(this.z) < 10) {
-            PandaLogger.getLogger().info("PlayerPositionLookS2CPacket");
-        }*/
     }
 
     public MovementPacketData(EntityVelocityUpdateS2CPacket packet) {
@@ -84,8 +68,5 @@ public class MovementPacketData {
     }
     public double getYaw(){
         return this.yaw;
-    }
-    public double getPitch(){
-        return this.pitch;
     }
 }
