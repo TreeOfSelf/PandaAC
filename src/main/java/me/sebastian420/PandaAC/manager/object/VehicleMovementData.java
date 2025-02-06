@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.packet.c2s.play.VehicleMoveC2SPacket;
 import net.minecraft.network.packet.s2c.play.VehicleMoveS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -56,6 +57,7 @@ public class VehicleMovementData {
     private long airTimeStartTime;
     private long lastSolidTouch;
 
+    private ServerWorld serverWorld;
 
     private UUID vehicleUUID;
 
@@ -82,6 +84,12 @@ public class VehicleMovementData {
     }
 
     public void setNew(MovementPacketData packet, UUID vehicleUUID) {
+
+        if (player.getServerWorld() != this.serverWorld) {
+            setInitial(player);
+            this.serverWorld = player.getServerWorld();
+        }
+
         currentX = packet.getX();
         currentY = packet.getY();
         currentZ = packet.getZ();
@@ -160,6 +168,9 @@ public class VehicleMovementData {
     public double getLastAttachedX(){return lastAttachedX;}
     public double getLastAttachedY(){return lastAttachedY;}
     public double getLastAttachedZ(){return lastAttachedZ;}
+
+    public ServerWorld getServerWorld(){return serverWorld;}
+
 
     public long getAirTimeStartTime(){return airTimeStartTime;}
 
@@ -260,6 +271,7 @@ public class VehicleMovementData {
         this.lastX = player.getX();
         this.lastY = player.getY();
         this.lastZ = player.getZ();
+        this.serverWorld = player.getServerWorld();
         this.changed = true;
         this.hasStarted = true;
     }

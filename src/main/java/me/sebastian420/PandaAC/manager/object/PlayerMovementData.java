@@ -6,6 +6,7 @@ import me.sebastian420.PandaAC.view.PlayerMoveC2SPacketView;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Arrays;
@@ -77,6 +78,7 @@ public class PlayerMovementData {
 
     private boolean possibleTimer;
 
+    ServerWorld serverWorld;
 
     private final ServerPlayerEntity player;
 
@@ -127,6 +129,8 @@ public class PlayerMovementData {
 
     public long getAirTimeStartTime(){return airTimeStartTime;}
     public void setAirTimeStartTime(long time){ airTimeStartTime = time;}
+
+    public ServerWorld getServerWorld(){return serverWorld;}
 
     public long getLastSolidTouch() {return lastSolidTouch;}
     public void setLastSolidTouch(long time) {lastSolidTouch = time;}
@@ -228,6 +232,12 @@ public class PlayerMovementData {
     }
 
     public void setNew(MovementPacketData packetView, long time) {
+
+        if (player.getServerWorld() != this.serverWorld) {
+            setInitial(player);
+            this.serverWorld = player.getServerWorld();
+        }
+
         boolean packetChanged = false;
 
         if (currentX != packetView.getX() ||
@@ -339,6 +349,7 @@ public class PlayerMovementData {
         this.lastX = player.getX();
         this.lastY = player.getY();
         this.lastZ = player.getZ();
+        this.serverWorld = player.getServerWorld();
         this.changed = true;
         this.hasStarted = true;
     }

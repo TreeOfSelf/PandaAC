@@ -184,7 +184,7 @@ public class CheckManager {
     }
 
     public static void rollBack(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData){
-        if (!playerData.getStarted()) return;
+        if (!playerData.getStarted() || playerData.getServerWorld() != serverPlayerEntity.getServerWorld()) return;
         if (playerData.getLastX() == 0 && playerData.getLastY() == 0 && playerData.getLastZ() == 0) return;
         if (Double.isNaN(playerData.getLastX()) || Double.isNaN(playerData.getLastY()) || Double.isNaN(playerData.getLastZ())) return;
 
@@ -192,14 +192,14 @@ public class CheckManager {
         //We should do something like this where your velocity is counted til you hit the ground
         //Vec3d velocity = serverPlayerEntity.getVelocity();
 
-        serverPlayerEntity.teleport(serverPlayerEntity.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(),PositionFlag.DELTA , serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch(), false);
+        serverPlayerEntity.teleport(playerData.getServerWorld(), playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(),PositionFlag.DELTA , serverPlayerEntity.getYaw(), serverPlayerEntity.getPitch(), false );
         playerData.teleport(playerData.getLastX(), playerData.getLastY(), playerData.getLastZ(), time);
         PandaLogger.getLogger().info("TELEPORTED TO {} {} {}", playerData.getLastX(), playerData.getLastY(), playerData.getLastZ());
         //serverPlayerEntity.setVelocity(velocity);
     }
 
     public static void rollBackVehicle(ServerPlayerEntity serverPlayerEntity, VehicleMovementData vehicleData) {
-        if (!vehicleData.getStarted()) return;
+        if (!vehicleData.getStarted() || vehicleData.getServerWorld() != serverPlayerEntity.getServerWorld()) return;
         if (vehicleData.getLastX() == 0 && vehicleData.getLastY() == 0 && vehicleData.getLastZ() == 0) return;
         if (Double.isNaN(vehicleData.getLastX()) || Double.isNaN(vehicleData.getLastY()) || Double.isNaN(vehicleData.getLastZ())) return;
 
@@ -210,7 +210,7 @@ public class CheckManager {
 
         List<Entity> passengers = vehicle.getPassengerList();
         passengers.iterator().forEachRemaining(Entity::dismountVehicle);
-        vehicle.teleport((ServerWorld) vehicle.getWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.DELTA, vehicle.getYaw(), vehicle.getPitch(), false);
+        vehicle.teleport(vehicleData.getServerWorld(), vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), PositionFlag.DELTA, vehicle.getYaw(), vehicle.getPitch(), false);
         vehicleData.teleport(vehicleData.getLastX(), vehicleData.getLastY(), vehicleData.getLastZ(), time);
 
         vehicle.setVelocity(new Vec3d(0,0,0));
