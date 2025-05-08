@@ -6,6 +6,8 @@ import me.sebastian420.PandaAC.mixin.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.*;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.passive.AbstractDonkeyEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.PacketCallbacks;
 import net.minecraft.network.packet.Packet;
@@ -59,7 +61,7 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
 
             Entity entity = player.getWorld().getEntityById(trackerPacket.id());
 
-            if (pandaConfig.packet.removeHealthTags && entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof Saddleable)) {
+            if (pandaConfig.packet.removeHealthTags && entity instanceof LivingEntity && entity.isAlive() && !(entity instanceof AbstractHorseEntity)) {
                 if (entity.getType() == EntityType.PLAYER) {
                     List<DataTracker.SerializedEntry<?>> modifiedValues = new ArrayList<>(trackedValues);
 

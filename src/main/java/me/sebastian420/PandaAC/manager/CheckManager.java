@@ -23,12 +23,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CheckManager {
 
     public static void run(ServerPlayerEntity serverPlayerEntity, long time) {
         if (serverPlayerEntity.isCreative() || serverPlayerEntity.isSpectator()) return;
-
 
         boolean running = true;
         while (running) {

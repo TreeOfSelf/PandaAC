@@ -40,7 +40,6 @@ public class MovementManager {
     }
 
     public static void read(ServerPlayerEntity player, MovementPacketData packet, long time) {
-
         PlayerMovementData playerData = getPlayer(player);
 
         ItemStack boots = player.getEquippedStack(EquipmentSlot.FEET);

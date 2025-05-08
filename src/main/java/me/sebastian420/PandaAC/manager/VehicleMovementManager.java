@@ -32,7 +32,6 @@ public class VehicleMovementManager {
     }
 
     public static void read(ServerPlayerEntity player, MovementPacketData packet, long time) {
-
         Entity vehicle = player.getVehicle();
         if (vehicle == null) return;
 
@@ -94,7 +93,7 @@ public class VehicleMovementManager {
             }
 
         } else if (vehicle instanceof AbstractHorseEntity horseEntity) {
-            if (horseEntity.isSaddled()) {
+            if (horseEntity.hasSaddleEquipped()) {
                 double speedMult = 1;
                 if (horseEntity.getControllingPassenger() != null) {
                     if (horseEntity.getControllingPassenger().isSprinting()) speedMult = 3;
@@ -112,7 +111,7 @@ public class VehicleMovementManager {
             }
         } else if (type == EntityType.PIG) {
             PigEntity pigEntity = (PigEntity) vehicle;
-            if (pigEntity.isSaddled()) {
+            if (pigEntity.hasSaddleEquipped()) {
                 speedPotential = SpeedLimits.PIG_SPEED;
                 yawPotential = SpeedLimits.PIG_YAW;
             } else {
@@ -121,7 +120,7 @@ public class VehicleMovementManager {
             }
         } else if (type == EntityType.STRIDER) {
             StriderEntity striderEntity = (StriderEntity) vehicle;
-            if (striderEntity.isSaddled()) {
+            if (striderEntity.hasSaddleEquipped()) {
                 speedPotential = SpeedLimits.STRIDER_SPEED;
                 yawPotential = SpeedLimits.STRIDER_YAW;
             } else {
