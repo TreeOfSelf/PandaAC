@@ -1,3 +1,9 @@
+# USE GRIMAC INSTEAD
+# https://github.com/GrimAnticheat/Grim 
+# DOWNLOAD FROM GITHUB ACTIONS
+
+![image](https://github.com/user-attachments/assets/36f9159c-97c1-422e-8489-53deeaa81e6e)
+
 # PandaAC
 
 ## Description
