@@ -148,17 +148,4 @@ public class PacketUtil {
         return climbable != null;
     }
 
-    public static boolean checkGround(ServerPlayerEntity serverPlayerEntity, MovementPacketData packetView) {
-
-        ServerWorld world = serverPlayerEntity.getServerWorld();
-        
-        int x = (int) Math.round(packetView.getX());
-        int y = (int) Math.round(packetView.getY());
-        int z = (int) Math.round(packetView.getZ());
-
-        BlockState blockBelow = checkVicinityGround(world, x, y - 1, z);
-
-        return blockBelow != null;
-    }
-
 }

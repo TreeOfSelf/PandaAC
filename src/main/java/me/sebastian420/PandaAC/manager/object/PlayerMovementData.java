@@ -233,9 +233,9 @@ public class PlayerMovementData {
 
     public void setNew(MovementPacketData packetView, long time) {
 
-        if (player.getServerWorld() != this.serverWorld) {
+        if (player.getWorld() != this.serverWorld) {
             setInitial(player);
-            this.serverWorld = player.getServerWorld();
+            this.serverWorld = player.getWorld();
         }
 
         boolean packetChanged = false;
@@ -349,7 +349,7 @@ public class PlayerMovementData {
         this.lastX = player.getX();
         this.lastY = player.getY();
         this.lastZ = player.getZ();
-        this.serverWorld = player.getServerWorld();
+        this.serverWorld = player.getWorld();
         this.changed = true;
         this.hasStarted = true;
     }

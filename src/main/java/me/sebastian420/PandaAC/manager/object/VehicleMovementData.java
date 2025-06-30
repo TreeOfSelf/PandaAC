@@ -85,9 +85,9 @@ public class VehicleMovementData {
 
     public void setNew(MovementPacketData packet, UUID vehicleUUID) {
 
-        if (player.getServerWorld() != this.serverWorld) {
+        if (player.getWorld() != this.serverWorld) {
             setInitial(player);
-            this.serverWorld = player.getServerWorld();
+            this.serverWorld = player.getWorld();
         }
 
         currentX = packet.getX();
@@ -271,7 +271,7 @@ public class VehicleMovementData {
         this.lastX = player.getX();
         this.lastY = player.getY();
         this.lastZ = player.getZ();
-        this.serverWorld = player.getServerWorld();
+        this.serverWorld = player.getWorld();
         this.changed = true;
         this.hasStarted = true;
     }

@@ -50,7 +50,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
             }
             final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, packet.getY(player.getY()) - player.getY() - 0.25005D, 0);
 
-            Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+            Iterable<VoxelShape> collidingBlocks = player.getWorld().getBlockCollisions(bottomEntity, bBox);
             boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
             if (blockCollisions) {
@@ -59,7 +59,7 @@ public class ServerPlayNetworkHandler_OnGroundCheck {
                 ((Player) player).setBlockCollisions(true);
             } else {
                 Entity finalBottomEntity = bottomEntity;
-                List<Entity> collidingEntities = player.getEntityWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
+                List<Entity> collidingEntities = player.getWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
 
                 ((Player) player).setEntityCollisions(!collidingEntities.isEmpty());
                 ((Player) player).setBlockCollisions(false);

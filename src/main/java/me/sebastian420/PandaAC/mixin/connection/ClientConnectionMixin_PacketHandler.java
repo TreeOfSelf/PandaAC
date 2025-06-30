@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.mixin.connection;
 
 import com.google.gson.internal.reflect.ReflectionHelper;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import me.sebastian420.PandaAC.PandaACThread;
 import me.sebastian420.PandaAC.manager.MovementManager;
@@ -84,18 +85,14 @@ public class ClientConnectionMixin_PacketHandler {
             }
         }
     }
-    @Inject(method = "sendImmediately", at = @At("HEAD"))
-    private void sendImmediately(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
-        if (packetListener instanceof ServerPlayNetworkHandler) {
-        }
-    }
+
 
     @Inject(method = "exceptionCaught", at = @At("HEAD"))
     public void exceptionCaught(ChannelHandlerContext channelHandlerContext, Throwable throwable, CallbackInfo cb) {
         PandaLogger.getLogger().warn(ExceptionUtils.getStackTrace(throwable));
     }
 
-    @Inject(method = "send(Lnet/minecraft/network/packet/Packet;Lnet/minecraft/network/PacketCallbacks;Z)V", at = @At("HEAD"))
+    @Inject(method = "send(Lnet/minecraft/network/packet/Packet;Lio/netty/channel/ChannelFutureListener;Z)V", at = @At("HEAD"))
     public void send(Packet<?> packet, PacketCallbacks callbacks, boolean flush, CallbackInfo ci) {
         if (packet instanceof PlayerPositionLookS2CPacket) {
             ServerPlayerEntity serverPlayerEntity = ((ServerPlayNetworkHandler) packetListener).getPlayer();

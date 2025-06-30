@@ -92,11 +92,11 @@ public class BlockUtil {
         }
         final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, y - vehicle.getY() - 0.25005D, 0);
 
-        Iterable<VoxelShape> collidingBlocks = vehicle.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        Iterable<VoxelShape> collidingBlocks = vehicle.getWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
         Entity finalBottomEntity = bottomEntity;
-        List<Entity> collidingEntities = vehicle.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
+        List<Entity> collidingEntities = vehicle.getWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
             if (finalBottomEntity.equals(foundEntity)) {
                 return false;
             }
@@ -134,11 +134,11 @@ public class BlockUtil {
         }
         final Box bBox = bottomEntity.getBoundingBox().expand(0.25, 0.25, 0.25);
 
-        Iterable<VoxelShape> collidingBlocks = vehicle.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        Iterable<VoxelShape> collidingBlocks = vehicle.getWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
         Entity finalBottomEntity = bottomEntity;
-        List<Entity> collidingEntities = vehicle.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
+        List<Entity> collidingEntities = vehicle.getWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
             if (finalBottomEntity.equals(foundEntity)) {
                 return false;
             }
@@ -159,7 +159,7 @@ public class BlockUtil {
 
 
         Entity finalBottomEntity = bottomEntity;
-        List<Entity> collidingEntities = vehicle.getEntityWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
+        List<Entity> collidingEntities = vehicle.getWorld().getOtherEntities(bottomEntity, bBox, foundEntity -> {
             if (finalBottomEntity.equals(foundEntity)) {
                 return false;
             }
@@ -180,7 +180,7 @@ public class BlockUtil {
         }
         final Box bBox = bottomEntity.getBoundingBox().expand(0, 0.25005D, 0).offset(0, y - player.getY() - 0.25005D, 0);
 
-        Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        Iterable<VoxelShape> collidingBlocks = player.getWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
         if (blockCollisions) {
@@ -188,7 +188,7 @@ public class BlockUtil {
             ((Player) player).setBlockCollisions(true);
         } else {
             Entity finalBottomEntity = bottomEntity;
-            List<Entity> collidingEntities = player.getEntityWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
+            List<Entity> collidingEntities = player.getWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
 
             ((Player) player).setEntityCollisions(!collidingEntities.isEmpty());
             ((Player) player).setBlockCollisions(false);
@@ -247,7 +247,7 @@ public class BlockUtil {
         }
         final Box bBox = bottomEntity.getBoundingBox().expand(0.25, 0.25, 0.25);
 
-        Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        Iterable<VoxelShape> collidingBlocks = player.getWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
         if (blockCollisions) {
@@ -255,7 +255,7 @@ public class BlockUtil {
             ((Player) player).setBlockCollisions(true);
         } else {
             Entity finalBottomEntity = bottomEntity;
-            List<Entity> collidingEntities = player.getEntityWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
+            List<Entity> collidingEntities = player.getWorld().getOtherEntities(bottomEntity, bBox, entity -> !finalBottomEntity.equals(entity));
 
             ((Player) player).setEntityCollisions(!collidingEntities.isEmpty());
             ((Player) player).setBlockCollisions(false);
@@ -276,7 +276,7 @@ public class BlockUtil {
         }
         final Box bBox = bottomEntity.getBoundingBox().expand(2, 2 ,2);
 
-        Iterable<VoxelShape> collidingBlocks = player.getEntityWorld().getBlockCollisions(bottomEntity, bBox);
+        Iterable<VoxelShape> collidingBlocks = player.getWorld().getBlockCollisions(bottomEntity, bBox);
         boolean blockCollisions = collidingBlocks.iterator().hasNext();
 
         return blockCollisions || checkFluid(player, y) != Blocks.AIR.getDefaultState();

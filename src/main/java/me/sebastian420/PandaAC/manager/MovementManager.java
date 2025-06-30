@@ -57,7 +57,7 @@ public class MovementManager {
             vehicleData.setUUID(null);
         }
 
-        ServerWorld world = player.getServerWorld();
+        ServerWorld world = player.getWorld();
 
         double speedPotential;
         double verticalSpeedPotential;
@@ -268,7 +268,7 @@ public class MovementManager {
         }
 
         if (soulSpeed > 0) {
-            if (PacketUtil.checkVicinitySoul(player.getServerWorld(), (int) packet.getX(), (int) packet.getY(), (int) packet.getZ())) {
+            if (PacketUtil.checkVicinitySoul(player.getWorld(), (int) packet.getX(), (int) packet.getY(), (int) packet.getZ())) {
                 speedPotential *= 1 + (soulSpeed * 0.5);
             }
         }

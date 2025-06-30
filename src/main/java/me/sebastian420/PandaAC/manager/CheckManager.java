@@ -41,7 +41,7 @@ public class CheckManager {
                         (int) Math.floor(playerData.getLastY()),
                         (int) Math.floor(playerData.getLastZ()));
 
-                BlockState lastBlockState = serverPlayerEntity.getServerWorld().getBlockState(lastBlockPos);
+                BlockState lastBlockState = serverPlayerEntity.getWorld().getBlockState(lastBlockPos);
 
                 //Non-Elytra
                 if (!serverPlayerEntity.isGliding()) {
@@ -184,7 +184,7 @@ public class CheckManager {
     }
 
     public static void rollBack(ServerPlayerEntity serverPlayerEntity, PlayerMovementData playerData){
-        if (!playerData.getStarted() || playerData.getServerWorld() != serverPlayerEntity.getServerWorld()) return;
+        if (!playerData.getStarted() || playerData.getServerWorld() != serverPlayerEntity.getWorld()) return;
         if (playerData.getLastX() == 0 && playerData.getLastY() == 0 && playerData.getLastZ() == 0) return;
         if (Double.isNaN(playerData.getLastX()) || Double.isNaN(playerData.getLastY()) || Double.isNaN(playerData.getLastZ())) return;
 
@@ -199,7 +199,7 @@ public class CheckManager {
     }
 
     public static void rollBackVehicle(ServerPlayerEntity serverPlayerEntity, VehicleMovementData vehicleData) {
-        if (!vehicleData.getStarted() || vehicleData.getServerWorld() != serverPlayerEntity.getServerWorld()) return;
+        if (!vehicleData.getStarted() || vehicleData.getServerWorld() != serverPlayerEntity.getWorld()) return;
         if (vehicleData.getLastX() == 0 && vehicleData.getLastY() == 0 && vehicleData.getLastZ() == 0) return;
         if (Double.isNaN(vehicleData.getLastX()) || Double.isNaN(vehicleData.getLastY()) || Double.isNaN(vehicleData.getLastZ())) return;
 

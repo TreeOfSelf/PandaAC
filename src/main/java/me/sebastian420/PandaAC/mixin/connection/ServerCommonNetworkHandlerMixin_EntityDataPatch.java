@@ -1,6 +1,7 @@
 package me.sebastian420.PandaAC.mixin.connection;
 
 import com.mojang.authlib.GameProfile;
+import io.netty.channel.ChannelFutureListener;
 import me.sebastian420.PandaAC.mixin.accessor.LivingEntityAccessor;
 import me.sebastian420.PandaAC.mixin.accessor.PlayerEntityAccessor;
 import net.minecraft.entity.*;
@@ -49,7 +50,7 @@ public abstract class ServerCommonNetworkHandlerMixin_EntityDataPatch {
 
 
     @Inject(method = "send", at = @At("HEAD"), cancellable = true)
-    private void onSend(Packet<?> packet, PacketCallbacks callbacks, CallbackInfo ci) {
+    private void onSend(Packet<?> packet, ChannelFutureListener channelFutureListener, CallbackInfo ci) {
         GameProfile profile = this.getProfile();
         ServerPlayerEntity player = this.server.getPlayerManager().getPlayer(profile.getId());
 
